@@ -30,11 +30,11 @@ int main(int argc, char *argv[]) {
 }
 
 int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
-  uint8_t *st[4];
+  uint8_t *st = malloc(sizeof(uint32_t));
 
   if (timer_get_conf(timer, st) != 0)
     return 1;
-  printf(*st[0]);
+  printf(st);
 
   if (timer_display_conf(timer, st, field) != 0)
     return 1;
