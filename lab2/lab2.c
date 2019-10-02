@@ -34,7 +34,6 @@ int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
 
   if (timer_get_conf(timer, st) != 0)
     return 1;
-  printf(st);
 
   if (timer_display_conf(timer, *st, field) != 0)
     return 1;
