@@ -34,7 +34,7 @@ void (timer_int_handler)() {
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
   *st = (TIMER_RB_CMD|TIMER_RB_COUNT_|TIMER_RB_SEL(0));
 
-  if (sys_outb(TIMER_0, *st) != 0)
+  if (sys_outb(TIMER_CTRL, *st) != 0)
     return 1;
 
   if (util_sys_inb(TIMER_0, st) != 0)
