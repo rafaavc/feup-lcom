@@ -39,8 +39,6 @@ int (timer_get_conf)(uint8_t timer, uint8_t *st) {
 
   if (util_sys_inb(TIMER_0, st) != 0)
     return 1;
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
 
   return 0;
 }
