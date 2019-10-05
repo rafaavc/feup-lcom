@@ -42,15 +42,49 @@ int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
 }
 
 int(timer_test_time_base)(uint8_t timer, uint32_t freq) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
 
-  return 1;
+	if (timer_set_frequency(timer, freq) != 0)
+    return 1;
+
+  return 0;
 }
 
 int(timer_test_int)(uint8_t time) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+  
+  int ipc_status;
+  int r;
+  message msg;
+
+
+  while (true)
+  {
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_set)
+          {
+            //proccess it
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+    else
+    {
+      //no standard messages expected: do nothing
+    }
+    
+  }
+
 
   return 1;
 }
