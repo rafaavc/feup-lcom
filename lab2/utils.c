@@ -5,12 +5,12 @@
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
   if (val % 2 == 0)
   {  
-    lsb = 0;
+    *lsb = 0;
     return 0;
   }
   else if (val % 2 == 1)
   {
-    lsb = 1;
+    *lsb = 1;
     return 0;
   }
 
@@ -21,7 +21,7 @@ int(util_get_MSB)(uint16_t val, uint8_t *msb) {
   
   val = val >> 15;
 
-  msb = val;
+  *msb = val;
 
   return 0;
 }

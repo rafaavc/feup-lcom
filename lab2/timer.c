@@ -8,18 +8,65 @@
 int counter = 0, hook_id;
 
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
-  /* To be implemented by the students */
-  printf("%s is not yet implemented!\n", __func__);
+  if (freq < 19 || freq > TIMER_FREQ)
+    return 1;
 
-  return 1;
+  uint8_t current_conf;
+
+  if (timer_get_conf(timer, &current_conf) != 0) // gets current timer conf so that the 4 least significant bits aren't changed
+    return 1;
+
+  uint8_t control_word = current_conf << 4;
+  control_word = control_word >> 4;  // now control_word holds the 4 least significant bits (BCD/binary and operating mode)
+
+  control_word |= TIMER_LSB_MSB;  // initializes lsb followed by msb
+  uint8_t lsb, msb;
+  uint16_t count_value = TIMER_FREQ / freq;
+
+  util_get_LSB(count_value, &lsb);
+  util_get_MSB(count_value, &msb);
+
+  switch (timer) {
+    case 0:
+      control_word |= TIMER_SEL0;
+      if (sys_outb(TIMER_CTRL, control_word) != 0) // writing to control
+        return 1;
+      if (sys_outb(TIMER_0, lsb) != 0) // giving lsb
+        return 1;
+      if (sys_outb(TIMER_0, msb) != 0) // and now msb
+        return 1;
+      break;
+    case 1:
+      control_word |= TIMER_SEL1;
+      if (sys_outb(TIMER_CTRL, control_word) != 0)
+        return 1;
+      if (sys_outb(TIMER_1, lsb) != 0)
+        return 1;
+      if (sys_outb(TIMER_1, msb) != 0)
+        return 1;
+      break;
+    case 2:
+      control_word |= TIMER_SEL2;
+      if (sys_outb(TIMER_CTRL, control_word) != 0)
+        return 1;
+      if (sys_outb(TIMER_2, lsb) != 0)
+        return 1;
+      if (sys_outb(TIMER_2, msb) != 0)
+        return 1;
+      break;
+    default:
+      return 1;
+  }
+
+  return 0;
 }
 
 int (timer_subscribe_int)(uint8_t *bit_no) {
-  hook_id = (int) *bit_no;
+  /*hook_id = (int) *bit_no;
   
   if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,bit_no) != 0)
     return 1;
-
+  */
   return 0;
 }
 
@@ -35,11 +82,11 @@ void (timer_int_handler)() {
 }
 
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
-  *st = (TIMER_RB_CMD|TIMER_RB_COUNT_|TIMER_RB_SEL(timer));
+  *st = (TIMER_RB_CMD|TIMER_RB_COUNT_|TIMER_RB_SEL(timer)); // read-back command
 
   if (sys_outb(TIMER_CTRL, *st) != 0)
     return 1;
-    
+ 
   if (timer == 0) {
     if (util_sys_inb(TIMER_0, st) != 0)
       return 1;
@@ -52,7 +99,6 @@ int (timer_get_conf)(uint8_t timer, uint8_t *st) {
   } else {
     return 1;
   }
-
   return 0;
 }
 
@@ -89,27 +135,10 @@ int (timer_display_conf)(uint8_t timer, uint8_t st,
     case 2:
       st = st << 4;
       st = st >> 5;
-      switch (st) {
-        case 0:
-          value.count_mode = 0;
-          break;
-        case 1:
-          value.count_mode = 1;
-          break;
-        case 2: case 6:
-          value.count_mode = 2;
-          break;
-        case 3: case 7:
-          value.count_mode = 3;
-          break;
-        case 4:
-          value.count_mode = 4;
-          break;
-        case 5:
-          value.count_mode = 5;
-          break;
-        default:
-          return 1;
+      if (st != 6 && st != 7) {
+        value.count_mode = st;
+      } else {
+        value.count_mode = st-4;
       }
       break;
     case 3:
