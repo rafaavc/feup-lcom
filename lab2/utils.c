@@ -3,24 +3,15 @@
 #include <stdint.h>
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
-  if (val % 2 == 0)
-  {  
-    *lsb = 0;
-    return 0;
-  }
-  else if (val % 2 == 1)
-  {
-    *lsb = 1;
-    return 0;
-  }
+  val = val << 8;
+  val = val >> 8;
+  *lsb = val;
 
-  return 1;
+  return 0;
 }
 
 int(util_get_MSB)(uint16_t val, uint8_t *msb) {
-  
-  val = val >> 15;
-
+  val = val >> 8;
   *msb = val;
 
   return 0;
