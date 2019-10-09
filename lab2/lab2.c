@@ -32,6 +32,9 @@ int main(int argc, char *argv[]) {
 }
 
 int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
+  if (timer > 2 || timer < 0)
+    return 1;
+
   uint8_t *st = malloc(sizeof(uint32_t));
 
   if (timer_get_conf(timer, st) != 0)
@@ -44,7 +47,9 @@ int(timer_test_read_config)(uint8_t timer, enum timer_status_field field) {
 }
 
 int(timer_test_time_base)(uint8_t timer, uint32_t freq) {
-
+  if (timer > 2 || timer < 0)
+    return 1;
+    
 	if (timer_set_frequency(timer, freq) != 0)
     return 1;
 

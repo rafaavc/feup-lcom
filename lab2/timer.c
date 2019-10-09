@@ -85,6 +85,7 @@ void (timer_int_handler)() {
 }
 
 int (timer_get_conf)(uint8_t timer, uint8_t *st) {
+
   *st = (TIMER_RB_CMD|TIMER_RB_COUNT_|TIMER_RB_SEL(timer)); // read-back command
 
   if (sys_outb(TIMER_CTRL, *st) != 0)
@@ -108,6 +109,8 @@ int (timer_get_conf)(uint8_t timer, uint8_t *st) {
 int (timer_display_conf)(uint8_t timer, uint8_t st,
                         enum timer_status_field field) {
   
+  if (timer > 2 || timer < 0)
+    return 1;
 
   union timer_status_field_val value;
   
