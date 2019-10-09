@@ -63,9 +63,9 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 }
 
 int (timer_subscribe_int)(uint8_t *bit_no) {
-  hook_id = (int) *bit_no;
+  hook_id = (int) *bit_no; // saves bit_no value
   
-  if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,&hook_id) != 0)
+  if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,&hook_id) != 0) // enables timer 0
     return 1;
   
   *bit_no = (uint8_t) BIT(*bit_no);
@@ -74,7 +74,7 @@ int (timer_subscribe_int)(uint8_t *bit_no) {
 }
 
 int (timer_unsubscribe_int)() {
-  if (sys_irqrmpolicy(&hook_id) != 0)
+  if (sys_irqrmpolicy(&hook_id) != 0) // disables timer 0
     return 1;
 
   return 0;
@@ -88,11 +88,11 @@ int (timer_get_conf)(uint8_t timer, uint8_t *st) {
 
   *st = (TIMER_RB_CMD|TIMER_RB_COUNT_|TIMER_RB_SEL(timer)); // read-back command
 
-  if (sys_outb(TIMER_CTRL, *st) != 0)
+  if (sys_outb(TIMER_CTRL, *st) != 0) // writing to control
     return 1;
  
   if (timer == 0) {
-    if (util_sys_inb(TIMER_0, st) != 0)
+    if (util_sys_inb(TIMER_0, st) != 0) // getting conf from timer
       return 1;
   } else if (timer == 1) {
     if (util_sys_inb(TIMER_1, st) != 0)
@@ -115,30 +115,30 @@ int (timer_display_conf)(uint8_t timer, uint8_t st,
   union timer_status_field_val value;
   
   switch(field) {
-    case 0:
+    case 0:     // checks status
       value.byte = st;
       break;
-    case 1:
+    case 1:     // checks initialization mode
       st = st << 2;
       st = st >> 6;
       switch (st) {
         case 0:
-          value.in_mode = INVAL_val;
+          value.in_mode = INVAL_val;    // init mode not valid
           break;
         case 1:
-          value.in_mode = LSB_only;
+          value.in_mode = LSB_only;     // init mode is LSB only
           break;
         case 2:
-          value.in_mode = MSB_only;
+          value.in_mode = MSB_only;     // init mode is MSB only
           break;
         case 3:
-          value.in_mode = MSB_after_LSB;
+          value.in_mode = MSB_after_LSB;// init mode is MSB after LSB
           break;
         default:
           return 1;
       }
       break;
-    case 2:
+    case 2:     // checks counting mode
       st = st << 4;
       st = st >> 5;
       if (st != 6 && st != 7) {
@@ -147,7 +147,7 @@ int (timer_display_conf)(uint8_t timer, uint8_t st,
         value.count_mode = st-4;
       }
       break;
-    case 3:
+    case 3:     // checks counting base
       if (st % 2 == 0) {
         value.bcd = false;
       } else {
