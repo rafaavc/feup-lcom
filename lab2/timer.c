@@ -65,7 +65,8 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 int (timer_subscribe_int)(uint8_t *bit_no) {
   hook_id = (int) *bit_no; // saves bit_no value
   
-  if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,&hook_id) != 0) // enables timer 0
+  // subscribe a notification on interrupts
+  if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,&hook_id) != 0)
     return 1;
   
   *bit_no = (uint8_t) BIT(*bit_no);
@@ -74,7 +75,8 @@ int (timer_subscribe_int)(uint8_t *bit_no) {
 }
 
 int (timer_unsubscribe_int)() {
-  if (sys_irqrmpolicy(&hook_id) != 0) // disables timer 0
+  // removes notification subscriptions on interrupts
+  if (sys_irqrmpolicy(&hook_id) != 0)
     return 1;
 
   return 0;
