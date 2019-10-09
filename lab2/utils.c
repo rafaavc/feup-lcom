@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
+  // Get least significant byte
   val = val << 8;
   val = val >> 8;
   *lsb = val;
@@ -11,6 +12,7 @@ int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
 }
 
 int(util_get_MSB)(uint16_t val, uint8_t *msb) {
+  // Get most significant byte
   val = val >> 8;
   *msb = val;
 
