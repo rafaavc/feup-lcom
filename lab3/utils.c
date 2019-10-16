@@ -31,14 +31,10 @@ int (util_sys_inb)(int port, uint8_t *value) {
   return 0;
 }
 
-int (util_sys_in2b)(int port, uint16_t *value) {
-  uint32_t *b = (uint32_t *) value;
+int (util_get_MSbit)(uint8_t val, uint8_t *msbit){
 
-  if (sys_inb(port, b) != 0) {
-    return 1;
-  }
-
-  *value = (uint16_t) *b;
+  val = val >> 7;
+  *msbit = val;
 
   return 0;
 }

@@ -6,6 +6,7 @@
 #include <stdint.h>
 #include "Macros.h"
 #include "keyboard.h"
+#include "utils.h"
 
 extern uint8_t kbd_code;  
 
@@ -63,12 +64,16 @@ int(kbd_test_scan)() {
   int r;
   message msg;
   uint8_t irq_set = BIT(0); // IRQ1
+  uint8_t msbit;
+  bool two_bytes = false, make = false;
+  uint8_t bytes[2];
 
   if (kbd_subscribe_int(& irq_set) != 0)
     return 1;
 
   while (kbd_code != ESC_break)
   {
+    kbd_code = 0;
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
     {
       printf("driver_receive failed with: %d", r);
@@ -92,14 +97,31 @@ int(kbd_test_scan)() {
           break;
       }
     }
-    else
-    {
-      //no standard messages expected: do nothing
-    } 
 
-  if (kbd_code == BYTE2_CODE)
-    continue;
+    if (kbd_code == BYTE2_CODE){
+      two_bytes = true;
+      continue;
+    }
+    
+    if (kbd_code == 0)
+      continue;
 
+    util_get_MSbit(kbd_code, &msbit);
+    if (msbit != 1)
+      make = true;
+
+
+    if (two_bytes){
+      bytes[0] = BYTE2_CODE;
+      bytes[1] = kbd_code;
+      kbd_print_scancode(make,2,bytes);
+    }
+    else{
+      bytes[0] = kbd_code;
+      kbd_print_scancode(make,1,bytes);
+    }
+
+    two_bytes = false; make = false;
 
   }
 
@@ -108,6 +130,7 @@ int(kbd_test_scan)() {
 
 
   return 1;
+
 }
 
 int(kbd_test_poll)() {
