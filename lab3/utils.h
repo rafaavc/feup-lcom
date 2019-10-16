@@ -38,3 +38,12 @@ int (util_get_MSB)(uint16_t val, uint8_t *msb);
  * @return Return 0 upon success and non-zero otherwise
  */
 int (util_sys_inb)(int port, uint8_t *value);
+
+/**
+ * @brief Invokes sys_inb() system call but reads the value into a uint16_t variable.
+ *
+ * @param port the input port that is to be read
+ * @param value address of 16-bit variable to be update with the value read
+ * @return Return 0 upon success and non-zero otherwise
+ */
+int (util_sys_in2b)(int port, uint8_t *value);

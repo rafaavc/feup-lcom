@@ -7,6 +7,7 @@
 
 int hook_id = 0;
 unsigned int counter;
+uint8_t kbd_code;
 
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   if (freq < 19 || freq > TIMER_FREQ)
@@ -81,6 +82,7 @@ int (kbd_unsubscribe_int)() {
 
   return 0;
 }
+
 
 void (timer_int_handler)() {
   counter++;

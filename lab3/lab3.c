@@ -6,6 +6,8 @@
 #include <stdint.h>
 #include "Macros.h"
 
+extern uint8_t kbd_code;
+
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
   lcf_set_language("EN-US");
@@ -31,20 +33,36 @@ int main(int argc, char *argv[]) {
 }
 
 void (kbc_ih)() {
-  
+  uint8_t status_data;
+  uint16_t breakcode;
+  if (util_sys_inb(STATUS_REG, &status_data) != 0)
+    return 1;
+
+  if (status_data & (BIT(7) | BIT(6) |BIT(5))) // Checks parity error, Timeout error and Mouse data
+    return 1;
+
+  if (status_data & BIT(0)){ // Checks if Output buffer is full
+    if (util_sys_inb(OUT_BUF, breakcode) != 0)
+      return 1;
+  }
 }
+
+
+int (kbd_print_scancode)(bool make, uint8_t	size, uint8_t * bytes){
+
+}
+
 
 int(kbd_test_scan)() {
   int ipc_status;
   int r;
   message msg;
   uint8_t irq_set = BIT(0); // IRQ1
-  uint8_t breakcode = 0;
 
   if (kbd_subscribe_int(& irq_set) != 0)
     return 1;
 
-  while (breakcode != ESC_break)
+  while (kbd_code != ESC_break)
   {
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
     {
@@ -71,6 +89,9 @@ int(kbd_test_scan)() {
       //no standard messages expected: do nothing
     }
     
+
+
+
   }
 
   if (kbd_unsubscribe_int() != 0)
