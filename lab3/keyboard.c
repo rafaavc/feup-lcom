@@ -5,7 +5,7 @@
 
 #include "Macros.h"
 
-int hook_id = TIMER_SEL0;
+int hook_id = 0;
 unsigned int counter;
 
 int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
@@ -66,7 +66,7 @@ int (kbd_subscribe_int)(uint8_t *bit_no) {
   hook_id = (int) *bit_no; // saves bit_no value
   
   // subscribe a notification on interrupts
-  if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,&hook_id) != 0)
+  if (sys_irqsetpolicy(KBD_IRQ,IRQ_REENABLE|IRQ_EXCLUSIVE,&hook_id) != 0)
     return 1;
   
   *bit_no = (uint8_t) BIT(*bit_no);
@@ -74,7 +74,7 @@ int (kbd_subscribe_int)(uint8_t *bit_no) {
   return 0;
 }
 
-int (timer_unsubscribe_int)() {
+int (kbd_unsubscribe_int)() {
   // removes notification subscriptions on interrupts
   if (sys_irqrmpolicy(&hook_id) != 0)
     return 1;

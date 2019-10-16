@@ -30,14 +30,18 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
+void (kbc_ih)() {
+  
+}
+
 int(kbd_test_scan)() {
   int ipc_status;
   int r;
   message msg;
-  uint8_t irq_set = BIT(0);
+  uint8_t irq_set = BIT(0); // IRQ1
   uint8_t breakcode = 0;
 
-  if (timer_subscribe_int(& irq_set) != 0)
+  if (kbd_subscribe_int(& irq_set) != 0)
     return 1;
 
   while (breakcode != ESC_break)
@@ -54,7 +58,7 @@ int(kbd_test_scan)() {
         case HARDWARE:
           if (msg.m_notify.interrupts & irq_set)
           {
-            
+            kbc_ih();
           }
           break;
 
@@ -69,7 +73,7 @@ int(kbd_test_scan)() {
     
   }
 
-  if (timer_unsubscribe_int() != 0)
+  if (kbd_unsubscribe_int() != 0)
     return 1;
 
 
