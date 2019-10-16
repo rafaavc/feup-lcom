@@ -31,7 +31,10 @@ int main(int argc, char *argv[]) {
 }
 
 int(kbd_test_scan)() {
-  uint16_t breakcode = 0;
+  int ipc_status;
+  int r;
+  message msg;
+  uint8_t irq_set = BIT(0);
 
   while (1)
   {
