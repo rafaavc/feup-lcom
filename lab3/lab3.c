@@ -35,8 +35,12 @@ int(kbd_test_scan)() {
   int r;
   message msg;
   uint8_t irq_set = BIT(0);
+  uint8_t breakcode = 0;
 
-  while (1)
+  if (timer_subscribe_int(& irq_set) != 0)
+    return 1;
+
+  while (breakcode != ESC_break)
   {
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
     {
@@ -50,7 +54,7 @@ int(kbd_test_scan)() {
         case HARDWARE:
           if (msg.m_notify.interrupts & irq_set)
           {
-
+            
           }
           break;
 
@@ -64,6 +68,10 @@ int(kbd_test_scan)() {
     }
     
   }
+
+  if (timer_unsubscribe_int() != 0)
+    return 1;
+
 
   return 1;
 }

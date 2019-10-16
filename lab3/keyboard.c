@@ -62,7 +62,7 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
   return 0;
 }
 
-int (timer_subscribe_int)(uint8_t *bit_no) {
+int (kbd_subscribe_int)(uint8_t *bit_no) {
   hook_id = (int) *bit_no; // saves bit_no value
   
   // subscribe a notification on interrupts

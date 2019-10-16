@@ -57,4 +57,7 @@
 
 #define ESC_break   0x81  /**< @brief ESC key BREAK CODE value  */
 
+#define OUT_BUF 0x60 /**< @brief OUT_BUF port */
+#define KBC_CMD_REG 0x64 /**< @brief IN_BUF port */
+
 #endif /* _LCOM_I8254_H */
