@@ -61,4 +61,7 @@
 #define OUT_BUF 0x60 /**< @brief OUT_BUF port */
 #define STATUS_REG 0x64 /**< @brief STATUS_REG port */
 
+#define LARGEST_NUM 0xFF /**< @brief Largest number of 1 byte */
+#define BYTE2_CODE 0xE0 /**< @brief code to read another byte from keyboard */
+
 #endif /* _LCOM_I8254_H */

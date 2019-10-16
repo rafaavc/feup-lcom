@@ -5,8 +5,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include "Macros.h"
+#include "keyboard.h"
 
-extern uint8_t kbd_code;
+extern uint8_t kbd_code;  
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -34,22 +35,26 @@ int main(int argc, char *argv[]) {
 
 void (kbc_ih)() {
   uint8_t status_data;
-  uint16_t breakcode;
-  if (util_sys_inb(STATUS_REG, &status_data) != 0)
-    return 1;
+  bool error = false;
+  if (util_sys_inb(STATUS_REG, &status_data) != 0){
+    error = true;
+  }
 
-  if (status_data & (BIT(7) | BIT(6) |BIT(5))) // Checks parity error, Timeout error and Mouse data
-    return 1;
+  if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
+    error = true;
+  }
 
   if (status_data & BIT(0)){ // Checks if Output buffer is full
-    if (util_sys_inb(OUT_BUF, breakcode) != 0)
-      return 1;
+    if (util_sys_inb(OUT_BUF, &kbd_code) != 0)
+      error = true;
   }
-}
 
 
-int (kbd_print_scancode)(bool make, uint8_t	size, uint8_t * bytes){
+  if (kbd_code == LARGEST_NUM)
+    kbd_code = 0;
 
+  if (error)
+    kbd_code = 0;
 }
 
 
@@ -77,6 +82,9 @@ int(kbd_test_scan)() {
           if (msg.m_notify.interrupts & irq_set)
           {
             kbc_ih();
+            if (kbd_code == 0)
+              return 1;
+
           }
           break;
 
@@ -87,9 +95,10 @@ int(kbd_test_scan)() {
     else
     {
       //no standard messages expected: do nothing
-    }
-    
+    } 
 
+  if (kbd_code == BYTE2_CODE)
+    continue;
 
 
   }
