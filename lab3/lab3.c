@@ -4,7 +4,7 @@
 
 #include <stdbool.h>
 #include <stdint.h>
-#include <Macros.h>
+#include "Macros.h"
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -33,7 +33,32 @@ int main(int argc, char *argv[]) {
 int(kbd_test_scan)() {
   uint16_t breakcode = 0;
 
-  while (breakcode != ESC_break){
+  while (1)
+  {
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_set)
+          {
+
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+    else
+    {
+      //no standard messages expected: do nothing
+    }
     
   }
 
