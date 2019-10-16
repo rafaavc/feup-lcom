@@ -33,7 +33,7 @@ int main(int argc, char *argv[]) {
 int(kbd_test_scan)() {
   uint16_t breakcode = 0;
 
-  while (breakcode != ESC){
+  while (breakcode != ESC_break){
     
   }
 

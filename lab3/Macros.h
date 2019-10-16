@@ -55,6 +55,6 @@
 /**@}*/
 
 
-#define ESC   0x81  /**< @brief ESC key value */
+#define ESC_break   0x81  /**< @brief ESC key BREAK CODE value  */
 
 #endif /* _LCOM_I8254_H */
