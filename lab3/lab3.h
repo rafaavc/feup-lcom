@@ -82,22 +82,9 @@ void (kbc_ih)(void);
  * @parameters bytes Array with size elements, with the scancode bytes
  * @return 0 upon success and non-zero otherwise
  */
-int (kbd_print_scancode)(bool make, uint8_t	size, uint8_t *	bytes);
+int (kbd_print_scancode)(bool make, uint8_t	size, uint8_t * bytes);
 
 
-/*
-
-Prints the no. of sys_inb() calls.
-
-Provided via the LCF – no need to implement it
-
-Parameters
-    cnt	Number of sys_inb() calls
-
-Returns
-    Return 0 upon success and non-zero otherwise 
-
-*/
 
 /**
  * @brief Prints the no. of sys_inb() calls.
