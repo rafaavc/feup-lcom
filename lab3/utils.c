@@ -1,6 +1,13 @@
+#ifndef LAB3
+#define LAB3
+#endif
+
 #include <lcom/lcf.h>
 
 #include <stdint.h>
+
+
+extern unsigned int sys_inb_counter;
 
 int(util_get_LSB)(uint16_t val, uint8_t *lsb) {
   // Get least significant byte
@@ -27,6 +34,10 @@ int (util_sys_inb)(int port, uint8_t *value) {
   }
 
   *value = (uint8_t) *b;
+
+  #ifdef LAB3
+  sys_inb_counter++;
+  #endif
 
   return 0;
 }

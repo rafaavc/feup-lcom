@@ -1,5 +1,5 @@
 #include <lcom/lcf.h>
-
+#include <minix/sysutil.h>
 #include <lcom/lab3.h>
 
 #include <stdbool.h>
@@ -9,6 +9,7 @@
 #include "utils.h"
 
 extern uint8_t kbd_code;  
+extern unsigned int sys_inb_counter;
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -34,9 +35,10 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void (kbc_ih)() {
+void (kbc_ih)(){
   uint8_t status_data;
   bool error = false;
+
   if (util_sys_inb(STATUS_REG, &status_data) != 0){
     error = true;
   }
@@ -50,12 +52,35 @@ void (kbc_ih)() {
       error = true;
   }
 
-
   if (kbd_code == LARGEST_NUM)
     kbd_code = 0;
-
   if (error)
     kbd_code = 0;
+
+  tickdelay(micros_to_ticks(DELAY_US));
+}
+
+
+int polling() {
+  uint8_t status_data;
+
+  if (util_sys_inb(STATUS_REG, &status_data) != 0){
+    return 1;
+  }
+
+  if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
+    return 1;
+  }
+
+  if (status_data & OBF){ // Checks if Output buffer is full
+    if (util_sys_inb(OUT_BUF, &kbd_code) != 0)
+      return 1;
+  }
+
+  if (kbd_code == LARGEST_NUM)
+    return 1;
+
+  return 0;
 }
 
 
@@ -103,22 +128,22 @@ int(kbd_test_scan)() {
       continue;
     }
     
-    if (kbd_code == 0)
-      continue;
+    if (kbd_code != 0){
 
-    util_get_MSbit(kbd_code, &msbit);
-    if (msbit != 1)
-      make = true;
+      util_get_MSbit(kbd_code, &msbit);
+      if (msbit != 1)
+        make = true;
 
 
-    if (two_bytes){
-      bytes[0] = BYTE2_CODE;
-      bytes[1] = kbd_code;
-      kbd_print_scancode(make,2,bytes);
-    }
-    else{
-      bytes[0] = kbd_code;
-      kbd_print_scancode(make,1,bytes);
+      if (two_bytes){
+        bytes[0] = BYTE2_CODE;
+        bytes[1] = kbd_code;
+        kbd_print_scancode(make,2,bytes);
+      }
+      else{
+        bytes[0] = kbd_code;
+        kbd_print_scancode(make,1,bytes);
+      }
     }
 
     two_bytes = false; make = false;
@@ -128,16 +153,64 @@ int(kbd_test_scan)() {
   if (kbd_unsubscribe_int() != 0)
     return 1;
 
+  
+  kbd_print_no_sysinb(sys_inb_counter);
 
-  return 1;
+  return 0;
 
 }
 
 int(kbd_test_poll)() {
-  /* To be completed by the students */
-  printf("%s is not yet implemented!\n", __func__);
+  uint8_t irq_set = BIT(0); // IRQ1
+  uint8_t msbit;
+  bool two_bytes = false, make = false;
+  uint8_t bytes[2];
 
-  return 1;
+  if (kbd_subscribe_int(& irq_set) != 0)
+    return 1;
+
+  while (kbd_code != ESC_break)
+  {
+    kbd_code = 0;
+    
+    if (polling() != 0)
+      return 1;
+
+    if (kbd_code == BYTE2_CODE){
+      two_bytes = true;
+      continue;
+    }
+    
+    if (kbd_code != 0){
+      
+      util_get_MSbit(kbd_code, &msbit);
+      if (msbit != 1)
+        make = true;
+
+
+      if (two_bytes){
+        bytes[0] = BYTE2_CODE;
+        bytes[1] = kbd_code;
+        kbd_print_scancode(make,2,bytes);
+      }
+      else{
+        bytes[0] = kbd_code;
+        kbd_print_scancode(make,1,bytes);
+      }
+    }
+
+    two_bytes = false; make = false;
+
+  }
+
+  if (kbd_unsubscribe_int() != 0)
+    return 1;
+
+  enable_interrupts();
+
+  kbd_print_no_sysinb(sys_inb_counter);
+
+  return 0;
 }
 
 int(kbd_test_timed_scan)(uint8_t n) {

@@ -61,7 +61,13 @@
 #define OUT_BUF 0x60 /**< @brief OUT_BUF port */
 #define STATUS_REG 0x64 /**< @brief STATUS_REG port */
 
+#define OBF BIT(0) /**< @brief Bit for Output Buffer Full */
+#define READ_CMD_BYTE 0x20 /**< @brief Read command byte */
+#define WRITE_CMD_BYTE 0x60 /**< @brief Write command byte */
+
 #define LARGEST_NUM 0xFF /**< @brief Largest number of 1 byte */
 #define BYTE2_CODE 0xE0 /**< @brief code to read another byte from keyboard */
+
+#define DELAY_US 20000 /**< @brief Delay US keyboard */
 
 #endif /* _LCOM_I8254_H */

@@ -95,3 +95,11 @@ int (kbd_print_scancode)(bool make, uint8_t	size, uint8_t * bytes);
  * @return 0 upon success and non-zero otherwise
  */
 int (kbd_print_no_sysinb)(uint32_t cnt);
+
+/**
+ * @brief Handles keyboard polling
+ * 
+ * @return 0 upon success and non-zero otherwise
+ */
+int polling();
+
