@@ -68,6 +68,6 @@
 #define LARGEST_NUM 0xFF /**< @brief Largest number of 1 byte */
 #define BYTE2_CODE 0xE0 /**< @brief code to read another byte from keyboard */
 
-#define DELAY_US 20000 /**< @brief Delay US keyboard */
+#define DELAY_US 2000 /**< @brief Delay US keyboard */
 
 #endif /* _LCOM_I8254_H */

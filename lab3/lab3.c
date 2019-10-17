@@ -1,6 +1,6 @@
 #include <lcom/lcf.h>
 #include <minix/sysutil.h>
-#include <lcom/lab3.h>
+//#include <lcom/lab3.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -57,7 +57,7 @@ void (kbc_ih)(){
   if (error)
     kbd_code = 0;
 
-  tickdelay(micros_to_ticks(DELAY_US));
+  //tickdelay(micros_to_ticks(DELAY_US));
 }
 
 
@@ -80,6 +80,7 @@ int polling() {
   if (kbd_code == LARGEST_NUM)
     return 1;
 
+  tickdelay(micros_to_ticks(DELAY_US));
   return 0;
 }
 
@@ -178,7 +179,7 @@ int(kbd_test_poll)() {
 
     if (kbd_code == BYTE2_CODE){
       two_bytes = true;
-      continue;
+      continue;LARGEST_NUM
     }
     
     if (kbd_code != 0){
@@ -200,7 +201,6 @@ int(kbd_test_poll)() {
     }
 
     two_bytes = false; make = false;
-
   }
 
   if (kbd_unsubscribe_int() != 0)
