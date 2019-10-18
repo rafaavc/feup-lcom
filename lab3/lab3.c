@@ -179,7 +179,7 @@ int(kbd_test_poll)() {
 
     if (kbd_code == BYTE2_CODE){
       two_bytes = true;
-      continue;LARGEST_NUM
+      continue;
     }
     
     if (kbd_code != 0){
