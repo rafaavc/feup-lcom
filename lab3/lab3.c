@@ -39,7 +39,7 @@ void (kbc_ih)(){
   uint8_t status_data;
   bool error = false;
 
-  if (util_sys_inb(STATUS_REG, &status_data) != 0){
+  if (util_sys_inb(STATUS_REG, &status_data) != 0){  // Reads the Status Reg
     error = true;
   }
 
@@ -61,26 +61,27 @@ void (kbc_ih)(){
 }
 
 
-int polling() {
+int (polling)() {
   uint8_t status_data;
-
-  if (util_sys_inb(STATUS_REG, &status_data) != 0){
-    return 1;
-  }
-
-  if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
-    return 1;
-  }
-
-  if (status_data & OBF){ // Checks if Output buffer is full
-    if (util_sys_inb(OUT_BUF, &kbd_code) != 0)
+  while (kbd_code == 0) {
+    if (util_sys_inb(STATUS_REG, &status_data) != 0){
       return 1;
+    }
+
+    if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
+      return 1;
+    }
+
+    if (status_data & OBF){ // Checks if Output buffer is full
+      if (util_sys_inb(OUT_BUF, &kbd_code) != 0)
+        return 1;
+    }
+
+    if (kbd_code == LARGEST_NUM)
+      return 1;
+
+    tickdelay(micros_to_ticks(DELAY_US));
   }
-
-  if (kbd_code == LARGEST_NUM)
-    return 1;
-
-  tickdelay(micros_to_ticks(DELAY_US));
   return 0;
 }
 
@@ -162,51 +163,51 @@ int(kbd_test_scan)() {
 }
 
 int(kbd_test_poll)() {
-  uint8_t irq_set = BIT(0); // IRQ1
-  uint8_t msbit;
+  uint8_t msbit = 0;
   bool two_bytes = false, make = false;
   uint8_t bytes[2];
+  printf("STARTED\n");
 
-  if (kbd_subscribe_int(& irq_set) != 0)
-    return 1;
 
   while (kbd_code != ESC_break)
   {
+    printf("LOOP BEGIN\n");
     kbd_code = 0;
     
     if (polling() != 0)
       return 1;
 
+    printf("POLLING CALLED\n");
+
     if (kbd_code == BYTE2_CODE){
       two_bytes = true;
       continue;
     }
-    
+    printf("BEFORE KBD_CODE != 0\n");
     if (kbd_code != 0){
-      
-      util_get_MSbit(kbd_code, &msbit);
+      printf("got into function\n");
+      msbit = kbd_code >> 7;
+      printf("GOT MSbit\n");
       if (msbit != 1)
         make = true;
-
-
       if (two_bytes){
         bytes[0] = BYTE2_CODE;
         bytes[1] = kbd_code;
+        printf("starting to print scancode");
         kbd_print_scancode(make,2,bytes);
-      }
-      else{
+      } else {
         bytes[0] = kbd_code;
+        bytes[1] = 0;
+        printf("starting to print scancode\n");
         kbd_print_scancode(make,1,bytes);
+        printf("asjdasjdgh");
       }
     }
 
     two_bytes = false; make = false;
   }
 
-  if (kbd_unsubscribe_int() != 0)
-    return 1;
-
-  enable_interrupts();
+  if (enable_interrupts() != 0) return 1;
 
   kbd_print_no_sysinb(sys_inb_counter);
 
@@ -214,8 +215,8 @@ int(kbd_test_poll)() {
 }
 
 int(kbd_test_timed_scan)(uint8_t n) {
-  /* To be completed by the students */
-  printf("%s is not yet implemented!\n", __func__);
+
+  
 
   return 1;
 }

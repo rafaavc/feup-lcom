@@ -101,5 +101,5 @@ int (kbd_print_no_sysinb)(uint32_t cnt);
  * 
  * @return 0 upon success and non-zero otherwise
  */
-int polling();
+int (polling)();
 
