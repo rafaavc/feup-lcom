@@ -31,23 +31,22 @@ int (kbd_unsubscribe_int)() {
 }
 
 
-int (enable_interrupts)(){
+void enable_interrupts(){
   uint8_t command = 0;
   uint8_t status_reg = 0;
   printf("KSJdh");
-  if (util_sys_inb(STATUS_REG, &status_reg) != 0) return 1;  // Reads status register
+  util_sys_inb(STATUS_REG, &status_reg);  // Reads status register
 
   if ((status_reg & BIT(1)) == 0) {    //  Makes sure that input buffer isn't full
     printf("Hey");
     sys_outb(STATUS_REG, READ_CMD_BYTE);      //  Sends instruction to status register to read command byte, goes to outbuffer
-  } else { return 1; }
+  }
 
-  if (util_sys_inb(OUT_BUF, &command) != 0) return 1;    // reads command byte from output buffer
+  util_sys_inb(OUT_BUF, &command);    // reads command byte from output buffer
 
-  if (sys_outb(STATUS_REG, WRITE_CMD_BYTE) != 0) return 1;    // sends information that command byte will be written    
+  sys_outb(STATUS_REG, WRITE_CMD_BYTE);    // sends information that command byte will be written    
 
   command = command | BIT(0);
 
-  if (sys_outb(OUT_BUF, command) != 0) return 1;    // sends command byte through outbuffer
-  return 0;
+  sys_outb(OUT_BUF, command);    // sends command byte through outbuffer
 }

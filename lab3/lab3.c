@@ -1,6 +1,5 @@
 #include <lcom/lcf.h>
 #include <minix/sysutil.h>
-//#include <lcom/lab3.h>
 
 #include <stdbool.h>
 #include <stdint.h>
@@ -62,8 +61,10 @@ void (kbc_ih)(){
 
 
 int (polling)() {
+
+  printf("STARTED POLLING\n");
   uint8_t status_data;
-  while (kbd_code == 0) {
+  while (true) {
     if (util_sys_inb(STATUS_REG, &status_data) != 0){
       return 1;
     }
@@ -73,14 +74,18 @@ int (polling)() {
     }
 
     if (status_data & OBF){ // Checks if Output buffer is full
-      if (util_sys_inb(OUT_BUF, &kbd_code) != 0)
-        return 1;
+      printf("OUTPUT BUFFER IS FULL \n");
+      if (util_sys_inb(OUT_BUF, &kbd_code) != 0) return 1;
+      printf("GOT KBD CODE\n");
+      if (kbd_code == LARGEST_NUM) return 1;
+
+      //break;
+      return 0;
+    } else {
+      printf("OUTPUT BUFFER WASN'T FULL\n");
+      tickdelay(micros_to_ticks(DELAY_US));
+
     }
-
-    if (kbd_code == LARGEST_NUM)
-      return 1;
-
-    tickdelay(micros_to_ticks(DELAY_US));
   }
   return 0;
 }
@@ -135,6 +140,7 @@ int(kbd_test_scan)() {
       util_get_MSbit(kbd_code, &msbit);
       if (msbit != 1)
         make = true;
+      else make = false;
 
 
       if (two_bytes){
@@ -166,48 +172,78 @@ int(kbd_test_poll)() {
   uint8_t msbit = 0;
   bool two_bytes = false, make = false;
   uint8_t bytes[2];
-  printf("STARTED\n");
-
-
+  uint8_t status_data; // TEST
+  //bytes[0] = 0x56; // TEST
+  //printf("STARTED\n");
+  //kbd_print_scancode(true, 1, bytes);
+  //printf("PASSED\n");
   while (kbd_code != ESC_break)
   {
-    printf("LOOP BEGIN\n");
+    //printf("LOOP BEGIN\n");
     kbd_code = 0;
+    //kbd_print_scancode(true, 1, bytes); // WORKED
+    /*if (polling() != 0)
+      return 1;*/
+
+    // START
+
     
-    if (polling() != 0)
-      return 1;
+    while (true) {
+      if (util_sys_inb(STATUS_REG, &status_data) != 0){
+        return 1;
+      }
 
-    printf("POLLING CALLED\n");
+      if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
+        return 1;
+      }
 
+      if (status_data & OBF){ // Checks if Output buffer is full
+        //printf("OUTPUT BUFFER IS FULL \n");
+        if (util_sys_inb(OUT_BUF, &kbd_code) != 0) return 1;
+        //printf("GOT KBD CODE\n");
+        if (kbd_code == LARGEST_NUM) return 1;
+
+        break;
+      } else {
+        //printf("OUTPUT BUFFER WASN'T FULL\n");
+        tickdelay(micros_to_ticks(DELAY_US));
+
+      }
+    }
+
+    // END
+
+
+    //printf("POLLING CALLED\n");
+    //kbd_print_scancode(true, 1, bytes); // ERROR
     if (kbd_code == BYTE2_CODE){
       two_bytes = true;
       continue;
     }
-    printf("BEFORE KBD_CODE != 0\n");
+    //printf("BEFORE KBD_CODE != 0\n");
     if (kbd_code != 0){
-      printf("got into function\n");
+      //printf("got into function\n");
       msbit = kbd_code >> 7;
-      printf("GOT MSbit\n");
+      //printf("GOT MSbit\n");
       if (msbit != 1)
         make = true;
       if (two_bytes){
         bytes[0] = BYTE2_CODE;
         bytes[1] = kbd_code;
-        printf("starting to print scancode");
+        //printf("starting to print scancode");
         kbd_print_scancode(make,2,bytes);
       } else {
         bytes[0] = kbd_code;
-        bytes[1] = 0;
-        printf("starting to print scancode\n");
-        kbd_print_scancode(make,1,bytes);
-        printf("asjdasjdgh");
+        //printf("starting to print scancode\n");
+        kbd_print_scancode(make,1, bytes);
+        //printf("asjdasjdgh");
       }
     }
 
     two_bytes = false; make = false;
   }
 
-  if (enable_interrupts() != 0) return 1;
+  enable_interrupts();
 
   kbd_print_no_sysinb(sys_inb_counter);
 

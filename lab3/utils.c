@@ -41,11 +41,11 @@ int (util_sys_inb)(int port, uint8_t *value) {
 }
 
 int (util_get_MSbit)(uint8_t val, uint8_t *msbit){
-  /*printf("hey\n");
+  //printf("hey\n");
   val = val >> 7;
-  printf("hey1 ");
+  //printf("hey1 ");
   *msbit = val; // ERRO
-  printf("DONE!! OH SHIT");*/
+  //printf("DONE!! OH SHIT");
 
   return 0;
 }

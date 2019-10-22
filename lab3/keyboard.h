@@ -24,7 +24,7 @@ int(kbd_unsubscribe_int)();
 /**
  * @brief Enables keyboard interrupts
  */
-int (enable_interrupts)();
+void enable_interrupts();
 
 
 
