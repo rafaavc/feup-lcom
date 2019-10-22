@@ -37,10 +37,23 @@ int(kbd_subscribe_int)(uint8_t *bit_no);
  */
 int(kbd_unsubscribe_int)();
 
+
+/**
+ * @brief Sends command byte to status reg
+ * 
+ * @param mask_enable the mask has the bits that it wants to change to enabled with value = 1    IF mask_enable = 0: Nothing changes
+ *        mask_disable the mask has the bits that it wants to change to disabled with value = 0    IF mask_disable = 0: Nothing changes
+ * 
+ * @return Return 0 upon success and non-zero otherwise
+ */
+int send_statusreg_commandbyte(uint8_t mask);
+
 /**
  * @brief Enables keyboard interrupts
+ * 
+ * @return Return 0 upon success and non-zero otherwise
  */
-void enable_interrupts();
+int enable_interrupts();
 
 
 

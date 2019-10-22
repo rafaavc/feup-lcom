@@ -44,7 +44,6 @@ int (util_sys_inb)(int port, uint8_t *value);
  * @brief Return the MSbit of a byte intenger
  * 
  * @param val input 1 byte integer
- * @param msb address of memory location to be updated with val's MSbit
- * @return Return 0 upon success and non-zero otherwise
+ * @return Returns the MSbit
  */
-int (util_get_MSbit)(uint8_t val, uint8_t *msbit);
+uint8_t (util_get_MSbit)(uint8_t val);

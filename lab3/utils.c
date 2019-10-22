@@ -40,8 +40,6 @@ int (util_sys_inb)(int port, uint8_t *value) {
   return 0;
 }
 
-int (util_get_MSbit)(uint8_t val, uint8_t *msbit){
-  val = val >> 7;
-  *msbit = val;
-  return 0;
+uint8_t (util_get_MSbit)(uint8_t val){
+  return val >> 7;
 }

@@ -39,29 +39,22 @@ void (kbc_ih)(){
   uint8_t status_data;
   bool error = false;
 
-  if (util_sys_inb(STATUS_REG, &status_data) != 0){  // Reads the Status Reg
-    error = true;
-  }
+  if (util_sys_inb(STATUS_REG, &status_data) != 0) error = true;  // Reads the Status Reg
 
-  if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
-    error = true;
-  }
+  if (status_data & (BIT(7) | BIT(6) | BIT(5))) error = true; // Checks parity error, Timeout error and Mouse data
 
-  if (status_data & BIT(0)){ // Checks if Output buffer is full
-    if (util_sys_inb(OUT_BUF, &kbd_code) != 0)
-      error = true;
+  if (status_data & BIT(0)){ // Makes sure that Output buffer is full
+    if (util_sys_inb(OUT_BUF, &kbd_code) != 0) error = true;
   }
 
   if (kbd_code == LARGEST_NUM)
     kbd_code = 0;
   if (error)
     kbd_code = 0;
-
-  //tickdelay(micros_to_ticks(DELAY_US));
 }
 
 
-int (polling)() {
+/*int (polling)() {
 
   printf("STARTED POLLING\n");
   uint8_t status_data;
@@ -89,29 +82,34 @@ int (polling)() {
     }
   }
   return 0;
-}
+}*/
 
 
 int(kbd_test_scan)() {
-  int ipc_status;
-  int r;
+  // Interrupt handling variables
+  int ipc_status;   // gets ipc_status
+  int r;   // return value of driver receive
   message msg;
-  uint8_t irq_set = BIT(0); // IRQ1
-  uint8_t msbit;
-  bool two_bytes = false, make = false;
-  uint8_t bytes[2];
+  uint8_t irq_set = BIT(0); // Keyboard's IRQ
 
-  if (kbd_subscribe_int(& irq_set) != 0)
-    return 1;
+  // Used for scan code logic
+  uint8_t msbit;   //  holds the most significant bit of scan code
+  bool two_bytes = false, make = false;  //  two_bytes - whether the scan code is made of two bytes or one
+                                         //  make - whether the scan code is a make or break code
+  uint8_t bytes[2];    // holds the scan code
 
-  while (kbd_code != ESC_break)
+  if (kbd_subscribe_int(& irq_set) != 0) return 1;  // Subscribes keyboard interruptions
+
+  while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
   {
-    kbd_code = 0;
+    kbd_code = 0;    //  Resets kbd_code
+
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
     {
       printf("driver_receive failed with: %d", r);
       continue;
     }
+
     if (is_ipc_notify(ipc_status))
     {
       switch (_ENDPOINT_P(msg.m_source))
@@ -119,13 +117,11 @@ int(kbd_test_scan)() {
         case HARDWARE:
           if (msg.m_notify.interrupts & irq_set)
           {
-            kbc_ih();
-            if (kbd_code == 0)
+            kbc_ih();    // Handles the interrupt
+            if (kbd_code == 0)    // Checks for erros in kbd_code
               return 1;
-
           }
           break;
-
         default:
           break;
       }
@@ -137,68 +133,63 @@ int(kbd_test_scan)() {
     }
     
     if (kbd_code != 0){
+      msbit = util_get_MSbit(kbd_code);    // To check whether it is a make or break code
 
-      util_get_MSbit(kbd_code, &msbit);
       if (msbit != 1)
         make = true;
-      else make = false;
-
 
       if (two_bytes){
         bytes[0] = BYTE2_CODE;
         bytes[1] = kbd_code;
         kbd_print_scancode(make,2,bytes);
-      }
-      else{
+      } else {
         bytes[0] = kbd_code;
         kbd_print_scancode(make,1,bytes);
       }
     }
 
-    two_bytes = false; make = false;
+    two_bytes = false; make = false;   // reseting state variables
+  }  // end of interrupt loop
 
-  }
 
-  if (kbd_unsubscribe_int() != 0)
-    return 1;
-
-  
-  kbd_print_no_sysinb(sys_inb_counter);
+  if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
+  kbd_print_no_sysinb(sys_inb_counter);   // Prints the number of calls to util_sys_inb
 
   return 0;
 
 }
 
 int(kbd_test_poll)() {
-  uint8_t msbit = 0;
-  bool two_bytes = false, make = false;
-  uint8_t bytes[2];
-  uint8_t status_data; // TEST
-  //bytes[0] = 0x56; // TEST
-  //printf("STARTED\n");
-  //kbd_print_scancode(true, 1, bytes);
-  //printf("PASSED\n");
+  // Used for scan code logic 
+  uint8_t msbit;   //  holds the most significant bit of scan code
+  bool two_bytes = false, make = false;  //  two_bytes - whether the scan code is made of two bytes or one
+                                         //  make - whether the scan code is a make or break code
+  uint8_t bytes[2];    // holds the scan code
+  uint8_t status_data; // Will hold the status reg data
+
   while (kbd_code != ESC_break)
   {
-    //printf("LOOP BEGIN\n");
     kbd_code = 0;
-    //kbd_print_scancode(true, 1, bytes); // WORKED
+
     /*if (polling() != 0)
       return 1;*/
 
-    // START of polling
-
-    
+    /*
+    This is the supposed polling function.
+    Initially, this was a separated function, but we were getting errors when it was called.
+    Therefore, we moved the body of the polling function to this location, where it works perfectly.
+    */
+    // START of polling "function"
     while (true) {
       if (util_sys_inb(STATUS_REG, &status_data) != 0){
         return 1;
       }
 
-      if (status_data & (BIT(7) | BIT(6) |BIT(5))){ // Checks parity error, Timeout error and Mouse data
+      if (status_data & (BIT(7) | BIT(6) |BIT(5))) { // Checks parity error, Timeout error and Mouse data
         return 1;
       }
 
-      if (status_data & OBF){ // Checks if Output buffer is full
+      if (status_data & OBF) { // Checks if Output buffer is full
         //printf("OUTPUT BUFFER IS FULL \n");
         if (util_sys_inb(OUT_BUF, &kbd_code) != 0) return 1;
         //printf("GOT KBD CODE\n");
@@ -211,43 +202,33 @@ int(kbd_test_poll)() {
 
       }
     }
+    // END of polling "function"
 
-    // END of polling
-
-
-    //printf("POLLING CALLED\n");
-    //kbd_print_scancode(true, 1, bytes); // ERROR
     if (kbd_code == BYTE2_CODE){
       two_bytes = true;
       continue;
     }
-    //printf("BEFORE KBD_CODE != 0\n");
     if (kbd_code != 0){
-      //printf("got into function\n");
-      msbit = kbd_code >> 7;
-      //printf("GOT MSbit\n");
+      msbit = util_get_MSbit(kbd_code);
+
       if (msbit != 1)
         make = true;
+
       if (two_bytes){
         bytes[0] = BYTE2_CODE;
         bytes[1] = kbd_code;
-        //printf("starting to print scancode");
         kbd_print_scancode(make,2,bytes);
       } else {
         bytes[0] = kbd_code;
-        //printf("starting to print scancode\n");
         kbd_print_scancode(make,1, bytes);
-        //printf("asjdasjdgh");
       }
     }
 
     two_bytes = false; make = false;
   }
 
-  enable_interrupts();
-
+  if (enable_interrupts() != 0) return 1;
   kbd_print_no_sysinb(sys_inb_counter);
-
   return 0;
 }
 
@@ -256,7 +237,6 @@ void (timer_int_handler)() {
 }
 
 int(kbd_test_timed_scan)(uint8_t n) {
-
   // Interrupt handling variables
   int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
@@ -270,13 +250,11 @@ int(kbd_test_timed_scan)(uint8_t n) {
   uint8_t bytes[2];
 
 
-  if (kbd_subscribe_int(& irq_kbd) != 0)
-    return 1;
+  if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes KBD interruptions
+  if (timer_subscribe_int(& irq_timer0) != 0) return 1;  // Subscribes Timer0 interruptions
 
-  if (timer_subscribe_int(& irq_timer0) != 0)
-    return 1;
 
-  while (kbd_code != ESC_break && n > timer_counter/60)
+  while (kbd_code != ESC_break && n > timer_counter/60)  //  Exits program when break code of escape key is read or keyboard input is idle for more than "n" seconds
   {
     kbd_code = 0;
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
@@ -289,7 +267,7 @@ int(kbd_test_timed_scan)(uint8_t n) {
       switch (_ENDPOINT_P(msg.m_source))
       {
         case HARDWARE:
-          if (msg.m_notify.interrupts & irq_kbd)
+          if (msg.m_notify.interrupts & irq_kbd)   // KDB interrupt received
           {
             kbc_ih();
             if (kbd_code == 0)
@@ -297,8 +275,7 @@ int(kbd_test_timed_scan)(uint8_t n) {
             timer_counter = 0;
 
           }
-
-          if (msg.m_notify.interrupts & irq_timer0)
+          if (msg.m_notify.interrupts & irq_timer0)   // Timer0 interrupt received
           {
             timer_int_handler();
           }
@@ -316,11 +293,9 @@ int(kbd_test_timed_scan)(uint8_t n) {
     }
     
     if (kbd_code != 0){
-
-      util_get_MSbit(kbd_code, &msbit);
+      msbit = util_get_MSbit(kbd_code);
       if (msbit != 1)
         make = true;
-      else make = false;
 
 
       if (two_bytes){
@@ -338,8 +313,8 @@ int(kbd_test_timed_scan)(uint8_t n) {
 
   }
 
-  if (kbd_unsubscribe_int() != 0) return 1;
-  if (timer_unsubscribe_int() != 0) return 1;
+  if (kbd_unsubscribe_int() != 0) return 1;  // unsubscribes KBD interrupts
+  if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
 
   kbd_print_no_sysinb(sys_inb_counter);
 

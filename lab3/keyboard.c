@@ -15,7 +15,7 @@ int (timer_subscribe_int)(uint8_t *bit_no) {
   hook_id_timer = (int) *bit_no; // saves bit_no value
   
   // subscribe a notification on interrupts
-  if (sys_irqsetpolicy(TIMER0_IRQ,IRQ_REENABLE,&hook_id_timer) != 0)
+  if (sys_irqsetpolicy(TIMER0_IRQ, IRQ_REENABLE, &hook_id_timer) != 0)
     return 1;
   
   *bit_no = (uint8_t) BIT(*bit_no);
@@ -51,21 +51,34 @@ int (kbd_unsubscribe_int)() {
   return 0;
 }
 
-
-void enable_interrupts(){
+int send_statusreg_commandbyte(uint8_t mask_enable, uint8_t mask_disable){
+  /*
+  This function receives a mask_enable, that will enable bits in the command byte and a mask_disable, that will disable bits in the command byte
+  */
   uint8_t command = 0;
-  uint8_t status_reg = 0;
-  util_sys_inb(STATUS_REG, &status_reg);  // Reads status register
+  uint8_t status_reg_content = 0;
+  if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;  // Reads status register
 
-  if ((status_reg & BIT(1)) == 0) {    //  Makes sure that input buffer isn't full
+  if ((status_reg_content & BIT(1)) == 0) {    //  Makes sure that input buffer isn't full
     sys_outb(STATUS_REG, READ_CMD_BYTE);      //  Sends instruction to status register to read command byte, goes to outbuffer
+  } else {
+    return 1;
   }
 
-  util_sys_inb(OUT_BUF, &command);    // reads command byte from output buffer
+  if (util_sys_inb(OUT_BUF, &command) != 0) return 1;    // reads command byte from output buffer
 
-  sys_outb(STATUS_REG, WRITE_CMD_BYTE);    // sends information that command byte will be written    
+  if (mask_enable != 0)
+    command = command | mask_enable;  // Enables bits that are 1 in mask of command
+  if (mask_disable != 0)
+    command = command & mask_disable;   // Disables bits that are 0 in mask of command
 
-  command = command | BIT(0);
+  if (sys_outb(STATUS_REG, WRITE_CMD_BYTE) != 0) return 1;    // sends information that command byte will be written    
+  if (sys_outb(OUT_BUF, command) != 0) return 1;    // sends command byte through outbuffer
+  return 0;
+}
 
-  sys_outb(OUT_BUF, command);    // sends command byte through outbuffer
+
+int enable_interrupts(){
+  if (send_statusreg_commandbyte(BIT(0), 0) != 0) return 1;  // Bit 0 enables interrupts from keyboard ("INT: enable interrupt on OBF, from keyboard")
+  return 0;
 }
