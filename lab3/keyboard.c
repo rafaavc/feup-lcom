@@ -34,11 +34,9 @@ int (kbd_unsubscribe_int)() {
 void enable_interrupts(){
   uint8_t command = 0;
   uint8_t status_reg = 0;
-  printf("KSJdh");
   util_sys_inb(STATUS_REG, &status_reg);  // Reads status register
 
   if ((status_reg & BIT(1)) == 0) {    //  Makes sure that input buffer isn't full
-    printf("Hey");
     sys_outb(STATUS_REG, READ_CMD_BYTE);      //  Sends instruction to status register to read command byte, goes to outbuffer
   }
 
