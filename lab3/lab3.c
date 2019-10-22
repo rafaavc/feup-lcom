@@ -9,6 +9,7 @@
 
 extern uint8_t kbd_code;  
 extern unsigned int sys_inb_counter;
+unsigned int timer_counter = 0;
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -185,7 +186,7 @@ int(kbd_test_poll)() {
     /*if (polling() != 0)
       return 1;*/
 
-    // START
+    // START of polling
 
     
     while (true) {
@@ -211,7 +212,7 @@ int(kbd_test_poll)() {
       }
     }
 
-    // END
+    // END of polling
 
 
     //printf("POLLING CALLED\n");
@@ -250,9 +251,97 @@ int(kbd_test_poll)() {
   return 0;
 }
 
+void (timer_int_handler)() {
+  timer_counter++;
+}
+
 int(kbd_test_timed_scan)(uint8_t n) {
 
-  
+  // Interrupt handling variables
+  int ipc_status;   // gets ipc_status
+  int r;   // return value of driver receive
+  message msg;
+  uint8_t irq_kbd = BIT(0); // Keyboard's IRQ
+  uint8_t irq_timer0 = BIT(1); // Timer0's IRQ
 
-  return 1;
+  // Used for scan code logic
+  uint8_t msbit;
+  bool two_bytes = false, make = false;
+  uint8_t bytes[2];
+
+
+  if (kbd_subscribe_int(& irq_kbd) != 0)
+    return 1;
+
+  if (timer_subscribe_int(& irq_timer0) != 0)
+    return 1;
+
+  while (kbd_code != ESC_break && n > timer_counter/60)
+  {
+    kbd_code = 0;
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_kbd)
+          {
+            kbc_ih();
+            if (kbd_code == 0)
+              return 1;
+            timer_counter = 0;
+
+          }
+
+          if (msg.m_notify.interrupts & irq_timer0)
+          {
+            timer_int_handler();
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    if (kbd_code == BYTE2_CODE){
+      two_bytes = true;
+      continue;
+    }
+    
+    if (kbd_code != 0){
+
+      util_get_MSbit(kbd_code, &msbit);
+      if (msbit != 1)
+        make = true;
+      else make = false;
+
+
+      if (two_bytes){
+        bytes[0] = BYTE2_CODE;
+        bytes[1] = kbd_code;
+        kbd_print_scancode(make,2,bytes);
+      }
+      else{
+        bytes[0] = kbd_code;
+        kbd_print_scancode(make,1,bytes);
+      }
+    }
+
+    two_bytes = false; make = false;
+
+  }
+
+  if (kbd_unsubscribe_int() != 0) return 1;
+  if (timer_unsubscribe_int() != 0) return 1;
+
+  kbd_print_no_sysinb(sys_inb_counter);
+
+  return 0;
 }

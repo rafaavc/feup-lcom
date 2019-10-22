@@ -103,3 +103,10 @@ int (kbd_print_no_sysinb)(uint32_t cnt);
  */
 int (polling)();
 
+/**
+ * @brief Timer 0 interrupt handler
+ *
+ * Increments counter
+ */
+void(timer_int_handler)();
+
