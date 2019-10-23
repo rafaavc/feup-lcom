@@ -171,12 +171,11 @@ int(kbd_test_poll)() {
   {
     kbd_code = 0;
 
-    /*if (polling() != 0)
-      return 1;*/
+    //if (polling() != 0) return 1;
 
     /*
     This is the supposed polling function.
-    Initially, this was a separated function, but we were getting errors when it was called.
+    Initially, this was a separated function, but we were segmentation errors when it was called (and didn't find a better solution).
     Therefore, we moved the body of the polling function to this location, where it works perfectly.
     */
     // START of polling "function"
@@ -210,7 +209,6 @@ int(kbd_test_poll)() {
     }
     if (kbd_code != 0){
       msbit = util_get_MSbit(kbd_code);
-
       if (msbit != 1)
         make = true;
 

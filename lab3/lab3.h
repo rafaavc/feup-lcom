@@ -100,8 +100,8 @@ int (kbd_print_no_sysinb)(uint32_t cnt);
  * @brief Handles keyboard polling
  * 
  * @return 0 upon success and non-zero otherwise
- 
-int (polling)();*/
+ */
+//int (polling)();
 
 /**
  * @brief Timer 0 interrupt handler
