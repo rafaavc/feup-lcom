@@ -1,7 +1,0 @@
-@lcflib.a:2019, lcf_start
-  mouse_test_packet(cnt)
-> mouse_test_packet(4)
-  @lab4.c:41, mouse_test_packet
-    printf("%s(%u): under construction\n", __func__, cnt)
-    "mouse_test_packet(4): under construction"
-< mouse_test_packet(4) -> (ret: 1)
