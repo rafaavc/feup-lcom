@@ -56,5 +56,5 @@ uint8_t (util_get_MSbit)(uint8_t val);
  * 
  * @return Delta
  */
-int16_t (join_bytes)(uint8_t MSB, uint8_t byte);
+//int16_t (join_bytes)(uint8_t MSB, uint8_t byte);
 

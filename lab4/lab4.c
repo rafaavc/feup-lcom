@@ -66,9 +66,6 @@ int (mouse_test_packet)(uint32_t cnt) {
           if (msg.m_notify.interrupts & irq_set)
           {
             mouse_ih();
-            if (mouse_code == 0) {
-              return 1;
-            }
             if ((mouse_code & BIT(3)) && byte_counter == 0){       //If BIT(3) != 1 certainly not first byte
               mouse_data.bytes[0] = mouse_code;
               byte_counter++;
@@ -79,13 +76,27 @@ int (mouse_test_packet)(uint32_t cnt) {
             }
             else if (byte_counter == 2){
               mouse_data.bytes[2] = mouse_code;
-              mouse_data.rb = ((mouse_data.bytes[0] & RB_BIT) << 1);
+              mouse_data.rb = (mouse_data.bytes[0] & RB_BIT);
               mouse_data.lb = (mouse_data.bytes[0] & LB_BIT);
-              mouse_data.mb = ((mouse_data.bytes[0] & MB_BIT) << 2);
+              mouse_data.mb = (mouse_data.bytes[0] & MB_BIT);
               mouse_data.x_ov = (mouse_data.bytes[0] & X_OVF);
               mouse_data.y_ov = (mouse_data.bytes[0] & Y_OVF);
-              mouse_data.delta_x = join_bytes(mouse_data.bytes[0] & MSB_X_DELTA, mouse_data.bytes[1]);
-              mouse_data.delta_y = join_bytes(mouse_data.bytes[0] & MSB_Y_DELTA, mouse_data.bytes[2]);
+              /*mouse_data.delta_x = join_bytes(mouse_data.bytes[0] & MSB_X_DELTA, mouse_data.bytes[1]);
+              mouse_data.delta_y = join_bytes(mouse_data.bytes[0] & MSB_Y_DELTA, mouse_data.bytes[2]);*/
+
+              if (mouse_data.bytes[0] & MSB_X_DELTA) {
+                mouse_data.delta_x = mouse_data.bytes[1] | (LARGEST_NUM << 8);
+              }
+              else {
+                mouse_data.delta_x = mouse_data.bytes[1];
+              }
+              if (mouse_data.bytes[0] & MSB_Y_DELTA) {
+                mouse_data.delta_y = ((LARGEST_NUM << 8) | mouse_data.bytes[2]);
+              }
+              else {
+                mouse_data.delta_y = mouse_data.bytes[2];
+              }
+
               mouse_print_packet(&mouse_data);
               counter++;
               byte_counter = 0;

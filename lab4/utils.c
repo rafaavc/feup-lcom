@@ -41,16 +41,15 @@ int (util_sys_inb)(int port, uint8_t *value) {
   return 0;
 }
 
-uint8_t (util_get_MSbit)(uint8_t val){
+uint8_t (util_get_MSbit)(uint8_t val) {
   return val >> 7;
 }
 
-
-int16_t (join_bytes)(uint8_t MSB, uint8_t byte){
+/*
+int16_t (join_bytes)(uint8_t MSB, uint8_t byte) {
   //int16_t res;
   if (MSB == 1) {
-    if (byte == 0) return -256;
-    return -((byte ^ LARGEST_NUM) + 1);
+    return  byte | (LARGEST_NUM << 8);
   }
   return byte;
-}
+}*/
