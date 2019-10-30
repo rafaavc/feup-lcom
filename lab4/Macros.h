@@ -78,9 +78,10 @@
 #define MB_BIT BIT(2) /**< @brief Bit of MB */
 #define MSB_X_DELTA BIT(4)
 #define MSB_Y_DELTA BIT(5)
-#define Y_OVF BIT(6)
-#define X_OVF BIT(7)
+#define X_OVF BIT(6)
+#define Y_OVF BIT(7)
 
 #define MSB_INT16 0xFFFF
+
 
 #endif /* _LCOM_I8254_H */
