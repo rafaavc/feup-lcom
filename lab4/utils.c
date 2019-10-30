@@ -46,8 +46,11 @@ uint8_t (util_get_MSbit)(uint8_t val){
 }
 
 
-int16_t (join_bytes)(uint8_t MSB, bool OVF, uint8_t byte){
+int16_t (join_bytes)(uint8_t MSB, uint8_t byte){
   //int16_t res;
-  if (MSB == 1) return (MSB_INT16 & byte);
+  if (MSB == 1) {
+    if (byte == 0) return -256;
+    return -((byte ^ LARGEST_NUM) + 1);
+  }
   return byte;
 }

@@ -44,8 +44,8 @@ void (mouse_ih)(void) {
     if (util_sys_inb(OUT_BUF, &mouse_code) != 0) error = true;
   }
 
-  if (mouse_code == LARGEST_NUM)
-    mouse_code = 0;
+  /*if (mouse_code == LARGEST_NUM)
+    mouse_code = 0;*/
   if (error)
     mouse_code = 0;
 }
