@@ -6,8 +6,10 @@
 
 #include "utils.h"
 #include "mouse.h"
+#include "Macros.h"
 
 unsigned int sys_inb_counter = 0;
+extern uint8_t mouse_code;
 
 // Any header files included below this line should have been created by you
 
@@ -37,9 +39,69 @@ int main(int argc, char *argv[]) {
 
 
 int (mouse_test_packet)(uint32_t cnt) {
-    /* To be completed */
-    printf("%s(%u): under construction\n", __func__, cnt);
-    return 1;
+    int ipc_status;   // gets ipc_status
+  int r;   // return value of driver receive
+  message msg;
+  uint8_t irq_set = BIT(0); // Mouse's IRQ
+  unsigned int counter = 0, byte_counter = 0;
+  struct packet mouse_data;
+
+  mouse_enable_data_reporting();
+  if (mouse_subscribe_int(& irq_set) != 0) return 1;  // Subscribes mouse interruptions
+
+
+  while (counter < cnt)    //   Program exits when cnt number of packets are read
+  {
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_set)
+          {
+            mouse_ih();
+            if (mouse_code == 0) {
+              return 1;
+            }
+            if ((mouse_code & BIT(3)) && byte_counter == 0){       //If BIT(3) != 1 certainly not first byte
+              mouse_data.bytes[0] = mouse_code;
+              byte_counter++;
+            }
+            else if (byte_counter == 1){
+              mouse_data.bytes[1] = mouse_code;
+              byte_counter++;
+            }
+            else if (byte_counter == 2){
+              mouse_data.bytes[2] = mouse_code;
+              mouse_data.rb = (mouse_data.bytes[0] & RB_BIT);
+              mouse_data.lb = (mouse_data.bytes[0] & LB_BIT);
+              mouse_data.mb = (mouse_data.bytes[0] & MB_BIT);
+              mouse_data.x_ov = (mouse_data.bytes[0] & X_OVF);
+              mouse_data.y_ov = (mouse_data.bytes[0] & Y_OVF);
+              mouse_data.delta_x = join_bytes(mouse_data.bytes[0] & MSB_X_DELTA, mouse_data.x_ov, mouse_data.bytes[1]);
+              mouse_data.delta_y = join_bytes(mouse_data.bytes[0] & MSB_Y_DELTA, mouse_data.y_ov, mouse_data.bytes[2]);
+              mouse_print_packet(&mouse_data);
+              counter++;
+              byte_counter = 0;
+            }
+          }
+          break;
+        default:
+          break;
+      }
+    }
+  }  // end of interrupt loop
+
+
+  if (mouse_unsubscribe_int() != 0) return 1;   // Unsubscribing mouse interruptions
+
+  return 0;
 }
 
 int (mouse_test_remote)(uint16_t period, uint8_t cnt) {

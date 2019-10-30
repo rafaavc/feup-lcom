@@ -1,5 +1,18 @@
 #include <lcom/lcf.h>
 
+
+/*struct packet
+{
+  uint8_t bytes[3];
+  bool rb, lb, mb, x_ov, y_ov;
+  int16_t delta_x, delta_y;
+};*/  
+
+
+int (mouse_subscribe_int)(uint8_t *bit_no);
+
+
+int (mouse_unsubscribe_int)();
 /*
 Enables stream mode data reporting.
 

@@ -5,6 +5,7 @@
 #include <lcom/lcf.h>
 
 #include <stdint.h>
+#include "Macros.h"
 
 
 extern unsigned int sys_inb_counter;
@@ -42,4 +43,11 @@ int (util_sys_inb)(int port, uint8_t *value) {
 
 uint8_t (util_get_MSbit)(uint8_t val){
   return val >> 7;
+}
+
+
+int16_t (join_bytes)(uint8_t MSB, bool OVF, uint8_t byte){
+  //int16_t res;
+  if (MSB == 1) return (MSB_INT16 & byte);
+  return byte;
 }

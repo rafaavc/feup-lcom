@@ -12,6 +12,7 @@
 #define TIMER_FREQ 1193182 /**< @brief clock frequency for timer in PC and AT */
 #define TIMER0_IRQ 0 /**< @brief Timer 0 IRQ line */
 #define KBD_IRQ 1 /**< @brief Keyboard IRQ line */
+#define MOUSE_IRQ 12 /**< @brief Mouse IRQ line */
 
 /* I/O port addresses */
 
@@ -70,5 +71,16 @@
 #define BYTE2_CODE 0xE0 /**< @brief code to read another byte from keyboard */
 
 #define DELAY_US 2000 /**< @brief Delay US keyboard */
+
+
+#define LB_BIT BIT(0) /**< @brief Bit of RB */
+#define RB_BIT BIT(1) /**< @brief Bit of LB */
+#define MB_BIT BIT(2) /**< @brief Bit of MB */
+#define MSB_X_DELTA BIT(4)
+#define MSB_Y_DELTA BIT(5)
+#define Y_OVF BIT(6)
+#define X_OVF BIT(7)
+
+#define MSB_INT16 0xFFFF
 
 #endif /* _LCOM_I8254_H */
