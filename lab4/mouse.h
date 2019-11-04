@@ -13,6 +13,18 @@ int (mouse_subscribe_int)(uint8_t *bit_no);
 
 
 int (mouse_unsubscribe_int)();
+
+
+/**
+ * @brief Sends command byte to status reg
+ * 
+ * @param mask_enable the mask has the bits that it wants to change to enabled with value = 1    IF mask_enable = 0: Nothing changes
+ *        mask_disable the mask has the bits that it wants to change to disabled with value = 0    IF mask_disable = 0: Nothing changes
+ * 
+ * @return Return 0 upon success and non-zero otherwise
+ */
+int send_statusreg_command(uint8_t cmd, uint8_t args);
+
 /*
 Enables stream mode data reporting.
 
@@ -23,6 +35,8 @@ This function is provided by the LCF.
 In order to score points for your Lab 4 grade, you should implement this functionality yourself. This can be done by defining your own function with the same functionality, or just by adding this functionality somewhere in your code
 */
 int mouse_enable_data_reporting_original();	
+
+int mouse_disable_data_reporting();
 
 
 

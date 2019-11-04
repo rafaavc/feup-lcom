@@ -39,7 +39,7 @@ int main(int argc, char *argv[]) {
 
 
 int (mouse_test_packet)(uint32_t cnt) {
-    int ipc_status;   // gets ipc_status
+  int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
   message msg;
   uint8_t irq_set = BIT(0); // Mouse's IRQ
@@ -47,17 +47,19 @@ int (mouse_test_packet)(uint32_t cnt) {
   struct packet mouse_data;
 
   mouse_enable_data_reporting();
+
   if (mouse_subscribe_int(& irq_set) != 0) return 1;  // Subscribes mouse interruptions
 
 
   while (counter < cnt)    //   Program exits when cnt number of packets are read
   {
+    printf("INSIDE WHILE\n");
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
     {
       printf("driver_receive failed with: %d", r);
       continue;
     }
-
+    printf("INSIDE WHILE1\n");
     if (is_ipc_notify(ipc_status))
     {
       switch (_ENDPOINT_P(msg.m_source))
@@ -109,6 +111,9 @@ int (mouse_test_packet)(uint32_t cnt) {
   }  // end of interrupt loop
 
   if (mouse_unsubscribe_int() != 0) return 1;   // Unsubscribing mouse interruptions
+
+
+  mouse_disable_data_reporting();
 
   return 0;
 }
