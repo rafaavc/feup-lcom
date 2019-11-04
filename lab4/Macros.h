@@ -90,6 +90,9 @@
 #define ENABLE_STREAM_MODE 0xEA
 #define ACK 0xFA
 #define ERROR 0xFC
+#define READ_MOUSE_DATA 0xEB
+#define SET_RMT_MODE 0xF0
+#define SET_STREAM_MODE 0xEA
 
 #define MSB_INT16 0xFFFF
 
