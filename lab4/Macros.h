@@ -82,16 +82,24 @@
 #define X_OVF BIT(6)
 #define Y_OVF BIT(7)
 
+
+
 #define MS_WRITE_BYTE_CMD 0xD4
+
 #define ENABLE_DATA_REPORTING 0xF4
 #define DISABLE_DATA_REPORTING 0xF5
+
 #define DISABLE_MOUSE 0xA7
 #define ENABLE_MOUSE 0xA8
+
 #define SET_DEFAULTS 0xF6
+
 #define ENABLE_STREAM_MODE 0xEA
+
 #define ACK 0xFA
 #define NACK 0xFE
 #define ERROR 0xFC
+
 #define READ_MOUSE_DATA 0xEB
 #define SET_RMT_MODE 0xF0
 #define SET_STREAM_MODE 0xEA

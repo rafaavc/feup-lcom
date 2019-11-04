@@ -30,17 +30,20 @@ int send_statusreg_command(uint8_t cmd, uint8_t args){
   if (sys_outb(STATUS_REG, cmd) != 0) return 1;
 
   if (args != 0){
+
     if (sys_outb(OUT_BUF, args) != 0) return 1;
 
     if (util_sys_inb(OUT_BUF, &response) != 0) return 1;
 
     if (response == NACK || response == ERROR) return 1;
+
   }
 
   return 0;
 }
 
 int mouse_enable_data_reporting_original() {
+
   return 0;
 }
 
@@ -58,7 +61,19 @@ int (mouse_unsubscribe_int)() {
 }
 
 void (mouse_ih)(void) {
-  
+
+  uint8_t status_reg_content;
+
+  if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) error = true;
+
+  if (status_reg_content & (BIT(6) | BIT(7))) error = true;
+
+  if ((status_reg_content & OBF) && !error && (status_reg_content & BIT(5))) {
+    
+    if (sys_outb(OUT_BUF, mouse_code) != 0) error = true;
+
+  } else { error = true; }
+
 } 
 
 int mouse_polling(){
