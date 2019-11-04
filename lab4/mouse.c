@@ -26,33 +26,35 @@ int send_statusreg_command(uint8_t cmd, uint8_t args){
   while (true) {
     if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;  // Reads status register
 
+    printf("%x\n", status_reg_content);
+
     if ((status_reg_content & BIT(1)) == 0) {    //  Makes sure that input buffer isn't full
       if (sys_outb(STATUS_REG, cmd) != 0) return 1;            // sends command
     } else {
       continue;
     }
 
-    printf("%x\n", status_reg_content);
     if (args != 0) {
       if (sys_outb(OUT_BUF, args) != 0) return 1;    // sends command arguments, if any
+    
+      if ((status_reg_content & OBF) && (status_reg_content & BIT(5))) { // if obf full and byte from mouse
+        printf("obf full and mouse\n");
+        if (util_sys_inb(OUT_BUF, &ack) != OK) // read output buffer (ack byte)
+          return 1;
+        if (ack == ERROR)
+          return 1;
+      } else {
+        continue;
+      }
+
+      if (ack == 0xFE) printf("NACK\n"); 
+
+      if (ack == ACK) { printf("Going to return\n"); return 0; }
     }
 
-    if ((status_reg_content & OBF) && (status_reg_content & BIT(5))) { // if obf and byte from mouse
-      printf("obf full and mouse\n");
-      if (util_sys_inb(OUT_BUF, &ack) != OK) // read obf (ack byte)
-        return 1;
-      if (ack == ERROR)
-        return 1;
-    }
-    if (ack == 0xFE) printf("NACK\n"); 
-    
-    if (args != 0) {
-      if (ack == ACK) return 0;
-    }
-    else {
+    if (args == 0) {
       return 0;
-    }
-      
+    }     
     
   }
 }
@@ -66,8 +68,8 @@ int mouse_enable_data_reporting_original() {
 
 int mouse_disable_data_reporting() {
   //send_statusreg_command(MS_WRITE_BYTE_CMD, ENABLE_STREAM_MODE);
-  send_statusreg_command(MS_WRITE_BYTE_CMD, DISABLE_DATA_REPORTING);
-  send_statusreg_command(DISABLE_MOUSE, 0);
+  //send_statusreg_command(DISABLE_MOUSE, 0);
+  printf("heyhey");
   return 0;
 }
 

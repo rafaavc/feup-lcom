@@ -111,10 +111,9 @@ int (mouse_test_packet)(uint32_t cnt) {
   }  // end of interrupt loop
 
   if (mouse_unsubscribe_int() != 0) return 1;   // Unsubscribing mouse interruptions
-
-
-  mouse_disable_data_reporting();
-
+  
+  send_statusreg_command(MS_WRITE_BYTE_CMD, DISABLE_DATA_REPORTING);
+  printf("HEYHYEHEY\n");
   return 0;
 }
 
@@ -125,15 +124,19 @@ int (mouse_test_remote)(uint16_t period, uint8_t cnt) {
   while (counter < cnt)    //   Program exits when cnt number of packets are read
   {
     tickdelay(micros_to_ticks(period));
+
     if (mouse_polling() != 0) return 1;
     printf("Did polling\n");
     if ((mouse_code & BIT(3)) && byte_counter == 0){       //If BIT(3) != 1 certainly not first byte
+
       mouse_data.bytes[0] = mouse_code;
       byte_counter++;
+
       if (mouse_polling(period) != 0) return 1;
     
       mouse_data.bytes[1] = mouse_code;
       byte_counter++;
+
       if (mouse_polling(period) != 0) return 1;
     
       mouse_data.bytes[2] = mouse_code;
