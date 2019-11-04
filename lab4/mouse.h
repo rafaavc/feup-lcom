@@ -37,4 +37,11 @@ Must be defined using parenthesis around the function name.
 */
 void (mouse_ih)(void);
 
-
+/**
+ * @brief Does polling for mouse
+ * 
+ * @param period Time between each search in miliseconds
+ * 
+ * @return 0 upon success and non-zero otherwise
+ */
+int mouse_polling();

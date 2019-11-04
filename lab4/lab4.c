@@ -65,7 +65,7 @@ int (mouse_test_packet)(uint32_t cnt) {
         case HARDWARE:
           if (msg.m_notify.interrupts & irq_set)
           {
-            mouse_ih();
+            (mouse_ih)();
             if ((mouse_code & BIT(3)) && byte_counter == 0){       //If BIT(3) != 1 certainly not first byte
               mouse_data.bytes[0] = mouse_code;
               byte_counter++;
@@ -96,7 +96,6 @@ int (mouse_test_packet)(uint32_t cnt) {
               else {
                 mouse_data.delta_y = mouse_data.bytes[2];
               }
-
               mouse_print_packet(&mouse_data);
               counter++;
               byte_counter = 0;
@@ -109,16 +108,63 @@ int (mouse_test_packet)(uint32_t cnt) {
     }
   }  // end of interrupt loop
 
-
   if (mouse_unsubscribe_int() != 0) return 1;   // Unsubscribing mouse interruptions
 
   return 0;
 }
 
 int (mouse_test_remote)(uint16_t period, uint8_t cnt) {
-    /* To be completed */
-    printf("%s(%u, %u): under construction\n", __func__, period, cnt);
-    return 1;
+  unsigned int counter = 0, byte_counter = 0;
+  struct packet mouse_data;
+
+  while (counter < cnt)    //   Program exits when cnt number of packets are read
+  {
+    tickdelay(micros_to_ticks(period));
+    if (mouse_polling() != 0) return 1;
+    printf("Did polling\n");
+    if ((mouse_code & BIT(3)) && byte_counter == 0){       //If BIT(3) != 1 certainly not first byte
+      mouse_data.bytes[0] = mouse_code;
+      byte_counter++;
+      if (mouse_polling(period) != 0) return 1;
+    
+      mouse_data.bytes[1] = mouse_code;
+      byte_counter++;
+      if (mouse_polling(period) != 0) return 1;
+    
+      mouse_data.bytes[2] = mouse_code;
+      mouse_data.rb = (mouse_data.bytes[0] & RB_BIT);
+      mouse_data.lb = (mouse_data.bytes[0] & LB_BIT);
+      mouse_data.mb = (mouse_data.bytes[0] & MB_BIT);
+      mouse_data.x_ov = (mouse_data.bytes[0] & X_OVF);
+      mouse_data.y_ov = (mouse_data.bytes[0] & Y_OVF);
+      /*mouse_data.delta_x = join_bytes(mouse_data.bytes[0] & MSB_X_DELTA, mouse_data.bytes[1]);
+      mouse_data.delta_y = join_bytes(mouse_data.bytes[0] & MSB_Y_DELTA, mouse_data.bytes[2]);*/
+
+      if (mouse_data.bytes[0] & MSB_X_DELTA) {
+        mouse_data.delta_x = mouse_data.bytes[1] | (LARGEST_NUM << 8);
+      }
+      else {
+        mouse_data.delta_x = mouse_data.bytes[1];
+      }
+      if (mouse_data.bytes[0] & MSB_Y_DELTA) {
+        mouse_data.delta_y = ((LARGEST_NUM << 8) | mouse_data.bytes[2]);
+      }
+      else {
+        mouse_data.delta_y = mouse_data.bytes[2];
+      }
+      mouse_print_packet(&mouse_data);
+      counter++;
+      byte_counter = 0;
+
+    }
+  }  // end of interrupt loop
+
+
+  // reset mouse to stream mode and disable mouse data reporting
+  uint8_t dflt_kbc_cmd_byte = minix_get_dflt_kbc_cmd_byte();
+  sys_outb(STATUS_REG, dflt_kbc_cmd_byte);
+
+  return 0;
 }
 
 int (mouse_test_async)(uint8_t idle_time) {

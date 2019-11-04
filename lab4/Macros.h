@@ -81,7 +81,4 @@
 #define X_OVF BIT(6)
 #define Y_OVF BIT(7)
 
-#define MSB_INT16 0xFFFF
-
-
 #endif /* _LCOM_I8254_H */
