@@ -64,6 +64,7 @@
 #define STATUS_REG 0x64 /**< @brief STATUS_REG port */
 
 #define OBF BIT(0) /**< @brief Bit for Output Buffer Full */
+#define IBF BIT(1)
 #define READ_CMD_BYTE 0x20 /**< @brief Read command byte */
 #define WRITE_CMD_BYTE 0x60 /**< @brief Write command byte */
 
@@ -89,6 +90,7 @@
 #define SET_DEFAULTS 0xF6
 #define ENABLE_STREAM_MODE 0xEA
 #define ACK 0xFA
+#define NACK 0xFE
 #define ERROR 0xFC
 #define READ_MOUSE_DATA 0xEB
 #define SET_RMT_MODE 0xF0
