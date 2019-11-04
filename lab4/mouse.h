@@ -58,4 +58,4 @@ void (mouse_ih)(void);
  * 
  * @return 0 upon success and non-zero otherwise
  */
-int mouse_polling();
+int mouse_polling(uint8_t p);

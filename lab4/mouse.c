@@ -7,6 +7,7 @@
 int hook_id_mouse = 0;
 uint8_t mouse_code;
 bool error = false;
+uint8_t bytes_read[3];
 
 int (mouse_subscribe_int)(uint8_t *bit_no){
   hook_id_mouse = (int) *bit_no; // saves bit_no value
@@ -76,7 +77,24 @@ void (mouse_ih)(void) {
 
 } 
 
-int mouse_polling(){
+int mouse_polling(uint16_t period){
+  uint8_t status_reg_content = 0;
   
+  if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;
+
+  if (status_reg_content & (BIT(7) | BIT(6))) return 1;
+  uint8_t n = 0;
+  while (true) {
+    if (status_reg_content & OBF && status_reg_content & BIT(5)){
+
+      if (util_sys_inb(OUT_BUF, &mouse_code) != 0) return 1;
+
+    }
+    bytes_read[n] = mouse_code;
+    if (n == 2) break;
+    n++;
+    tickdelay(micros_to_ticks(DELAY_US));
+
+  }
   return 0;
 }

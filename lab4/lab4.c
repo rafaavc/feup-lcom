@@ -11,6 +11,7 @@
 unsigned int sys_inb_counter = 0;
 extern uint8_t mouse_code;
 extern bool error;
+extern uint8_t bytes_read[3];
 
 // Any header files included below this line should have been created by you
 
@@ -70,10 +71,10 @@ int (mouse_test_packet)(uint32_t cnt) {
           if (msg.m_notify.interrupts & irq_set)
           {
             printf("6\n");
-            mouse_ih();
+            (mouse_ih)();
             // ***************
-
-            /*if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) error = true;
+            /*
+            if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) error = true;
 
             if (status_reg_content & (BIT(6) | BIT(7))) error = true;
 
@@ -81,8 +82,8 @@ int (mouse_test_packet)(uint32_t cnt) {
               
               if (sys_outb(OUT_BUF, mouse_code) != 0) error = true;
 
-            } else { error = true; }*/
-
+            } else { error = true; }
+            */
             // ***************
 
 
@@ -134,7 +135,44 @@ int (mouse_test_packet)(uint32_t cnt) {
 }
 
 int (mouse_test_remote)(uint16_t period, uint8_t cnt) {
-  
+  unsigned int nada = 0;
+  struct packet mouse_data;
+
+
+  while(nada < cnt){
+    nada++;
+    if (send_statusreg_command(READ_MOUSE_DATA,0) != 0) return 1;
+
+    if (mouse_polling(period) != 0) return 1;
+    if (true){       //If BIT(3) != 1 certainly not first byte
+      mouse_data.bytes[0] = bytes_read[0];
+      //if (mouse_polling() != 0) return 1;
+      mouse_data.bytes[1] = bytes_read[1];
+      //if (mouse_polling() != 0) return 1;
+      mouse_data.bytes[2] = bytes_read[2];
+      mouse_data.rb = (mouse_data.bytes[0] & RB_BIT);
+      mouse_data.lb = (mouse_data.bytes[0] & LB_BIT);
+      mouse_data.mb = (mouse_data.bytes[0] & MB_BIT);
+      mouse_data.x_ov = (mouse_data.bytes[0] & X_OVF);
+      mouse_data.y_ov = (mouse_data.bytes[0] & Y_OVF);
+      if (mouse_data.bytes[0] & MSB_X_DELTA) {
+        mouse_data.delta_x = mouse_data.bytes[1] | (LARGEST_NUM << 8);
+      }
+      else {
+        mouse_data.delta_x = mouse_data.bytes[1];
+      }
+      if (mouse_data.bytes[0] & MSB_Y_DELTA) {
+        mouse_data.delta_y = ((LARGEST_NUM << 8) | mouse_data.bytes[2]);
+      }
+      else {
+        mouse_data.delta_y = mouse_data.bytes[2];
+      }
+      mouse_print_packet(&mouse_data);
+    }
+    tickdelay(micros_to_ticks(period*1000));
+    printf("%d\n",nada);
+  }
+
   return 0;
 }
 
