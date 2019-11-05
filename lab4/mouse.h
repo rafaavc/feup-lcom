@@ -10,11 +10,11 @@
 
 
 int (mouse_subscribe_int)(uint8_t *bit_no);
-
-
 int (mouse_unsubscribe_int)();
 
-int send_statusreg_commandbyte(uint8_t mask_enable, uint8_t mask_disable);
+
+int write_command_byte(uint8_t cmd);
+int send_command_to_mouse(uint8_t);
 
 /**
  * @brief Sends command byte to status reg
@@ -26,22 +26,7 @@ int send_statusreg_commandbyte(uint8_t mask_enable, uint8_t mask_disable);
  */
 int send_statusreg_command(uint8_t cmd, uint8_t args);
 
-/*
-Enables stream mode data reporting.
-
-Enables stream mode data reporting, by sending the respective command to the mouse.
-
-This function is provided by the LCF.
-
-In order to score points for your Lab 4 grade, you should implement this functionality yourself. This can be done by defining your own function with the same functionality, or just by adding this functionality somewhere in your code
-*/
-int mouse_enable_data_reporting_original();	
-
-int mouse_disable_data_reporting();
-
-
-unsigned int check_data();
-
+void parse_packet(struct packet *mouse_data);
 
 /*
 Handles mouse interrutps.
@@ -53,6 +38,8 @@ If there was some error, the byte read from the OB should be discarded.
 Must be defined using parenthesis around the function name.
 */
 void (mouse_ih)();
+
+void (timer_int_handler)();
 
 /**
  * @brief Does polling for mouse

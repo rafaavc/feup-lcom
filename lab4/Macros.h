@@ -82,7 +82,7 @@
 #define X_OVF BIT(6)
 #define Y_OVF BIT(7)
 
-
+#define AUX BIT(5)
 
 #define MS_WRITE_BYTE_CMD 0xD4
 
