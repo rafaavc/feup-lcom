@@ -14,6 +14,7 @@ int (mouse_subscribe_int)(uint8_t *bit_no);
 
 int (mouse_unsubscribe_int)();
 
+int send_statusreg_commandbyte(uint8_t mask_enable, uint8_t mask_disable);
 
 /**
  * @brief Sends command byte to status reg
@@ -39,6 +40,8 @@ int mouse_enable_data_reporting_original();
 int mouse_disable_data_reporting();
 
 
+unsigned int check_data();
+
 
 /*
 Handles mouse interrutps.
@@ -49,7 +52,7 @@ If there was some error, the byte read from the OB should be discarded.
 
 Must be defined using parenthesis around the function name.
 */
-void (mouse_ih)(void);
+void (mouse_ih)();
 
 /**
  * @brief Does polling for mouse
@@ -58,4 +61,4 @@ void (mouse_ih)(void);
  * 
  * @return 0 upon success and non-zero otherwise
  */
-int mouse_polling(uint8_t p);
+int mouse_polling();

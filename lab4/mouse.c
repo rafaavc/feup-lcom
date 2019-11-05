@@ -6,7 +6,6 @@
 
 int hook_id_mouse = 0;
 uint8_t mouse_code;
-bool error = false;
 uint8_t bytes_read[3];
 
 int (mouse_subscribe_int)(uint8_t *bit_no){
@@ -18,6 +17,32 @@ int (mouse_subscribe_int)(uint8_t *bit_no){
   
   *bit_no = (uint8_t) BIT(*bit_no);
 
+  return 0;
+}
+
+int send_statusreg_commandbyte(uint8_t mask_enable, uint8_t mask_disable){
+  /*
+  This function receives a mask_enable, that will enable bits in the command byte and a mask_disable, that will disable bits in the command byte
+  */
+  uint8_t command = 0;
+  uint8_t status_reg_content = 0;
+  if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;  // Reads status register
+
+  if ((status_reg_content & BIT(1)) == 0) {    //  Makes sure that input buffer isn't full
+    sys_outb(STATUS_REG, READ_CMD_BYTE);      //  Sends instruction to status register to read command byte, goes to outbuffer
+  } else {
+    return 1;
+  }
+
+  if (util_sys_inb(OUT_BUF, &command) != 0) return 1;    // reads command byte from output buffer
+
+  if (mask_enable != 0)
+    command = command | mask_enable;  // Enables bits that are 1 in mask of command
+  if (mask_disable != 0)
+    command = command & mask_disable;   // Disables bits that are 0 in mask of command
+
+  if (sys_outb(STATUS_REG, WRITE_CMD_BYTE) != 0) return 1;    // sends information that command byte will be written    
+  if (sys_outb(OUT_BUF, command) != 0) return 1;    // sends command byte through outbuffer
   return 0;
 }
 
@@ -61,39 +86,45 @@ int (mouse_unsubscribe_int)() {
   return 0;
 }
 
-void (mouse_ih)(void) {
-
+unsigned int check_data() {
   uint8_t status_reg_content;
 
-  if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) error = true;
-
-  if (status_reg_content & (BIT(6) | BIT(7))) error = true;
-
-  if ((status_reg_content & OBF) && !error && (status_reg_content & BIT(5))) {
-    
-    if (sys_outb(OUT_BUF, mouse_code) != 0) error = true;
-
-  } else { error = true; }
-
-} 
-
-int mouse_polling(uint16_t period){
-  uint8_t status_reg_content = 0;
-  
   if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;
 
-  if (status_reg_content & (BIT(7) | BIT(6))) return 1;
+  if (status_reg_content & (BIT(6) | BIT(7))) return 1;
+
+  if (((status_reg_content & OBF) == 0 && (status_reg_content & BIT(5)) == 0)) return 2;
+
+  return 0;
+}
+
+void (mouse_ih)() {
+  // No need to check the OBF or AUX bits
+  util_sys_inb(OUT_BUF, &mouse_code);
+} 
+
+int mouse_polling(){
+  uint8_t status_reg_content = 0, obf_content = 0;
+  
+
   uint8_t n = 0;
   while (true) {
+
+    if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;
+
+    if (status_reg_content & (BIT(7) | BIT(6))) return 1;
+
     if (status_reg_content & OBF && status_reg_content & BIT(5)){
 
-      if (util_sys_inb(OUT_BUF, &mouse_code) != 0) return 1;
+      if (util_sys_inb(OUT_BUF, &obf_content) != 0) return 1;
+      bytes_read[n] = obf_content;
+      printf("%x\n", obf_content);
+      if (n == 2) break;
+      n++;
 
     }
-    bytes_read[n] = mouse_code;
-    if (n == 2) break;
-    n++;
     tickdelay(micros_to_ticks(DELAY_US));
+    
 
   }
   return 0;
