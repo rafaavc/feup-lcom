@@ -49,6 +49,8 @@ int (mouse_test_packet)(uint32_t cnt) {
   unsigned int counter = 0, byte_counter = 0;
   struct packet mouse_data;
 
+  //  ler command byte e ver se mouse está a 1 & enable stream mode
+
   send_command_to_mouse(ENABLE_DATA_REPORTING);
 
   if ((mouse_subscribe_int)(& irq_set) != 0) return 1;  // Subscribes mouse interruptions
@@ -193,7 +195,7 @@ int (mouse_test_async)(uint8_t idle_time) {
 }
 
 enum state jump_state(enum state s, enum event e) {
-  printf("s: %d, e: %d\n", s, e);
+  //printf("s: %d, e: %d\n", s, e);
   if (s+1 == e) {
     s += 1;
   } else if (s != e+0) {
@@ -218,7 +220,6 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
   int total_y_var = 0;
   bool packet_received = false;
 
-
   send_command_to_mouse(ENABLE_DATA_REPORTING);
 
   if ((mouse_subscribe_int)(& irq_set) != 0) return 1;  // Subscribes mouse interruptions
@@ -239,7 +240,7 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
           {
             mouse_ih();
 
-            if ((mouse_code & BIT(3)) && byte_counter == 0) {       //If BIT(3) != 1 certainly not first byte
+            if ((mouse_code & BIT(3)) && byte_counter == 0) { //If BIT(3) != 1 certainly not first byte
               mouse_data.bytes[0] = mouse_code;
               byte_counter++;
             }
@@ -257,20 +258,15 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
             }
 
             if (packet_received) {
-              if ((!mouse_data.mb && !mouse_data.x_ov && !mouse_data.y_ov) && (!(mouse_data.lb && mouse_data.rb))) {
-                //printf("MAYBE\n");
-                if (mouse_data.lb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0) {
-                  //printf("LB: 1\n");
+              if ((!mouse_data.mb && !mouse_data.x_ov && !mouse_data.y_ov) && (!(mouse_data.lb && mouse_data.rb))) {    // if valid action
+                if (mouse_data.lb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0) {  // if no movement and left button pressed
                   EVENT = mLB_PRESS;
                   if (STATE == mLB_RELEASED) STATE = mLB_PRESSED;
-                } else if (mouse_data.rb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0 && STATE != mRB_RELEASED) {
-                  //printf("RB: 1\n");
+                } else if (mouse_data.rb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0) {   // if no movements and right button pressed
                   between_vertex = false;
                   EVENT = mRB_PRESS;
-                } else if (!mouse_data.rb && !mouse_data.lb) {
-                  //printf("RB: 0  LB: 0\n");
-                  if (STATE == mL_LINE_DRAWN) {
-                    //printf("total_x_var_ %d, x_len: %d, abs(tolerance), %d\n", total_x_var, x_len, abs(tolerance));
+                } else if (!mouse_data.rb && !mouse_data.lb) {  // mouse releases
+                  if (STATE == mL_LINE_DRAWN) {  // Release left button
                     if (total_x_var >= x_len) {
                       
                       EVENT = mLB_RELEASE;
@@ -278,16 +274,15 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
                       EVENT = mOTHER;
                     }
                     line_started = false;
-                  } else if (STATE == mR_LINE_DRAWN) {
+                  } else if (STATE == mR_LINE_DRAWN) {   // Release right button
                     if (total_x_var >= x_len) {
                       EVENT = mRB_RELEASE;
                     } else {
                       EVENT = mOTHER;
                     }
                     line_started = false;
-                    //printf("finished\n");
-                  } else if (STATE == mLB_RELEASED) {
-                    if (abs(mouse_data.delta_x) > abs(tolerance) || abs(mouse_data.delta_y) > abs(tolerance)) {
+                  } else if (STATE == mLB_RELEASED) {  // Between vertex
+                    if (abs(mouse_data.delta_x) > abs(tolerance) || abs(mouse_data.delta_y) > abs(tolerance)) {   // if tolerance not exceeded
                       EVENT = mOTHER;
                     } else if (between_vertex) {
                       total_x_var += mouse_data.delta_x;
@@ -303,9 +298,8 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
 
 
                   } else { EVENT = mOTHER; }
-                } else if (mouse_data.lb && (mouse_data.delta_x > -abs(tolerance)) && (mouse_data.delta_y > -abs(tolerance))) {
-                  //printf("LB: 1  X>0  Y>0\n");
-                  if (line_started) {
+                } else if (mouse_data.lb && (mouse_data.delta_x > -abs(tolerance)) && (mouse_data.delta_y > -abs(tolerance))) {  // Movement while describing the left line
+                  if (line_started) {   // If movement already has been started
                     total_x_var += mouse_data.delta_x;
                     total_y_var += mouse_data.delta_y;
                     if (total_y_var/total_x_var < 1) {
@@ -313,23 +307,19 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
                     } else {
                       EVENT = mDRAW_L_LINE;
                     }
-                  } else {
-                    //printf("HEY1\n");
+                  } else {  // If movement hasn't been started
                     if (mouse_data.delta_y/mouse_data.delta_x > 1) {
-                      //printf("HEY2\n");
                       line_started = true;
-                      total_x_var = 0;
-                      total_y_var = 0;
-                      total_x_var += mouse_data.delta_x;
-                      total_y_var += mouse_data.delta_y;
+                      total_x_var = mouse_data.delta_x;
+                      total_y_var = mouse_data.delta_y;
                       EVENT = mDRAW_L_LINE;
+                      if (STATE != mLB_PRESSED) EVENT = mLB_PRESS; // checks for button press
                     } else {
                       EVENT = mOTHER;
                     }
                   }
-                } else if (mouse_data.rb && mouse_data.delta_x > -abs(tolerance) && mouse_data.delta_y < abs(tolerance)) {
-                  //printf("RB: 1  X>0  Y<0\n");
-                  if (line_started) {
+                } else if (mouse_data.rb && mouse_data.delta_x > -abs(tolerance) && mouse_data.delta_y < abs(tolerance)) {  // Movement while describing the right line
+                  if (line_started) {   // If movement already has been started
                     total_x_var += mouse_data.delta_x;
                     total_y_var += mouse_data.delta_y;
                     if (total_y_var/total_x_var > -1) {
@@ -337,14 +327,13 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
                     } else {
                       EVENT = mDRAW_R_LINE;
                     }
-                  } else {
+                  } else {  // If movement hasn't been started
                     if (abs(mouse_data.delta_y/mouse_data.delta_x) > 1) {
                       line_started = true;
-                      total_x_var = 0;
-                      total_y_var = 0;
-                      total_x_var += mouse_data.delta_x;
-                      total_y_var += mouse_data.delta_y;
+                      total_x_var = mouse_data.delta_x;
+                      total_y_var = mouse_data.delta_y;
                       EVENT = mDRAW_R_LINE;
+                      if (STATE != mRB_PRESSED) EVENT = mRB_PRESS; // checks for button press
                     } else {
                       EVENT = mOTHER;
                     }
