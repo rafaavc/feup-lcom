@@ -117,7 +117,6 @@ void parse_packet(struct packet *mouse_data) {
   }
 }
 
-
 void (mouse_ih)() {
   // No need to check the OBF or AUX bits
   util_sys_inb(OUT_BUF, &mouse_code);
@@ -126,7 +125,6 @@ void (mouse_ih)() {
 void (timer_int_handler)() {
   timer_counter++;
 }
-
 int mouse_polling(){
   uint8_t status_reg_content = 0, obf_content = 0;
   
