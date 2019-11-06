@@ -4,6 +4,29 @@
 #include <stdint.h>
 
 
+enum state{
+  mSTART,
+  mLB_PRESSED,
+  mL_LINE_DRAWN,
+  mLB_RELEASED,
+  mRB_PRESSED,
+  mR_LINE_DRAWN,
+  mRB_RELEASED
+};
+
+enum event{
+  mBEGIN,
+  mLB_PRESS,
+  mDRAW_L_LINE,
+  mLB_RELEASE,
+  mRB_PRESS,
+  mDRAW_R_LINE,
+  mRB_RELEASE,
+  mOTHER = 99
+};
+
+enum state jump_state(enum state s, enum event e);
+
 /**
  * @brief To test packet reception via interrupts.
  * Enables data reporting in streaming mode by the mouse
