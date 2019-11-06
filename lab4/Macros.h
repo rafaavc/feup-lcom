@@ -57,54 +57,46 @@
 /**@}*/
 
 
-#define ESC_break   0x81  /**< @brief ESC key BREAK CODE value  */
+#define ESC_break   0x81    /**< @brief ESC key BREAK CODE value  */
 
 
-#define OUT_BUF 0x60 /**< @brief OUT_BUF port */
-#define STATUS_REG 0x64 /**< @brief STATUS_REG port */
+#define OUT_BUF 0x60        /**< @brief OUT_BUF port */
+#define STATUS_REG 0x64     /**< @brief STATUS_REG port */
 
-#define OBF BIT(0) /**< @brief Bit for Output Buffer Full */
+#define OBF BIT(0)          /**< @brief Bit for Output Buffer Full */
 #define IBF BIT(1)
-#define READ_CMD_BYTE 0x20 /**< @brief Read command byte */
+#define READ_CMD_BYTE 0x20  /**< @brief Read command byte */
 #define WRITE_CMD_BYTE 0x60 /**< @brief Write command byte */
 
-#define LARGEST_NUM 0xFF /**< @brief Largest number of 1 byte */
-#define BYTE2_CODE 0xE0 /**< @brief code to read another byte from keyboard */
+#define LARGEST_NUM 0xFF    /**< @brief Largest number of 1 byte */
+#define BYTE2_CODE 0xE0     /**< @brief code to read another byte from keyboard */
 
-#define DELAY_US 2000 /**< @brief Delay US keyboard */
+#define DELAY_US 2000       /**< @brief Delay US keyboard */
 
 
-#define LB_BIT BIT(0) /**< @brief Bit of RB */
-#define RB_BIT BIT(1) /**< @brief Bit of LB */
-#define MB_BIT BIT(2) /**< @brief Bit of MB */
-#define MSB_X_DELTA BIT(4)
-#define MSB_Y_DELTA BIT(5)
-#define X_OVF BIT(6)
-#define Y_OVF BIT(7)
+#define LB_BIT BIT(0)       /**< @brief Bit of RB */
+#define RB_BIT BIT(1)       /**< @brief Bit of LB */
+#define MB_BIT BIT(2)       /**< @brief Bit of MB */
+#define MSB_X_DELTA BIT(4)  /**< @brief 9th bit of x delta */
+#define MSB_Y_DELTA BIT(5)  /**< @brief 9th bit of y delta */
+#define X_OVF BIT(6)        /**< @brief Bit of x overflow */
+#define Y_OVF BIT(7)        /**< @brief Bit of y overflow */
 
-#define AUX BIT(5)
+#define AUX BIT(5)          /**< @brief Bit of mouse data */
 
-#define MS_WRITE_BYTE_CMD 0xD4
+#define MS_WRITE_BYTE_CMD 0xD4      /**< @brief Code of write byte to mouse */
 
-#define ENABLE_DATA_REPORTING 0xF4
-#define DISABLE_DATA_REPORTING 0xF5
+#define ENABLE_DATA_REPORTING 0xF4  /**< @brief Mouse code to enable data reporting */
+#define DISABLE_DATA_REPORTING 0xF5 /**< @brief Mouse code to disable data reporting */
 
-#define DISABLE_MOUSE 0xA7
-#define ENABLE_MOUSE 0xA8
+#define ACK 0xFA    /**< @brief acknowledgment byte from mouse controller if everything OK */
+#define NACK 0xFE   /**< @brief acknowledgment byte from mouse controller if invalid byte */
+#define ERROR 0xFC  /**< @brief acknowledgment byte from mouse controller if second consecutive invalid byte*/
 
-#define SET_DEFAULTS 0xF6
+#define READ_MOUSE_DATA 0xEB  /**< @brief Send data packet request to mouse */
+#define SET_STREAM_MODE 0xEA  /**< @brief Set mouse to stream mode */
 
-#define ENABLE_STREAM_MODE 0xEA
-
-#define ACK 0xFA
-#define NACK 0xFE
-#define ERROR 0xFC
-
-#define READ_MOUSE_DATA 0xEB
-#define SET_RMT_MODE 0xF0
-#define SET_STREAM_MODE 0xEA
-
-#define MSB_INT16 0xFFFF
+#define MSB_INT16 0xFFFF      /**< @brief Largest number with 16 bits */
 
 
 #endif /* _LCOM_I8254_H */

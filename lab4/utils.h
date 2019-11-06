@@ -47,14 +47,3 @@ int (util_sys_inb)(int port, uint8_t *value);
  * @return Returns the MSbit
  */
 uint8_t (util_get_MSbit)(uint8_t val);
-
-/**
- * @brief Calculates Delta from MSB and corresponding byte
- * 
- * @param MSB Most significant bit
- * @param Byte Byte with first 8 bits
- * 
- * @return Delta
- */
-//int16_t (join_bytes)(uint8_t MSB, uint8_t byte);
-

@@ -61,15 +61,6 @@ int (mouse_test_packet)	(uint32_t 	cnt);
 int (mouse_test_remote)(uint16_t period, uint8_t cnt);
 
 
-/*
-To test handling of more than one interrupt.
-
-Similar to test_packet(), except that it 
-should return if no packets are received for idle_time seconds
-rather than after the reception of a given number of packets
-
-Must be defined using parenthesis around the function name.
-*/
 /**
  * @brief To test handling of more than one interrupt.
  * Similar to test_packet(), except that it 
@@ -84,17 +75,6 @@ Must be defined using parenthesis around the function name.
 int (mouse_test_async)(uint8_t idle_time);
 
 
-/*
-To test state machine implementation.
-
-Similar to mouse_test_packet() except that it 
-should terminate if user executes a 
-gesture to be defined with the mouse.
-
-Disables data reporting before returning.
-
-Must be defined using parenthesis around the function name.
-*/
 /**
  * @brief To test state machine implementation.
  * Similar to mouse_test_packet() except that it 
