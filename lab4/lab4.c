@@ -193,7 +193,7 @@ int (mouse_test_async)(uint8_t idle_time) {
 }
 
 enum state jump_state(enum state s, enum event e) {
-  //printf("s: %d, e: %d\n", s, e);
+  printf("s: %d, e: %d\n", s, e);
   if (s+1 == e) {
     s += 1;
   } else if (s != e+0) {
@@ -257,105 +257,108 @@ int (mouse_test_gesture)(uint8_t x_len, uint8_t tolerance) {
             }
 
             if (packet_received) {
-            if ((!mouse_data.mb && !mouse_data.x_ov && !mouse_data.y_ov) && (!(mouse_data.lb && mouse_data.rb)) && packet_received) {
-              //printf("MAYBE\n");
-              if (mouse_data.lb && (mouse_data.delta_x == 0) && (mouse_data.delta_y == 0) && STATE != mLB_RELEASED) {
-                //printf("LB: 1\n");
-                EVENT = mLB_PRESS;
-              } else if (mouse_data.rb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0 && STATE != mRB_RELEASED) {
-                //printf("RB: 1\n");
-                between_vertex = false;
-                EVENT = mRB_PRESS;
-              } else if (!mouse_data.rb && !mouse_data.lb) {
-                //printf("RB: 0  LB: 0\n");
-                if (STATE == mL_LINE_DRAWN) {
-                  if (total_x_var >= x_len) {
-                    EVENT = mLB_RELEASE;
-                  } else {
-                    EVENT = mOTHER;
-                  }
-                  line_started = false;
-                } else if (STATE == mR_LINE_DRAWN) {
-                  if (total_x_var >= x_len) {
-                    EVENT = mRB_RELEASE;
-                  } else {
-                    EVENT = mOTHER;
-                  }
-                  line_started = false;
-                  printf("finished\n");
-                } else if (STATE == mLB_RELEASED) {
-                  if (mouse_data.delta_x > tolerance || mouse_data.delta_y > tolerance) {
-                    EVENT = mOTHER;
-                  } else if (between_vertex) {
-                    total_x_var += mouse_data.delta_x;
-                    total_y_var += mouse_data.delta_y;
-                    if (total_x_var > tolerance || total_y_var > tolerance) {
+              if ((!mouse_data.mb && !mouse_data.x_ov && !mouse_data.y_ov) && (!(mouse_data.lb && mouse_data.rb))) {
+                //printf("MAYBE\n");
+                if (mouse_data.lb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0) {
+                  //printf("LB: 1\n");
+                  EVENT = mLB_PRESS;
+                  if (STATE == mLB_RELEASED) STATE = mLB_PRESSED;
+                } else if (mouse_data.rb && mouse_data.delta_x == 0 && mouse_data.delta_y == 0 && STATE != mRB_RELEASED) {
+                  //printf("RB: 1\n");
+                  between_vertex = false;
+                  EVENT = mRB_PRESS;
+                } else if (!mouse_data.rb && !mouse_data.lb) {
+                  //printf("RB: 0  LB: 0\n");
+                  if (STATE == mL_LINE_DRAWN) {
+                    //printf("total_x_var_ %d, x_len: %d, abs(tolerance), %d\n", total_x_var, x_len, abs(tolerance));
+                    if (total_x_var >= x_len) {
+                      
+                      EVENT = mLB_RELEASE;
+                    } else {
                       EVENT = mOTHER;
                     }
-                  } else {
-                    between_vertex = true;
-                    total_x_var = mouse_data.delta_x;
-                    total_y_var = mouse_data.delta_y;
-                  }
+                    line_started = false;
+                  } else if (STATE == mR_LINE_DRAWN) {
+                    if (total_x_var >= x_len) {
+                      EVENT = mRB_RELEASE;
+                    } else {
+                      EVENT = mOTHER;
+                    }
+                    line_started = false;
+                    //printf("finished\n");
+                  } else if (STATE == mLB_RELEASED) {
+                    if (abs(mouse_data.delta_x) > abs(tolerance) || abs(mouse_data.delta_y) > abs(tolerance)) {
+                      EVENT = mOTHER;
+                    } else if (between_vertex) {
+                      total_x_var += mouse_data.delta_x;
+                      total_y_var += mouse_data.delta_y;
+                      if (abs(total_x_var) > abs(tolerance) || abs(total_y_var) > abs(tolerance)) {
+                        EVENT = mOTHER;
+                      }
+                    } else {
+                      between_vertex = true;
+                      total_x_var = mouse_data.delta_x;
+                      total_y_var = mouse_data.delta_y;
+                    }
 
 
-                } else { EVENT = mOTHER; }
-              } else if (mouse_data.lb && (abs(mouse_data.delta_x) > 0) && (abs(mouse_data.delta_y) > 0)) {
-                //printf("LB: 1  X>0  Y>0\n");
-                if (line_started) {
-                  total_x_var += mouse_data.delta_x;
-                  total_y_var += mouse_data.delta_y;
-                  if (total_y_var/total_x_var < 1) {
-                    EVENT = mOTHER;
-                  } else {
-                    EVENT = mDRAW_L_LINE;
-                  }
-                } else {
-                  //printf("HEY1\n");
-                  if (mouse_data.delta_y/mouse_data.delta_x > 1) {
-                    //printf("HEY2\n");
-                    line_started = true;
-                    total_x_var = 0;
-                    total_y_var = 0;
+                  } else { EVENT = mOTHER; }
+                } else if (mouse_data.lb && (mouse_data.delta_x > -abs(tolerance)) && (mouse_data.delta_y > -abs(tolerance))) {
+                  //printf("LB: 1  X>0  Y>0\n");
+                  if (line_started) {
                     total_x_var += mouse_data.delta_x;
                     total_y_var += mouse_data.delta_y;
-                    EVENT = mDRAW_L_LINE;
+                    if (total_y_var/total_x_var < 1) {
+                      EVENT = mOTHER;
+                    } else {
+                      EVENT = mDRAW_L_LINE;
+                    }
                   } else {
-                    EVENT = mOTHER;
+                    //printf("HEY1\n");
+                    if (mouse_data.delta_y/mouse_data.delta_x > 1) {
+                      //printf("HEY2\n");
+                      line_started = true;
+                      total_x_var = 0;
+                      total_y_var = 0;
+                      total_x_var += mouse_data.delta_x;
+                      total_y_var += mouse_data.delta_y;
+                      EVENT = mDRAW_L_LINE;
+                    } else {
+                      EVENT = mOTHER;
+                    }
                   }
-                }
-              } else if (mouse_data.rb && mouse_data.delta_x > 0 && mouse_data.delta_y < 0) {
-                //printf("RB: 1  X>0  Y<0\n");
-                if (line_started) {
-                  total_x_var += mouse_data.delta_x;
-                  total_y_var += mouse_data.delta_y;
-                  if (total_y_var/total_x_var > -1) {
-                    EVENT = mOTHER;
-                  } else {
-                    EVENT = mDRAW_R_LINE;
-                  }
-                } else {
-                  if (abs(mouse_data.delta_y/mouse_data.delta_x) > 1) {
-                    line_started = true;
-                    total_x_var = 0;
-                    total_y_var = 0;
+                } else if (mouse_data.rb && mouse_data.delta_x > -abs(tolerance) && mouse_data.delta_y < abs(tolerance)) {
+                  //printf("RB: 1  X>0  Y<0\n");
+                  if (line_started) {
                     total_x_var += mouse_data.delta_x;
                     total_y_var += mouse_data.delta_y;
-                    EVENT = mDRAW_R_LINE;
+                    if (total_y_var/total_x_var > -1) {
+                      EVENT = mOTHER;
+                    } else {
+                      EVENT = mDRAW_R_LINE;
+                    }
                   } else {
-                    EVENT = mOTHER;
+                    if (abs(mouse_data.delta_y/mouse_data.delta_x) > 1) {
+                      line_started = true;
+                      total_x_var = 0;
+                      total_y_var = 0;
+                      total_x_var += mouse_data.delta_x;
+                      total_y_var += mouse_data.delta_y;
+                      EVENT = mDRAW_R_LINE;
+                    } else {
+                      EVENT = mOTHER;
+                    }
+                                        
                   }
-                                      
+                } else {
+                  EVENT = mOTHER;
                 }
-              } else {
-                EVENT = mOTHER;
               }
-            }
-            else { EVENT = mOTHER; }
+              else { EVENT = mOTHER; }
 
-            STATE = jump_state(STATE, EVENT);
+              STATE = jump_state(STATE, EVENT);
 
-            packet_received = false;
+              packet_received = false;
             }
           }
           break;
