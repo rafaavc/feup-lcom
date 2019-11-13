@@ -77,3 +77,4 @@
  } vg_vbe_contr_info_t;
   
  int(vbe_get_mode_info)(uint16_t mode, vbe_mode_info_t *vmi_p);
+ 

@@ -33,3 +33,4 @@
  uint8_t *(xpm_load)(xpm_map_t map, enum xpm_image_type type, xpm_image_t *img);
   
  uint32_t(xpm_transparency_color)(enum xpm_image_type type);
+ 
