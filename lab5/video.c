@@ -8,6 +8,9 @@
 #include "video.h"
 
 
+static void* video_mem;
+static uint8_t bits_per_pixel;
+static uint8_t xres, yres;
 
 
 int allow_and_map_memory(uint16_t mode, bool map_memory){
@@ -18,6 +21,10 @@ int allow_and_map_memory(uint16_t mode, bool map_memory){
 
     struct minix_mem_range mr;
     memset(&mr, 0, sizeof(mr));	/* zero the structure */
+
+    bits_per_pixel = vbe_info.BitsPerPixel;
+    xres = vbe_info.XResolution;
+    yres = vbe_info.YResolution;
 
     // Allow memory mapping 
 
@@ -32,10 +39,8 @@ int allow_and_map_memory(uint16_t mode, bool map_memory){
         return 1;
     }
 
-
     // Map memory 
     if (map_memory){
-        void * video_mem;
 
         video_mem = vm_map_phys(SELF, (void *)mr.mr_base, size);
 
@@ -44,14 +49,12 @@ int allow_and_map_memory(uint16_t mode, bool map_memory){
             return 1;
         }
     }
-
-
     return 0;
 }
 
 
 int set_vbe_mode(uint16_t mode){
-    if (allow_and_map_memory(mode, false) != 0) return 1;
+    if (allow_and_map_memory(mode, true) != 0) return 1;
     
 
     struct reg86 reg86_;
@@ -67,4 +70,27 @@ int set_vbe_mode(uint16_t mode){
         return 1;
     }
     return 0;
+}
+
+void draw_pixel(uint16_t x, uint16_t y, uint32_t color){
+    if (x >= xres || y >= yres)
+        return;
+    uint8_t *memory = video_mem;
+    uint8_t bytes_per_pixel = (bits_per_pixel + 7) / 8;
+
+    int pos = bytes_per_pixel * xres * y + bytes_per_pixel * x;
+
+    memory += pos;
+    uint8_t color_tmp;
+    for (unsigned int i = 0; i < bytes_per_pixel; i++) {
+        color_tmp = color >> 8 * i;
+        *memory = color_tmp;
+        memory++;
+    }
+}
+
+void draw_hline(uint16_t x, uint16_t y, uint16_t width, uint32_t color) {
+    for (unsigned int i = 0; i < width; i++) {
+        draw_pixel(x+i, y, color);
+    }
 }
