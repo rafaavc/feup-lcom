@@ -13,7 +13,7 @@
 // Any header files included below this line should have been created by you
 
 extern void* video_mem;
-extern uint8_t kbd_code; 
+extern uint8_t kbd_code;
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
 }
 
 int(video_test_init)(uint16_t mode, uint8_t delay) {
-  if (set_vbe_mode(mode) != 0) return 1;
+  if ((vg_init)(mode) != 0) return 1;
 
   tickdelay(micros_to_ticks(delay*1000000));
 
@@ -69,10 +69,10 @@ void (kbc_ih)(){
 int(video_test_rectangle)(uint16_t mode, uint16_t x, uint16_t y,
                           uint16_t width, uint16_t height, uint32_t color) {
   
-  if (set_vbe_mode(mode) != 0) return 1;
-  for (unsigned int i = 0; i < height; i++) {
-    draw_hline(x, y+i, width, color);
-  }
+  if (vg_init(mode) == NULL) return 1;
+
+  draw_rectangle(x, y, height, width, color);
+
   int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
   message msg;
@@ -105,24 +105,71 @@ int(video_test_rectangle)(uint16_t mode, uint16_t x, uint16_t y,
 
   if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
 
-  //sleep(5);
+  vg_exit();
+ 
+  return 1;
+}
+
+int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, uint8_t step) {
+
+  if (vg_init(mode) == NULL) return 1;
+
+  uint16_t rectangle_width = get_xres()/no_rectangles, rectangle_height = get_yres()/no_rectangles;
+
+  uint32_t color;
+
+
+  for (unsigned int i = 0; i < no_rectangles; i++) {
+    for (unsigned int j = 0; j < no_rectangles; j++) {
+      if (mode == 0x105) {
+         color = (first + (j * no_rectangles + i) * step) % (1 << get_bits_per_pixel());
+      } else {
+
+      }
+      draw_rectangle(rectangle_width*j, rectangle_height*i, rectangle_height, rectangle_width, color);
+    }
+  }
+
+
+  int ipc_status;   // gets ipc_status
+  int r;   // return value of driver receive
+  message msg;
+  uint8_t irq_set = BIT(0); // Keyboard's IRQ
+
+  if (kbd_subscribe_int(& irq_set) != 0) return 1;  // Subscribes keyboard interruptions
+
+  while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
+  {
+    kbd_code = 0;    //  Resets kbd_code
+
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_set)
+          {
+            (kbc_ih)();
+          }
+      }
+    }
+  }  // end of interrupt loop
+
+  if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
+
   vg_exit();
 
   return 1;
 }
 
-int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, uint8_t step) {
-  /* To be completed */
-  printf("%s(0x%03x, %u, 0x%08x, %d): under construction\n", __func__,
-         mode, no_rectangles, first, step);
-
-  return 1;
-}
-
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
-  /* To be completed */
-  printf("%s(%8p, %u, %u): under construction\n", __func__, xpm, x, y);
-
+  
   return 1;
 }
 
