@@ -115,16 +115,21 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
   if (vg_init(mode) == NULL) return 1;
 
   uint16_t rectangle_width = get_xres()/no_rectangles, rectangle_height = get_yres()/no_rectangles;
-
   uint32_t color;
 
+  uint8_t bits_per_pixel = get_bits_per_pixel(), red_mask = get_red_mask(), blue_mask = get_blue_mask(), green_mask = get_green_mask();
 
-  for (unsigned int i = 0; i < no_rectangles; i++) {
-    for (unsigned int j = 0; j < no_rectangles; j++) {
+
+
+  for (unsigned int i = 0; i <= no_rectangles; i++) {
+    for (unsigned int j = 0; j <= no_rectangles; j++) {
+
       if (mode == 0x105) {
-         color = (first + (j * no_rectangles + i) * step) % (1 << get_bits_per_pixel());
+        color = (first + ((j+1) * no_rectangles + (i + 1)) * step) % (1 << bits_per_pixel);
       } else {
-
+        color = (first + (j+1) * step) % (1 << red_mask);
+	      color += ((first << red_mask) + (i + 1) * step) % (1 << green_mask) << red_mask;
+	      color += ((first << (red_mask + green_mask)) + ((j+1) + (i + 1)) * step) % (1 << blue_mask) << (red_mask + green_mask);
       }
       draw_rectangle(rectangle_width*j, rectangle_height*i, rectangle_height, rectangle_width, color);
     }

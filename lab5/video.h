@@ -15,3 +15,9 @@ uint16_t get_xres();
 uint16_t get_yres();
 
 uint8_t get_bits_per_pixel();
+
+uint8_t get_red_mask();
+
+uint8_t get_green_mask();
+
+uint8_t get_blue_mask();

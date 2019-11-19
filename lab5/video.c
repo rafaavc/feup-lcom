@@ -11,6 +11,8 @@
 static void* video_mem;
 static uint8_t bits_per_pixel;
 static uint16_t xres, yres;
+static uint8_t red_screen_mask, blue_screen_mask, green_screen_mask;
+
 
 
 void *( vg_init)(uint16_t mode){
@@ -26,6 +28,9 @@ void *( vg_init)(uint16_t mode){
     bits_per_pixel = vbe_info.BitsPerPixel;
     xres = vbe_info.XResolution;
     yres = vbe_info.YResolution;
+    red_screen_mask = vbe_info.RedMaskSize;
+    blue_screen_mask = vbe_info.BlueMaskSize;
+    green_screen_mask = vbe_info.GreenMaskSize;
 
     // Allow memory mapping 
 
@@ -122,4 +127,13 @@ uint16_t get_yres() {
 }
 uint8_t get_bits_per_pixel() {
     return bits_per_pixel;
+}
+uint8_t get_red_mask() {
+    return red_screen_mask;
+}
+uint8_t get_blue_mask() {
+    return blue_screen_mask;
+}
+uint8_t get_green_mask() {
+    return green_screen_mask;
 }
