@@ -70,11 +70,9 @@ int(video_test_rectangle)(uint16_t mode, uint16_t x, uint16_t y,
                           uint16_t width, uint16_t height, uint32_t color) {
   
   if (set_vbe_mode(mode) != 0) return 1;
-  
   for (unsigned int i = 0; i < height; i++) {
     draw_hline(x, y+i, width, color);
   }
-  
   int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
   message msg;

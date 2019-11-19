@@ -10,7 +10,7 @@
 
 static void* video_mem;
 static uint8_t bits_per_pixel;
-static uint8_t xres, yres;
+static uint16_t xres, yres;
 
 
 int allow_and_map_memory(uint16_t mode, bool map_memory){
@@ -79,7 +79,6 @@ void draw_pixel(uint16_t x, uint16_t y, uint32_t color){
     uint8_t bytes_per_pixel = (bits_per_pixel + 7) / 8;
 
     int pos = bytes_per_pixel * xres * y + bytes_per_pixel * x;
-
     memory += pos;
     uint8_t color_tmp;
     for (unsigned int i = 0; i < bytes_per_pixel; i++) {
@@ -88,7 +87,7 @@ void draw_pixel(uint16_t x, uint16_t y, uint32_t color){
         memory++;
     }
 }
-
+    
 void draw_hline(uint16_t x, uint16_t y, uint16_t width, uint32_t color) {
     for (unsigned int i = 0; i < width; i++) {
         draw_pixel(x+i, y, color);
