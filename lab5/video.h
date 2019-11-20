@@ -21,3 +21,5 @@ uint8_t get_red_mask();
 uint8_t get_green_mask();
 
 uint8_t get_blue_mask();
+
+void* get_video_mem();

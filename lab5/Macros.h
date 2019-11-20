@@ -99,4 +99,8 @@
 #define MSB_INT16 0xFFFF      /**< @brief Largest number with 16 bits */
 
 
+// Graphics
+#define INDEXED_MODE 0x105
+
+
 #endif /* _LCOM_I8254_H */

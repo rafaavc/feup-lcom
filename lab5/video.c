@@ -137,3 +137,6 @@ uint8_t get_blue_mask() {
 uint8_t get_green_mask() {
     return green_screen_mask;
 }
+void* get_video_mem() {
+    return video_mem;
+}

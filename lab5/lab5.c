@@ -9,6 +9,7 @@
 #include "keyboard.h"
 #include "Macros.h"
 #include "utils.h"
+#include "sprite.h"
 
 // Any header files included below this line should have been created by you
 
@@ -124,7 +125,7 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
   for (unsigned int i = 0; i < no_rectangles; i++) {
     for (unsigned int j = 0; j < no_rectangles; j++) {
 
-      if (mode == 0x105) {
+      if (mode == INDEXED_MODE) {
         color = (first + ((i) * no_rectangles + (j)) * step) % (1 << bits_per_pixel);
       } else {
         color = (first + (j + i) * step) % (1 << blue_mask);
@@ -175,6 +176,63 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
   
+  if (vg_init(INDEXED_MODE) == NULL) return 1;
+
+  uint8_t *mem = get_video_mem();
+  xpm_image_t img;
+
+  uint8_t *map = xpm_load(xpm, XPM_INDEXED, &img);
+
+  Sprite *s = create_sprite((char **) &map, (char *) mem + x+y*get_xres());
+
+  for (uint8_t i = 0; i < s->height; i++, y++) {
+    for (uint8_t j = 0; j < s->width; j++) {
+      draw_pixel(x, y, *(s->map + i * s->width + j));
+      x++;
+    }
+    x -= s->width;
+  }
+
+  /*for (unsigned i = 0; i < img.height; i++) {
+    for (unsigned j = 0; j < img.width; j++) {
+      draw_pixel(j, i, );
+    }
+  }*/
+
+  int ipc_status;   // gets ipc_status
+  int r;   // return value of driver receive
+  message msg;
+  uint8_t irq_set = BIT(0); // Keyboard's IRQ
+
+  if (kbd_subscribe_int(& irq_set) != 0) return 1;  // Subscribes keyboard interruptions
+
+  while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
+  {
+    kbd_code = 0;    //  Resets kbd_code
+
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_set)
+          {
+            (kbc_ih)();
+          }
+      }
+    }
+  }  // end of interrupt loop
+
+  if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
+
+  vg_exit();
+
   return 1;
 }
 
