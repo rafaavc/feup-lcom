@@ -183,15 +183,13 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 
   uint8_t *map = xpm_load(xpm, XPM_INDEXED, &img);
 
-  Sprite *s = create_sprite(map, x, y, 0, 0);
 
 
-
-  /*for (unsigned i = 0; i < img.height; i++) {
+  for (unsigned i = 0; i < img.height; i++) {
     for (unsigned j = 0; j < img.width; j++) {
-      draw_pixel(j, i, );
+      draw_pixel(x+j, y+i, map[img.width*i + j]);
     }
-  }*/
+  }
 
   int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
