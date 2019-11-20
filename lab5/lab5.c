@@ -226,51 +226,7 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
   if (fr_rate < 19 || (uint32_t) fr_rate > TIMER_FREQ) return 1;
   //if (timer_set_frequency(0, fr_rate) != 0)
     //return 1;
-  uint8_t timer = 0;
-  uint32_t freq = fr_rate;
-  uint8_t current_conf;
-  if (timer_get_conf(timer, &current_conf) != 0) // gets current timer conf so that the 4 least significant bits aren't changed
-    return 1;
-  uint8_t control_word = current_conf << 4;
-  control_word = control_word >> 4;  // now control_word holds the 4 least significant bits (BCD/binary and operating mode)
 
-  control_word |= TIMER_LSB_MSB;  // initializes lsb followed by msb
-  uint8_t lsb, msb;
-  uint16_t count_value = TIMER_FREQ / freq;
-
-  util_get_LSB(count_value, &lsb);
-  util_get_MSB(count_value, &msb);
-  switch (timer) {
-    case 0:
-      control_word |= TIMER_SEL0;
-      if (sys_outb(TIMER_CTRL, control_word) != 0) // writing to control
-        return 1;
-      if (sys_outb(TIMER_0, lsb) != 0) // giving lsb
-        return 1;
-      if (sys_outb(TIMER_0, msb) != 0) // and now msb
-        return 1;
-      break;
-    case 1:
-      control_word |= TIMER_SEL1;
-      if (sys_outb(TIMER_CTRL, control_word) != 0)
-        return 1;
-      if (sys_outb(TIMER_1, lsb) != 0)
-        return 1;
-      if (sys_outb(TIMER_1, msb) != 0)
-        return 1;
-      break;
-    case 2:
-      control_word |= TIMER_SEL2;
-      if (sys_outb(TIMER_CTRL, control_word) != 0)
-        return 1;
-      if (sys_outb(TIMER_2, lsb) != 0)
-        return 1;
-      if (sys_outb(TIMER_2, msb) != 0)
-        return 1;
-      break;
-    default:
-      return 1;
-  }
 
 
   // Interrupt handling variables
@@ -306,15 +262,23 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
           if (msg.m_notify.interrupts & irq_timer0)   // Timer0 interrupt received
           {
             timer_int_handler();
-            //if (timer_counter % (sys_hz()/fr_rate) == 0){
+            if (timer_counter % (sys_hz()/fr_rate) == 0){
               draw_pixmap(xpm, xi, yi);
               if (xi != xf) {
-                xi += speed;
+                if (xf-xi >= speed) {
+                  xi += speed;
+                } else {
+                  xi = xf;
+                }
               }
               if (yi != yf) {
-                yi += speed;
+                if (yf-yi >= speed) {
+                  yi += speed;
+                } else {
+                  yi = yf;
+                }
               }
-            //}
+            }
           }
 
           break;
@@ -327,7 +291,7 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
 
   if (kbd_unsubscribe_int() != 0) return 1;  // unsubscribes KBD interrupts
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
-
+  printf("xi(%d) == xf(%d), yi(%d) == yf(%d)\n", xi, xf, yi, yf);
   vg_exit();
 
   return 0;

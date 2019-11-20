@@ -126,7 +126,7 @@
   
  /* this one was converted from a 32 bits colors png! */
   
- static xpm_row_t const penguin[] = {
+ static xpm_row_t const minix3_xpm[] = {
    "64 64 9",
    "  0",
    ". 15",
@@ -204,7 +204,7 @@
   
  // for direct color mode tests
   
- static xpm_row_t const minix3_xpm[] = {
+ static xpm_row_t const penguin[] = {
    "196 196 950 2",
    "     c None",
    ".    c #C1C1C1",
