@@ -127,9 +127,9 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
       if (mode == 0x105) {
         color = (first + ((i) * no_rectangles + (j)) * step) % (1 << bits_per_pixel);
       } else {
-        color = (first + (j) * step) % (1 << red_mask);
-	      color += ((first >> red_mask) + (i) * step) % (1 << green_mask) << red_mask;
-	      color += ((first >> (red_mask + green_mask)) + ((j) + (i)) * step) % (1 << blue_mask) << (red_mask + green_mask);
+        color = (first + (j + i) * step) % (1 << blue_mask);
+        color += ((first >> blue_mask) + i * step) % (1 << (green_mask)) << blue_mask;
+        color += ((first >> (blue_mask + green_mask)) + j * step) % (1 << (red_mask)) << (blue_mask + green_mask);
       }
       draw_rectangle(rectangle_width*j, rectangle_height*i, rectangle_height, rectangle_width, color);
     }
