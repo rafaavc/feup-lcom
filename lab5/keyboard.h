@@ -14,6 +14,10 @@
  */
 int(timer_subscribe_int)(uint8_t *bit_no);
 
+int (timer_set_frequency)(uint8_t timer, uint32_t freq);
+
+int (timer_get_conf)(uint8_t timer, uint8_t *st);
+
 /**
  * @brief Unsubscribes Timer 0 interrupts
  *

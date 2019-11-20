@@ -9,7 +9,7 @@
 #include "keyboard.h"
 #include "Macros.h"
 #include "utils.h"
-#include "sprite.h"
+//#include "sprite.h"
 
 // Any header files included below this line should have been created by you
 
@@ -230,9 +230,55 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
     
-  
-  if (timer_set_frequency(0, fr_rate) != 0)
+
+  if (fr_rate < 19 || fr_rate > TIMER_FREQ) return 1;
+  //if (timer_set_frequency(0, fr_rate) != 0)
+    //return 1;
+  uint8_t timer = 0;
+  uint32_t freq = fr_rate;
+  uint8_t current_conf;
+  if (timer_get_conf(timer, &current_conf) != 0) // gets current timer conf so that the 4 least significant bits aren't changed
     return 1;
+  uint8_t control_word = current_conf << 4;
+  control_word = control_word >> 4;  // now control_word holds the 4 least significant bits (BCD/binary and operating mode)
+
+  control_word |= TIMER_LSB_MSB;  // initializes lsb followed by msb
+  uint8_t lsb, msb;
+  uint16_t count_value = TIMER_FREQ / freq;
+
+  util_get_LSB(count_value, &lsb);
+  util_get_MSB(count_value, &msb);
+  switch (timer) {
+    case 0:
+      control_word |= TIMER_SEL0;
+      if (sys_outb(TIMER_CTRL, control_word) != 0) // writing to control
+        return 1;
+      if (sys_outb(TIMER_0, lsb) != 0) // giving lsb
+        return 1;
+      if (sys_outb(TIMER_0, msb) != 0) // and now msb
+        return 1;
+      break;
+    case 1:
+      control_word |= TIMER_SEL1;
+      if (sys_outb(TIMER_CTRL, control_word) != 0)
+        return 1;
+      if (sys_outb(TIMER_1, lsb) != 0)
+        return 1;
+      if (sys_outb(TIMER_1, msb) != 0)
+        return 1;
+      break;
+    case 2:
+      control_word |= TIMER_SEL2;
+      if (sys_outb(TIMER_CTRL, control_word) != 0)
+        return 1;
+      if (sys_outb(TIMER_2, lsb) != 0)
+        return 1;
+      if (sys_outb(TIMER_2, msb) != 0)
+        return 1;
+      break;
+    default:
+      return 1;
+  }
 
 
   // Interrupt handling variables
@@ -262,16 +308,13 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
         case HARDWARE:
           if (msg.m_notify.interrupts & irq_kbd)   // KDB interrupt received
           {
-            kbc_ih();
-            if (kbd_code == 0)
-              return 1;
+            (kbc_ih)();
           }
 
           if (msg.m_notify.interrupts & irq_timer0)   // Timer0 interrupt received
           {
-            //timer_int_handler();
-            printf("1, ");
-
+            timer_int_handler();
+            printf("%d, ",timer_counter);
           }
 
           break;

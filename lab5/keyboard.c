@@ -42,10 +42,12 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
     return 1;
 
   uint8_t current_conf;
-
+  printf("1\n");
+  fflush(stdout);
   if (timer_get_conf(timer, &current_conf) != 0) // gets current timer conf so that the 4 least significant bits aren't changed
     return 1;
-
+  printf("1\n");
+  fflush(stdout);
   uint8_t control_word = current_conf << 4;
   control_word = control_word >> 4;  // now control_word holds the 4 least significant bits (BCD/binary and operating mode)
 
@@ -55,7 +57,8 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
 
   util_get_LSB(count_value, &lsb);
   util_get_MSB(count_value, &msb);
-
+  printf("1\n");
+  fflush(stdout);
   switch (timer) {
     case 0:
       control_word |= TIMER_SEL0;
@@ -87,7 +90,8 @@ int (timer_set_frequency)(uint8_t timer, uint32_t freq) {
     default:
       return 1;
   }
-
+  printf("1\n");
+  fflush(stdout);
   return 0;
 }
 
