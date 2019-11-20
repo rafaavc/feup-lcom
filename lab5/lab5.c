@@ -179,16 +179,7 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
   
   if (vg_init(INDEXED_MODE) == NULL) return 1;
 
-  //uint8_t *mem = get_video_mem();
-  xpm_image_t img;
-
-  uint8_t *map = xpm_load(xpm, XPM_INDEXED, &img);
-
-  for (unsigned i = 0; i < img.height; i++) {
-    for (unsigned j = 0; j < img.width; j++) {
-      draw_pixel(x+j, y+i, map[img.width*i + j]);
-    }
-  }
+  draw_pixmap(xpm, x, y);
 
   int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
@@ -230,8 +221,9 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
     
+  if (vg_init(INDEXED_MODE) == NULL) return 1;
 
-  if (fr_rate < 19 || fr_rate > TIMER_FREQ) return 1;
+  if (fr_rate < 19 || (uint32_t) fr_rate > TIMER_FREQ) return 1;
   //if (timer_set_frequency(0, fr_rate) != 0)
     //return 1;
   uint8_t timer = 0;
@@ -314,7 +306,15 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
           if (msg.m_notify.interrupts & irq_timer0)   // Timer0 interrupt received
           {
             timer_int_handler();
-            printf("%d, ",timer_counter);
+            //if (timer_counter % (sys_hz()/fr_rate) == 0){
+              draw_pixmap(xpm, xi, yi);
+              if (xi != xf) {
+                xi += speed;
+              }
+              if (yi != yf) {
+                yi += speed;
+              }
+            //}
           }
 
           break;
@@ -327,6 +327,9 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
 
   if (kbd_unsubscribe_int() != 0) return 1;  // unsubscribes KBD interrupts
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
+
+  vg_exit();
+
   return 0;
 }
 

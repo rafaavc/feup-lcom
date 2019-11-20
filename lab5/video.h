@@ -23,3 +23,5 @@ uint8_t get_green_mask();
 uint8_t get_blue_mask();
 
 void* get_video_mem();
+
+void draw_pixmap(xpm_map_t xpm, uint16_t x, uint16_t y);

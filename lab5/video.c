@@ -118,6 +118,19 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
     }
 }
 
+void draw_pixmap(xpm_map_t xpm, uint16_t x, uint16_t y) {
+    //uint8_t *mem = get_video_mem();
+    xpm_image_t img;
+
+    uint8_t *map = xpm_load(xpm, XPM_INDEXED, &img);
+    draw_rectangle(0, 0, yres, xres, 0x0);
+    for (unsigned i = 0; i < img.height; i++) {
+        for (unsigned j = 0; j < img.width; j++) {
+            draw_pixel(x+j, y+i, map[img.width*i + j]);
+        }
+    }
+}
+
 uint16_t get_xres() {
     return xres;
 }
