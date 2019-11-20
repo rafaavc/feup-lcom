@@ -18,13 +18,11 @@ static uint8_t red_screen_mask, blue_screen_mask, green_screen_mask;
 void *( vg_init)(uint16_t mode){
     int r;
     vbe_mode_info_t vbe_info;
-
     //if (
         vbe_get_mode_info(mode, &vbe_info);// != 0) return 1;
 
     struct minix_mem_range mr;
     memset(&mr, 0, sizeof(mr));	 //zero the structure 
-
     bits_per_pixel = vbe_info.BitsPerPixel;
     xres = vbe_info.XResolution;
     yres = vbe_info.YResolution;
@@ -55,7 +53,7 @@ void *( vg_init)(uint16_t mode){
             return NULL;
         }
     //}
-
+    printf("1\n");
     struct reg86 reg86_;
     memset(&reg86_, 0, sizeof(reg86_));	 //zero the structure 
 
@@ -63,28 +61,23 @@ void *( vg_init)(uint16_t mode){
     reg86_.ah = 0x4F;     // distinguishing the VBE function from standard VGA BIOS functions
     reg86_.al = 0x02;     // VBE function
     reg86_.bx = mode|(BIT(14));
-
     if(sys_int86(&reg86_) != OK ) {
         printf("vg_exit(): sys_int86() failed \n");
         return NULL;
     }
-
     return video_mem;
 }
 
 
 int set_vbe_mode(uint16_t mode){
-    if (vg_init(mode) != 0) return 1;
-    
+    if (vg_init(mode) == NULL) return 1;
 
     struct reg86 reg86_;
     memset(&reg86_, 0, sizeof(reg86_));	/* zero the structure */
-
     reg86_.intno = 0x10;  // Call via INT 10h
     reg86_.ah = 0x4F;     // distinguishing the VBE function from standard VGA BIOS functions
     reg86_.al = 0x02;     // VBE function
     reg86_.bx = mode|(BIT(14));
-
     if(sys_int86(&reg86_) != OK ) {
         printf("vg_exit(): sys_int86() failed \n");
         return 1;
