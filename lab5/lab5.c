@@ -178,20 +178,14 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
   
   if (vg_init(INDEXED_MODE) == NULL) return 1;
 
-  uint8_t *mem = get_video_mem();
+  //uint8_t *mem = get_video_mem();
   xpm_image_t img;
 
   uint8_t *map = xpm_load(xpm, XPM_INDEXED, &img);
 
-  Sprite *s = create_sprite((char **) &map, (char *) mem + x+y*get_xres());
+  Sprite *s = create_sprite(map, x, y, 0, 0);
 
-  for (uint8_t i = 0; i < s->height; i++, y++) {
-    for (uint8_t j = 0; j < s->width; j++) {
-      draw_pixel(x, y, *(s->map + i * s->width + j));
-      x++;
-    }
-    x -= s->width;
-  }
+
 
   /*for (unsigned i = 0; i < img.height; i++) {
     for (unsigned j = 0; j < img.width; j++) {
