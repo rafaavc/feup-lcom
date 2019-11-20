@@ -14,7 +14,8 @@
 // Any header files included below this line should have been created by you
 
 extern void* video_mem;
-extern uint8_t kbd_code;
+extern uint8_t kbd_code, timer_counter;
+
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -183,8 +184,6 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 
   uint8_t *map = xpm_load(xpm, XPM_INDEXED, &img);
 
-
-
   for (unsigned i = 0; i < img.height; i++) {
     for (unsigned j = 0; j < img.width; j++) {
       draw_pixel(x+j, y+i, map[img.width*i + j]);
@@ -230,11 +229,62 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
-  /* To be completed */
-  printf("%s(%8p, %u, %u, %u, %u, %d, %u): under construction\n",
-         __func__, xpm, xi, yi, xf, yf, speed, fr_rate);
+    
+  
+  if (timer_set_frequency(0, fr_rate) != 0)
+    return 1;
 
-  return 1;
+
+  // Interrupt handling variables
+  int ipc_status;   // gets ipc_status
+  int r;   // return value of driver receive
+  message msg;
+  uint8_t irq_kbd = BIT(0); // Keyboard's IRQ
+  uint8_t irq_timer0 = BIT(1); // Timer0's IRQ
+
+
+  if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes KBD interruptions
+  if (timer_subscribe_int(& irq_timer0) != 0) return 1;  // Subscribes Timer0 interruptions
+
+
+  while (kbd_code != ESC_break)  //  Exits program when break code of escape key is read
+  {
+    kbd_code = 0;
+    if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
+    {
+      printf("driver_receive failed with: %d", r);
+      continue;
+    }
+    if (is_ipc_notify(ipc_status))
+    {
+      switch (_ENDPOINT_P(msg.m_source))
+      {
+        case HARDWARE:
+          if (msg.m_notify.interrupts & irq_kbd)   // KDB interrupt received
+          {
+            kbc_ih();
+            if (kbd_code == 0)
+              return 1;
+          }
+
+          if (msg.m_notify.interrupts & irq_timer0)   // Timer0 interrupt received
+          {
+            //timer_int_handler();
+            printf("1, ");
+
+          }
+
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+
+  if (kbd_unsubscribe_int() != 0) return 1;  // unsubscribes KBD interrupts
+  if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
+  return 0;
 }
 
 int(video_test_controller)() {
