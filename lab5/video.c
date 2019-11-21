@@ -15,11 +15,11 @@ static uint8_t red_screen_mask, blue_screen_mask, green_screen_mask;
 
 
 
-void *( vg_init)(uint16_t mode){
+void * (vg_init)(uint16_t mode){
     int r;
     vbe_mode_info_t vbe_info;
-    //if (
-        vbe_get_mode_info(mode, &vbe_info);// != 0) return 1;
+
+    if (vbe_get_mode_info(mode, &vbe_info) != 0) return NULL;
 
     struct minix_mem_range mr;
     memset(&mr, 0, sizeof(mr));	 //zero the structure 
@@ -43,16 +43,14 @@ void *( vg_init)(uint16_t mode){
         return NULL;
     }
 
-    // Map memory 
-    //if (map_memory){
+    // Map memory
+    video_mem = vm_map_phys(SELF, (void *)mr.mr_base, size);
 
-        video_mem = vm_map_phys(SELF, (void *)mr.mr_base, size);
+    if(video_mem == MAP_FAILED){
+        panic("couldn't map video memory");
+        return NULL;
+    }
 
-        if(video_mem == MAP_FAILED){
-            panic("couldn't map video memory");
-            return NULL;
-        }
-    //}
     struct reg86 reg86_;
     memset(&reg86_, 0, sizeof(reg86_));	 //zero the structure 
 
@@ -65,23 +63,6 @@ void *( vg_init)(uint16_t mode){
         return NULL;
     }
     return video_mem;
-}
-
-
-int set_vbe_mode(uint16_t mode){
-    if (vg_init(mode) == NULL) return 1;
-
-    struct reg86 reg86_;
-    memset(&reg86_, 0, sizeof(reg86_));	/* zero the structure */
-    reg86_.intno = 0x10;  // Call via INT 10h
-    reg86_.ah = 0x4F;     // distinguishing the VBE function from standard VGA BIOS functions
-    reg86_.al = 0x02;     // VBE function
-    reg86_.bx = mode|(BIT(14));
-    if(sys_int86(&reg86_) != OK ) {
-        printf("vg_exit(): sys_int86() failed \n");
-        return 1;
-    }
-    return 0;
 }
 
 void draw_pixel(uint16_t x, uint16_t y, uint32_t color){
@@ -120,6 +101,48 @@ void draw_pixmap(xpm_map_t xpm, uint16_t x, uint16_t y) {
         for (unsigned j = 0; j < img.width; j++) {
             draw_pixel(x+j, y+i, map[img.width*i + j]);
         }
+    }
+}
+
+void increment_with_speed(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf, uint16_t speed) {
+    if (*xi != xf) {
+      if (xf-*xi >= speed) {
+        *xi += speed;
+      } else if (*xi -xf >= speed){
+        *xi -= speed;
+      } else {
+        *xi = xf;
+      }
+    }
+    if (*yi != yf) {
+      if (yf-*yi >= speed) {
+        *yi += speed;
+      } else if (*yi-yf >= speed) { 
+        *yi -= speed;
+      } else {
+        *yi = yf;
+      }
+    }
+}
+
+void increment_with_one(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf) {
+    if (*xi != xf) {
+      if (xf-*xi >= 1) {
+        *xi += 1;
+      } else if (*xi -xf >= 1){
+        *xi -= 1;
+      } else {
+        *xi = xf;
+      }
+    }
+    if (*yi != yf) {
+      if (yf-*yi >= 1) {
+        *yi += 1;
+      } else if (*yi-yf >= 1) { 
+        *yi -= 1;
+      } else {
+        *yi = yf;
+      }
     }
 }
 

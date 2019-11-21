@@ -1,4 +1,3 @@
-// IMPORTANT: you must include the following line in all your C files
 #include <lcom/lcf.h>
 #include <lcom/lab5.h>
 #include <minix/driver.h>
@@ -6,12 +5,10 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "video.h"
-#include "keyboard.h"
+#include "keyboard_timer.h"
 #include "Macros.h"
 #include "utils.h"
-//#include "sprite.h"
 
-// Any header files included below this line should have been created by you
 
 extern void* video_mem;
 extern uint8_t kbd_code, timer_counter;
@@ -42,7 +39,7 @@ int main(int argc, char *argv[]) {
 }
 
 int(video_test_init)(uint16_t mode, uint8_t delay) {
-  if (set_vbe_mode(mode) != 0) return 1;
+  if (vg_init(mode) == NULL) return 1;
 
   tickdelay(micros_to_ticks(delay*1000000));
 
@@ -177,7 +174,7 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
   
-  if (set_vbe_mode(INDEXED_MODE) != 0) return 1;
+  if (vg_init(INDEXED_MODE) == NULL) return 1;
 
   draw_pixmap(xpm, x, y);
 
@@ -221,7 +218,7 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
     
-  if (set_vbe_mode(INDEXED_MODE) != 0) return 1;
+  if (vg_init(INDEXED_MODE) == NULL) return 1;
   //if (timer_set_frequency(0, fr_rate) != 0)
     //return 1;
 
@@ -236,43 +233,9 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
 
   draw_pixmap(xpm, xi, yi);
   if (speed > 0){
-    if (xi != xf) {
-      if (xf-xi >= speed) {
-        xi += speed;
-      } else if (xi -xf >= speed){
-        xi -= speed;
-      } else {
-        xi = xf;
-      }
-    }
-    if (yi != yf) {
-      if (yf-yi >= speed) {
-        yi += speed;
-      } else if (yi-yf >= speed) { 
-        yi -= speed;
-      } else {
-        yi = yf;
-      }
-    }
+    increment_with_speed(&xi, &yi, xf, yf, speed);
   } else {
-    if (xi != xf) {
-      if (xf-xi >= 1) {
-        xi += 1;
-      } else if (xi -xf >= 1){
-        xi -= 1;
-      } else {
-        xi = xf;
-      }
-    }
-    if (yi != yf) {
-      if (yf-yi >= 1) {
-        yi += 1;
-      } else if (yi-yf >= 1) { 
-        yi -= 1;
-      } else {
-        yi = yf;
-      }
-    }
+    increment_with_one(&xi, &yi, xf, yf);
   }
 
   if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes KBD interruptions
@@ -303,24 +266,7 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
             if (speed > 0){
               if (timer_counter % (sys_hz()/fr_rate) == 0){
                 draw_pixmap(xpm, xi, yi);
-                if (xi != xf) {
-                  if (xf-xi >= speed) {
-                    xi += speed;
-                  } else if (xi -xf >= speed){
-                    xi -= speed;
-                  } else {
-                    xi = xf;
-                  }
-                }
-                if (yi != yf) {
-                  if (yf-yi >= speed) {
-                    yi += speed;
-                  } else if (yi-yf >= speed) { 
-                    yi -= speed;
-                  } else {
-                    yi = yf;
-                  }
-                }
+                increment_with_speed(&xi, &yi, xf, yf, speed);
               }
             } else {
               if (timer_counter % (sys_hz()/fr_rate) == 0){
@@ -328,24 +274,7 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
               }
               if (frame_counter%(-speed) == 0){
                 draw_pixmap(xpm, xi, yi);
-                if (xi != xf) {
-                  if (xf-xi >= 1) {
-                    xi += 1;
-                  } else if (xi -xf >= 1){
-                    xi -= 1;
-                  } else {
-                    xi = xf;
-                  }
-                }
-                if (yi != yf) {
-                  if (yf-yi >= 1) {
-                    yi += 1;
-                  } else if (yi-yf >= 1) { 
-                    yi -= 1;
-                  } else {
-                    yi = yf;
-                  }
-                }
+                increment_with_one(&xi, &yi, xf, yf);
               }
             }
           }
@@ -360,19 +289,12 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
 
   if (kbd_unsubscribe_int() != 0) return 1;  // unsubscribes KBD interrupts
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
-  printf("xi(%d) == xf(%d), yi(%d) == yf(%d)\n", xi, xf, yi, yf);
+
   vg_exit();
 
   return 0;
 }
 
 int(video_test_controller)() {
-  /*
-  vbe_mode_info_t vbe_info;
-  vbe_get_mode_info(0x0, &vbe_info);
-
-  struct vg_vbe_contr_info_t info;
-
-*/
-return 1;
+  return 1;
 }
