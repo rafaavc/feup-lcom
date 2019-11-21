@@ -45,7 +45,7 @@ int(video_test_init)(uint16_t mode, uint8_t delay) {
   if (set_vbe_mode(mode) != 0) return 1;
 
   tickdelay(micros_to_ticks(delay*1000000));
-  
+
   if (vg_exit() != 0) return 1;
   return 0;
 }
@@ -177,7 +177,7 @@ int(video_test_pattern)(uint16_t mode, uint8_t no_rectangles, uint32_t first, ui
 
 int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
   
-  if (vg_init(INDEXED_MODE) == NULL) return 1;
+  if (set_vbe_mode(INDEXED_MODE) != 0) return 1;
 
   draw_pixmap(xpm, x, y);
 
@@ -221,12 +221,9 @@ int(video_test_xpm)(xpm_map_t xpm, uint16_t x, uint16_t y) {
 int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint16_t yf,
                      int16_t speed, uint8_t fr_rate) {
     
-  if (vg_init(INDEXED_MODE) == NULL) return 1;
-
-  if (fr_rate < 19 || (uint32_t) fr_rate > TIMER_FREQ) return 1;
+  if (set_vbe_mode(INDEXED_MODE) != 0) return 1;
   //if (timer_set_frequency(0, fr_rate) != 0)
     //return 1;
-
 
 
   // Interrupt handling variables
@@ -235,7 +232,48 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
   message msg;
   uint8_t irq_kbd = BIT(0); // Keyboard's IRQ
   uint8_t irq_timer0 = BIT(1); // Timer0's IRQ
+  unsigned int frame_counter = 0;
 
+  draw_pixmap(xpm, xi, yi);
+  if (speed > 0){
+    if (xi != xf) {
+      if (xf-xi >= speed) {
+        xi += speed;
+      } else if (xi -xf >= speed){
+        xi -= speed;
+      } else {
+        xi = xf;
+      }
+    }
+    if (yi != yf) {
+      if (yf-yi >= speed) {
+        yi += speed;
+      } else if (yi-yf >= speed) { 
+        yi -= speed;
+      } else {
+        yi = yf;
+      }
+    }
+  } else {
+    if (xi != xf) {
+      if (xf-xi >= 1) {
+        xi += 1;
+      } else if (xi -xf >= 1){
+        xi -= 1;
+      } else {
+        xi = xf;
+      }
+    }
+    if (yi != yf) {
+      if (yf-yi >= 1) {
+        yi += 1;
+      } else if (yi-yf >= 1) { 
+        yi -= 1;
+      } else {
+        yi = yf;
+      }
+    }
+  }
 
   if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes KBD interruptions
   if (timer_subscribe_int(& irq_timer0) != 0) return 1;  // Subscribes Timer0 interruptions
@@ -262,20 +300,51 @@ int(video_test_move)(xpm_map_t xpm, uint16_t xi, uint16_t yi, uint16_t xf, uint1
           if (msg.m_notify.interrupts & irq_timer0)   // Timer0 interrupt received
           {
             timer_int_handler();
-            if (timer_counter % (sys_hz()/fr_rate) == 0){
-              draw_pixmap(xpm, xi, yi);
-              if (xi != xf) {
-                if (xf-xi >= speed) {
-                  xi += speed;
-                } else {
-                  xi = xf;
+            if (speed > 0){
+              if (timer_counter % (sys_hz()/fr_rate) == 0){
+                draw_pixmap(xpm, xi, yi);
+                if (xi != xf) {
+                  if (xf-xi >= speed) {
+                    xi += speed;
+                  } else if (xi -xf >= speed){
+                    xi -= speed;
+                  } else {
+                    xi = xf;
+                  }
+                }
+                if (yi != yf) {
+                  if (yf-yi >= speed) {
+                    yi += speed;
+                  } else if (yi-yf >= speed) { 
+                    yi -= speed;
+                  } else {
+                    yi = yf;
+                  }
                 }
               }
-              if (yi != yf) {
-                if (yf-yi >= speed) {
-                  yi += speed;
-                } else {
-                  yi = yf;
+            } else {
+              if (timer_counter % (sys_hz()/fr_rate) == 0){
+                frame_counter++;
+              }
+              if (frame_counter%(-speed) == 0){
+                draw_pixmap(xpm, xi, yi);
+                if (xi != xf) {
+                  if (xf-xi >= 1) {
+                    xi += 1;
+                  } else if (xi -xf >= 1){
+                    xi -= 1;
+                  } else {
+                    xi = xf;
+                  }
+                }
+                if (yi != yf) {
+                  if (yf-yi >= 1) {
+                    yi += 1;
+                  } else if (yi-yf >= 1) { 
+                    yi -= 1;
+                  } else {
+                    yi = yf;
+                  }
                 }
               }
             }

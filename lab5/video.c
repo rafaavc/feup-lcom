@@ -53,7 +53,6 @@ void *( vg_init)(uint16_t mode){
             return NULL;
         }
     //}
-    printf("1\n");
     struct reg86 reg86_;
     memset(&reg86_, 0, sizeof(reg86_));	 //zero the structure 
 
