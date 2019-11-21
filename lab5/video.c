@@ -19,7 +19,7 @@ void * (vg_init)(uint16_t mode){
     int r;
     vbe_mode_info_t vbe_info;
 
-    if (vbe_get_mode_info(mode, &vbe_info) != 0) return NULL;
+    if (get_mode_info(mode, &vbe_info) != 0) return NULL;
 
     struct minix_mem_range mr;
     memset(&mr, 0, sizeof(mr));	 //zero the structure 
@@ -144,6 +144,56 @@ void increment_with_one(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf) {
         *yi = yf;
       }
     }
+}
+
+int get_mode_info(uint16_t mode, vbe_mode_info_t *vmi_p) {
+    phys_bytes buf;
+
+    struct reg86 reg86_;
+    memset(&reg86_, 0, sizeof(reg86_));
+
+    mmap_t mem;
+    lm_alloc(sizeof(vbe_mode_info_t), &mem);
+
+    buf = mem.phys;
+
+    /*
+    Visa Bios Extension Documentation
+
+    Input: AX = 4F01h Return VBE mode information
+    CX = Mode number
+    ES:DI = Pointer to ModeInfoBlock structure
+    */
+
+    reg86_.ax = 0x4F01;
+    reg86_.es = PB2BASE(buf);
+    reg86_.di = PB2OFF(buf);
+    reg86_.cx = mode;
+    reg86_.intno = 0x10;
+
+
+    /*
+    The mmap_t includes both:
+        The physical address, for use by VBE
+        The virtual address, for use in Minix 3
+
+    PB2BASE Is a macro for computing the base of a segment, a
+    16-bit value, given a 32-bit linear address;
+    PB2OFF Is a macro for computing the offset with respect to the
+    base of a segment, a 16-bit value, given a 32-bit linear address;
+    
+    */
+
+
+    if (sys_int86(&reg86_) != OK) {
+        return 1;
+    }
+
+    *vmi_p = *(vbe_mode_info_t *) (mem.virt);
+
+    lm_free(&mem);
+    
+    return 0;
 }
 
 uint16_t get_xres() {
