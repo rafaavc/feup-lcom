@@ -2,7 +2,7 @@
 static xpm_row_t M_xpm[] = {
 "52 72 2 1",
 " 	g #FF0000",
-".	g #FFFFFF",
+".	g #000000",
 "                                                    ",
 "                                                    ",
 "                                                    ",

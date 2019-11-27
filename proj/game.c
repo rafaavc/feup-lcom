@@ -98,7 +98,12 @@ int game() {
               frame_counter++;
               switch(s) {
                 case MAIN_MENU:
-                  s = GAME;
+                  draw_pixmap(get_background(), 0, 0, true);
+                  draw_string("Start Game", 10, 250, 200, 300);
+                  draw_string("Tutorial", 8, 300, 275, 200);
+                  draw_string("Quit", 4, 350, 350, 100);
+                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false);
+                  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
                   break;
                 case PAUSE:
                   break;

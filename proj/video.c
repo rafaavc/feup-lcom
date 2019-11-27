@@ -131,6 +131,7 @@ void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght
   for(int i = 0; i < ssize; i++){
     if (s[i] == ' ' && i < ssize - 1){
       i++;
+      xtmp += 35;
       if (xtmp < max_lenght_per_line - 35){
         draw_pixmap(get_letter(s[i]), xtmp, y, false);
         xtmp += 35;

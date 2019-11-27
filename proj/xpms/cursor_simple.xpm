@@ -56,7 +56,7 @@ static xpm_row_t cursor_simple_xpm[] = {
 "b c #fafafa",
 "n c #FBFBFB",
 "m c #FEFEFE",
-"M c #FFFFFF",
+"M c #000000",
 /* pixels */
 "                         ",
 "O*..                     ",
