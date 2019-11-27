@@ -45,6 +45,7 @@ int game() {
   uint8_t fr_rate = 60;
 
   unsigned int byte_counter = 0;
+  bool menu = true;
   struct packet mouse_data;
 
   load_pixmaps();
@@ -71,12 +72,11 @@ int game() {
 
   enum State s;
   s = MAIN_MENU;
-  
+  printf("1\n");
 
   while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
   {
     kbd_code = 0;    //  Resets kbd_code
-
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
     {
       printf("driver_receive failed with: %d", r);
@@ -140,11 +140,21 @@ int game() {
               parse_packet(&mouse_data);
               byte_counter = 0;
             }
+            if (menu && mouse_data.lb){
+              if (mouse_xvariance > 350 && mouse_xvariance < 550 && mouse_yvariance > 200 && mouse_yvariance < 250){
+                s = GAME;
+                menu = false;
+              } else if (mouse_xvariance > 300 && mouse_xvariance < 500 && mouse_yvariance > 275 && mouse_yvariance < 325){
+                continue;
+                //s = Tutorial;
+              } else if (mouse_xvariance > 350 && mouse_xvariance < 450 && mouse_yvariance > 350 && mouse_yvariance < 400){
+                kbd_code = ESC_break;
+              }
+            }
           }
       }
     }
   }  // end of interrupt loop
-
 
   if ((mouse_unsubscribe_int)() != 0) return 1;   // Unsubscribing mouse interruptions
   if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
