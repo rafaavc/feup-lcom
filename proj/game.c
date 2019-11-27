@@ -108,6 +108,8 @@ int game() {
                     draw_tile(tiles[i]);
                   }
                   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false);
+                  draw_pixmap(get_letter('1'), 100, 100, false);
+                  draw_string("Random try", 10, 50, 200, 200);
                   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
                   break;
                 default:

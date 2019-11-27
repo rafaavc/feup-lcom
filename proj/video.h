@@ -10,6 +10,8 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
 
 void draw_pixmap(xpm_image_t xpm, uint16_t x, uint16_t y, bool centered);
 
+void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line);
+
 void increment_with_speed(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf, uint16_t speed);
 
 void increment_with_one(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf);

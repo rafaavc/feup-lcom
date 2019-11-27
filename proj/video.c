@@ -6,6 +6,7 @@
 #include <stdio.h>
 
 #include "video.h"
+#include "xpm_includes.h"
 
 
 static void* video_mem;
@@ -122,6 +123,28 @@ void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered) {
           map += bytes_per_pixel-1;
         }
     }
+}
+
+void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line){
+  uint16_t xtmp = x;
+  max_lenght_per_line += x;
+  for(int i = 0; i < ssize; i++){
+    if (s[i] == ' ' && i < ssize - 1){
+      i++;
+      if (xtmp < max_lenght_per_line - 35){
+        draw_pixmap(get_letter(s[i]), xtmp, y, false);
+        xtmp += 35;
+      } else {
+        y += 72;
+        xtmp = x;
+        draw_pixmap(get_letter(s[i]), xtmp, y, false);
+        xtmp += 35;
+      }
+    } else {
+      draw_pixmap(get_letter(s[i]), xtmp, y, false);
+      xtmp += 35;
+    }
+  }
 }
 
 void* get_double_buffer() {
