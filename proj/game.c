@@ -72,7 +72,6 @@ int game() {
 
   enum State s;
   s = MAIN_MENU;
-  printf("1\n");
 
   while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
   {
@@ -90,7 +89,7 @@ int game() {
         case HARDWARE:
           if (msg.m_notify.interrupts & irq_kbd)
           {
-            (kbc_ih)();
+            kbc_ih();
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
@@ -155,7 +154,6 @@ int game() {
       }
     }
   }  // end of interrupt loop
-
   if ((mouse_unsubscribe_int)() != 0) return 1;   // Unsubscribing mouse interruptions
   if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts

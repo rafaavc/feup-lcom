@@ -8,7 +8,7 @@
 int hook_id_kbd = 0;
 uint8_t kbd_code;
 
-void (kbc_ih)(){
+void (kbc_ih)() {
   uint8_t status_data;
   bool error = false;
 
