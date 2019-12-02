@@ -4,6 +4,7 @@
 #include <sys/mman.h>
 #include <stdint.h>
 #include <stdio.h>
+#include "string.h"
 
 #include "video.h"
 #include "xpm_includes.h"
@@ -94,11 +95,17 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
     }
 }
 
-void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_t color1) {
+void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_t color1, char * relative_size) {
     /*if (abs(x) > xres/2 || abs(y) > yres/2) {
       printf("Error: Invalid screen position for pixmap.\n");
       return;
     }*/
+    unsigned module_size = 1;
+    if (strcmp(relative_size, "small") == 0) {
+      module_size = 2;
+    } else if (strcmp(relative_size, "smaller") == 0) {
+      module_size = 3;
+    }
 
     
     uint32_t color;
@@ -117,26 +124,38 @@ void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_
 
     //draw_rectangle(0, 0, yres, xres, 0x0);
     for (unsigned i = 0; i < img.height; i++) {
+      if (i % module_size == 0) {
         for (unsigned j = 0; j < img.width; j++) {
-          color = 0;
-          for (unsigned byte = 0; byte < bytes_per_pixel; byte++) {
-            color += map[img.width*i + j + byte] << byte * 8;
-          }
-          if (color != 0xFF0000) {
-            if (custom_color) {
-              color = color1;
+          if (j % module_size == 0) {
+            color = 0;
+            for (unsigned byte = 0; byte < bytes_per_pixel; byte++) {
+              color += map[img.width*i + j + byte] << byte * 8;
             }
-            draw_pixel(x+j, y+i, color);
-          }            
+            if (color != 0xFF0000) {
+              if (custom_color) {
+                color = color1;
+              }
+              draw_pixel(x+(j/module_size), y+(i/module_size), color);
+            }            
+          }
           map += bytes_per_pixel-1;
         }
+      } else {
+        map += (bytes_per_pixel-1) * img.width;
+      }
     }
 }
 
-void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line, uint32_t color){
+void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line, uint32_t color, char * relative_size){
   uint16_t xtmp = x;
   max_lenght_per_line += x;
   unsigned letter_width;
+  unsigned module_size = 1;
+    if (strcmp(relative_size, "small") == 0) {
+      module_size = 2;
+    } else if (strcmp(relative_size, "smaller") == 0) {
+      module_size = 3;
+    }
   for(int i = 0; i < ssize; i++){ 
     if (s[i] == 'i') {
       letter_width = 19;
@@ -188,16 +207,17 @@ void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght
       letter_width = 35;
     }
     letter_width -= 5;
+    letter_width = letter_width/module_size;
     if (s[i] == ' ' && i < ssize){
-      xtmp += 28;
+      xtmp += 28/module_size;
     } else if (i < ssize) {
       if (xtmp < max_lenght_per_line - 35){
-        draw_pixmap(get_letter(s[i]), xtmp, y, false, color);
+        draw_pixmap(get_letter(s[i]), xtmp, y, false, color, relative_size);
         xtmp += letter_width;
       } else {
         y += 72;
         xtmp = x;
-        draw_pixmap(get_letter(s[i]), xtmp, y, false, color);
+        draw_pixmap(get_letter(s[i]), xtmp, y, false, color, relative_size);
         xtmp += letter_width;
       }
     }

@@ -97,23 +97,23 @@ int game() {
               frame_counter++;
               switch(s) {
                 case MAIN_MENU:
-                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR);
-                  draw_string("Start Game", 10, 250, 200, 800, WHITE);
-                  draw_string("Tutorial", 8, 300, 275, 800, WHITE);
-                  draw_string("Quit", 4, 350, 350, 800, WHITE);
-                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR);
+                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
+                  draw_string("Start Game", 10, 250, 200, 800, WHITE, "small");
+                  draw_string("Tutorial", 8, 300, 275, 800, WHITE, "");
+                  draw_string("Quit", 4, 350, 350, 800, WHITE, "");
+                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
                   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
                   break;
                 case PAUSE:
                   break;
                 case GAME:
-                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR);
+                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
                   for (unsigned int i = 0; i < tile_no; i++) {
                     draw_tile(tiles[i]);
                   }
-                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR);
-                  draw_pixmap(get_letter('1'), 100, 100, false, PREDEF_COLOR);
-                  draw_string("Random try", 10, 50, 200, 200, PREDEF_COLOR);
+                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+                  draw_pixmap(get_letter('1'), 100, 100, false, WHITE, "");
+                  draw_string("Random try", 10, 50, 200, 200, WHITE, "");
                   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
                   break;
                 default:
