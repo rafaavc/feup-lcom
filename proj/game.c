@@ -70,7 +70,7 @@ int game() {
 
   create_board(tiles, tile_no);
 
-  enum State s;
+  enum State s; 
   s = MAIN_MENU;
 
   while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
@@ -97,23 +97,23 @@ int game() {
               frame_counter++;
               switch(s) {
                 case MAIN_MENU:
-                  draw_pixmap(get_background(), 0, 0, true);
-                  draw_string("Start Game", 10, 250, 200, 300);
-                  draw_string("Tutorial", 8, 300, 275, 200);
-                  draw_string("Quit", 4, 350, 350, 100);
-                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false);
+                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR);
+                  draw_string("Start Game", 10, 250, 200, 800, WHITE);
+                  draw_string("Tutorial", 8, 300, 275, 800, WHITE);
+                  draw_string("Quit", 4, 350, 350, 800, WHITE);
+                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR);
                   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
                   break;
                 case PAUSE:
                   break;
                 case GAME:
-                  draw_pixmap(get_background(), 0, 0, true);
+                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR);
                   for (unsigned int i = 0; i < tile_no; i++) {
                     draw_tile(tiles[i]);
                   }
-                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false);
-                  draw_pixmap(get_letter('1'), 100, 100, false);
-                  draw_string("Random try", 10, 50, 200, 200);
+                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR);
+                  draw_pixmap(get_letter('1'), 100, 100, false, PREDEF_COLOR);
+                  draw_string("Random try", 10, 50, 200, 200, PREDEF_COLOR);
                   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
                   break;
                 default:

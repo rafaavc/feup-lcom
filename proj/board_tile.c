@@ -1,6 +1,7 @@
 #include "board_tile.h"
 #include "xpm_includes.h"
 #include "video.h"
+#include "Macros.h"
 #include <lcom/lcf.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -25,7 +26,7 @@ Tile * create_tile(int x, int y) {
 }
 
 void draw_tile(Tile *t) {
-    draw_pixmap(get_block(), (uint16_t) (*t).x, (uint16_t) (*t).y, true);
+    draw_pixmap(get_block(), (uint16_t) (*t).x, (uint16_t) (*t).y, true, PREDEF_COLOR);
 }
 
 void dragging_tile(Tile *t, int xvariance, int yvariance) {

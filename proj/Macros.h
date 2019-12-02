@@ -102,5 +102,9 @@
 // Graphics
 #define INDEXED_MODE 0x105
 
+//Colors
+#define PREDEF_COLOR 0xFF0000
+#define WHITE 0xFFFFFF
+
 
 #endif /* _LCOM_I8254_H */

@@ -94,7 +94,7 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
     }
 }
 
-void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered) {
+void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_t color1) {
     /*if (abs(x) > xres/2 || abs(y) > yres/2) {
       printf("Error: Invalid screen position for pixmap.\n");
       return;
@@ -102,6 +102,10 @@ void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered) {
 
     
     uint32_t color;
+    bool custom_color = false;
+    if (color1 != 0xFF0000) {
+      custom_color = true;
+    }
 
     uint8_t bytes_per_pixel = (bits_per_pixel+7)/8;
     uint8_t *map = img.bytes;
@@ -118,32 +122,84 @@ void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered) {
           for (unsigned byte = 0; byte < bytes_per_pixel; byte++) {
             color += map[img.width*i + j + byte] << byte * 8;
           }
-          if (color != 0xFF0000)
+          if (color != 0xFF0000) {
+            if (custom_color) {
+              color = color1;
+            }
             draw_pixel(x+j, y+i, color);
+          }            
           map += bytes_per_pixel-1;
         }
     }
 }
 
-void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line){
+void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line, uint32_t color){
   uint16_t xtmp = x;
   max_lenght_per_line += x;
-  for(int i = 0; i < ssize; i++){
-    if (s[i] == ' ' && i < ssize - 1){
-      i++;
-      xtmp += 35;
+  unsigned letter_width;
+  for(int i = 0; i < ssize; i++){ 
+    if (s[i] == 'i') {
+      letter_width = 19;
+    } else if (s[i] == 'f') {
+      letter_width = 30;
+    } else if (s[i] == 'g') {
+      letter_width = 38;
+    } else if (s[i] == 'l') {
+      letter_width = 20;
+    } else if (s[i] == 'm') {
+      letter_width = 48;
+    } else if (s[i] == 't') {
+      letter_width = 30;
+    } else if (s[i] == 'v') {
+      letter_width = 32;
+    } else if (s[i] == 'w') {
+      letter_width = 48;
+    } else if (s[i] == 'B') {
+      letter_width = 38;
+    } else if (s[i] == 'D') {
+      letter_width = 40;
+    } else if (s[i] == 'G') {
+      letter_width = 38;
+    } else if (s[i] == 'H') {
+      letter_width = 38;
+    } else if (s[i] == 'K') {
+      letter_width = 38;
+    } else if (s[i] == 'M') {
+      letter_width = 45;
+    } else if (s[i] == 'O') {
+      letter_width = 41;
+    } else if (s[i] == 'Q') {
+      letter_width = 46;
+    } else if (s[i] == 'R') {
+      letter_width = 38;
+    } else if (s[i] == 'P') {
+      letter_width = 40;
+    } else if (s[i] == 'U') {
+      letter_width = 41;
+    } else if (s[i] == 'V') {
+      letter_width = 39;
+    } else if (s[i] == 'W') {
+      letter_width = 53;
+    } else if (s[i] == 'Y') {
+      letter_width = 38;
+    } else if (s[i] == 'Z') {
+      letter_width = 40;
+    } else {
+      letter_width = 35;
+    }
+    letter_width -= 5;
+    if (s[i] == ' ' && i < ssize){
+      xtmp += 28;
+    } else if (i < ssize) {
       if (xtmp < max_lenght_per_line - 35){
-        draw_pixmap(get_letter(s[i]), xtmp, y, false);
-        xtmp += 35;
+        draw_pixmap(get_letter(s[i]), xtmp, y, false, color);
+        xtmp += letter_width;
       } else {
         y += 72;
         xtmp = x;
-        draw_pixmap(get_letter(s[i]), xtmp, y, false);
-        xtmp += 35;
+        draw_pixmap(get_letter(s[i]), xtmp, y, false, color);
+        xtmp += letter_width;
       }
-    } else {
-      draw_pixmap(get_letter(s[i]), xtmp, y, false);
-      xtmp += 35;
     }
   }
 }
