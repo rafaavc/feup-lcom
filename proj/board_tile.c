@@ -26,7 +26,7 @@ Tile * create_tile(int x, int y) {
 }
 
 void draw_tile(Tile *t) {
-    draw_pixmap(get_block(), (uint16_t) (*t).x, (uint16_t) (*t).y, true, PREDEF_COLOR);
+    draw_pixmap(get_block(), (uint16_t) (*t).x, (uint16_t) (*t).y, true, PREDEF_COLOR, "");
 }
 
 void dragging_tile(Tile *t, int xvariance, int yvariance) {

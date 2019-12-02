@@ -215,7 +215,7 @@ void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght
         draw_pixmap(get_letter(s[i]), xtmp, y, false, color, relative_size);
         xtmp += letter_width;
       } else {
-        y += 72;
+        y += 72/module_size;
         xtmp = x;
         draw_pixmap(get_letter(s[i]), xtmp, y, false, color, relative_size);
         xtmp += letter_width;
