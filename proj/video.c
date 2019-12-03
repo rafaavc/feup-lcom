@@ -146,72 +146,104 @@ void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_
     }
 }
 
-void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_lenght_per_line, uint32_t color, char * relative_size){
+unsigned get_letter_width_normal(char * s) {
+  unsigned letter_width, i = 0;
+  if (s[i] == 'i') {
+    letter_width = 19;
+  } else if (s[i] == 'f') {
+    letter_width = 30;
+  } else if (s[i] == 'g') {
+    letter_width = 38;
+  } else if (s[i] == 'l') {
+    letter_width = 20;
+  } else if (s[i] == 'm') {
+    letter_width = 48;
+  } else if (s[i] == 't') {
+    letter_width = 30;
+  } else if (s[i] == 'v') {
+    letter_width = 32;
+  } else if (s[i] == 'w') {
+    letter_width = 48;
+  } else if (s[i] == 'B') {
+    letter_width = 38;
+  } else if (s[i] == 'D') {
+    letter_width = 40;
+  } else if (s[i] == 'G') {
+    letter_width = 38;
+  } else if (s[i] == 'H') {
+    letter_width = 38;
+  } else if (s[i] == 'K') {
+    letter_width = 38;
+  } else if (s[i] == 'M') {
+    letter_width = 45;
+  } else if (s[i] == 'O') {
+    letter_width = 41;
+  } else if (s[i] == 'Q') {
+    letter_width = 46;
+  } else if (s[i] == 'R') {
+    letter_width = 38;
+  } else if (s[i] == 'P') {
+    letter_width = 40;
+  } else if (s[i] == 'U') {
+    letter_width = 41;
+  } else if (s[i] == 'V') {
+    letter_width = 39;
+  } else if (s[i] == 'W') {
+    letter_width = 53;
+  } else if (s[i] == 'Y') {
+    letter_width = 38;
+  } else if (s[i] == 'Z') {
+    letter_width = 40;
+  } else {
+    letter_width = 35;
+  }
+
+  letter_width -= 5;
+  return letter_width;
+}
+
+
+unsigned get_string_width_normal(char *s, unsigned length) {
+  unsigned res = 0;
+  for (unsigned i = 0; i < length; i++) {
+    res += get_letter_width_normal(&s[i]);
+  }
+  return res;
+}
+
+void draw_string_centered(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_length_per_line, uint32_t color, char * relative_size) {
+  /*
+    This function draws the string centered with the x specified in the arguments.
+  */
+  unsigned module_size = 1;
+  if (strcmp(relative_size, "small") == 0) {
+    module_size = 2;
+  } else if (strcmp(relative_size, "smaller") == 0) {
+    module_size = 3;
+  }
+  x = x - (get_string_width_normal(s, ssize)/(module_size*2));
+  draw_string(s, ssize, x, y, max_length_per_line, color, relative_size);
+}
+
+
+void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_length_per_line, uint32_t color, char * relative_size){
   uint16_t xtmp = x;
-  max_lenght_per_line += x;
+  max_length_per_line += x;
   unsigned letter_width;
   unsigned module_size = 1;
-    if (strcmp(relative_size, "small") == 0) {
-      module_size = 2;
-    } else if (strcmp(relative_size, "smaller") == 0) {
-      module_size = 3;
-    }
+  if (strcmp(relative_size, "small") == 0) {
+    module_size = 2;
+  } else if (strcmp(relative_size, "smaller") == 0) {
+    module_size = 3;
+  }
   for(int i = 0; i < ssize; i++){ 
-    if (s[i] == 'i') {
-      letter_width = 19;
-    } else if (s[i] == 'f') {
-      letter_width = 30;
-    } else if (s[i] == 'g') {
-      letter_width = 38;
-    } else if (s[i] == 'l') {
-      letter_width = 20;
-    } else if (s[i] == 'm') {
-      letter_width = 48;
-    } else if (s[i] == 't') {
-      letter_width = 30;
-    } else if (s[i] == 'v') {
-      letter_width = 32;
-    } else if (s[i] == 'w') {
-      letter_width = 48;
-    } else if (s[i] == 'B') {
-      letter_width = 38;
-    } else if (s[i] == 'D') {
-      letter_width = 40;
-    } else if (s[i] == 'G') {
-      letter_width = 38;
-    } else if (s[i] == 'H') {
-      letter_width = 38;
-    } else if (s[i] == 'K') {
-      letter_width = 38;
-    } else if (s[i] == 'M') {
-      letter_width = 45;
-    } else if (s[i] == 'O') {
-      letter_width = 41;
-    } else if (s[i] == 'Q') {
-      letter_width = 46;
-    } else if (s[i] == 'R') {
-      letter_width = 38;
-    } else if (s[i] == 'P') {
-      letter_width = 40;
-    } else if (s[i] == 'U') {
-      letter_width = 41;
-    } else if (s[i] == 'V') {
-      letter_width = 39;
-    } else if (s[i] == 'W') {
-      letter_width = 53;
-    } else if (s[i] == 'Y') {
-      letter_width = 38;
-    } else if (s[i] == 'Z') {
-      letter_width = 40;
-    } else {
-      letter_width = 35;
-    }
-    letter_width -= 5;
+    letter_width = get_letter_width_normal(&s[i]);
     letter_width = letter_width/module_size;
+
     if (s[i] == ' ' && i < ssize){
       xtmp += 28/module_size;
     } else if (i < ssize) {
-      if (xtmp < max_lenght_per_line - 35){
+      if (xtmp < max_length_per_line - 35){
         draw_pixmap(get_letter(s[i]), xtmp, y, false, color, relative_size);
         xtmp += letter_width;
       } else {

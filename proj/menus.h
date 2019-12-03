@@ -1,1 +1,1 @@
-void draw_main_menu();
+//void draw_main_menu();

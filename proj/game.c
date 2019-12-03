@@ -26,14 +26,90 @@ extern int hook_id_mouse;
 unsigned grid_height = 23;
 unsigned grid_width = 37;
 
-void draw_game() {
-    printf("draw_game\n");
-}
+bool on = true;
 
 /*void create_game() {
     
 }
 */
+
+void draw_main_menu() {
+  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
+  draw_string("Start Game", 10, 250, 200, 800, WHITE, "");
+  draw_string("Tutorial", 8, 300, 275, 800, WHITE, "");
+  draw_string("Quit", 4, 350, 350, 800, WHITE, "");
+  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+}
+
+void draw_pause_menu() {
+  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
+  draw_string_centered("PAUSED", 6, get_xres()/2, 150, 800, WHITE, "");
+  draw_string_centered("Resume Game", 11, get_xres()/2, 280, 800, WHITE, "small");
+  draw_string_centered("Quit", 4, get_xres()/2, 330, 800, WHITE, "small");
+  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+}
+
+void handle_keyboard_events(enum State *s) {
+  switch (*s) {
+    case MAIN_MENU: case PAUSE:
+      if (kbd_code == ESC_break) {
+        on = false;
+      }
+      break;
+    case GAME:
+      if (kbd_code == ESC_break) {
+        *s = PAUSE;
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void handle_mouse_events(enum State *s, struct packet *mouse_data) {
+  switch (*s) {
+    case MAIN_MENU:
+      if (mouse_data->lb) {
+        if (mouse_xvariance > 350 && mouse_xvariance < 550 && mouse_yvariance > 200 && mouse_yvariance < 250){
+          *s = GAME;
+        } else if (mouse_xvariance > 300 && mouse_xvariance < 500 && mouse_yvariance > 275 && mouse_yvariance < 325){
+          //s = Tutorial;
+        } else if (mouse_xvariance > 350 && mouse_xvariance < 450 && mouse_yvariance > 350 && mouse_yvariance < 400){
+          on = false;
+        }
+      }
+      break;
+    case PAUSE:
+      if (mouse_data->lb) {
+        if (mouse_xvariance > 350 && mouse_xvariance < 550 && mouse_yvariance > 200 && mouse_yvariance < 250){
+          *s = GAME;
+        } else if (mouse_xvariance > 350 && mouse_xvariance < 450 && mouse_yvariance > 350 && mouse_yvariance < 400){
+          on = false;
+        }
+      }
+      break;
+    default:
+      break;
+  }
+}
+
+void update_game() {
+
+}
+
+void draw_game(Tile * tiles[], const unsigned tile_no) {
+  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
+  for (unsigned int i = 0; i < tile_no; i++) {
+    draw_tile(tiles[i]);
+  }
+  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+  draw_pixmap(get_letter('1'), 100, 100, false, WHITE, "");
+  draw_string("Random try", 10, 50, 200, 200, WHITE, "");
+  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+}
+
 int game() {
   int ipc_status;   // gets ipc_status
   int r;   // return value of driver receive
@@ -45,7 +121,6 @@ int game() {
   uint8_t fr_rate = 60;
 
   unsigned int byte_counter = 0;
-  bool menu = true;
   struct packet mouse_data;
 
   load_pixmaps();
@@ -73,7 +148,7 @@ int game() {
   enum State s; 
   s = MAIN_MENU;
 
-  while (kbd_code != ESC_break)    //   Program exits when break code of escape key is read
+  while (on)    //   Program exits when break code of escape key is read
   {
     kbd_code = 0;    //  Resets kbd_code
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
@@ -90,6 +165,7 @@ int game() {
           if (msg.m_notify.interrupts & irq_kbd)
           {
             kbc_ih();
+            handle_keyboard_events(&s);
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
@@ -97,24 +173,14 @@ int game() {
               frame_counter++;
               switch(s) {
                 case MAIN_MENU:
-                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
-                  draw_string("Start Game", 10, 250, 200, 800, WHITE, "small");
-                  draw_string("Tutorial", 8, 300, 275, 800, WHITE, "");
-                  draw_string("Quit", 4, 350, 350, 800, WHITE, "");
-                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
-                  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+                  draw_main_menu();
                   break;
                 case PAUSE:
+                  draw_pause_menu();
                   break;
                 case GAME:
-                  draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
-                  for (unsigned int i = 0; i < tile_no; i++) {
-                    draw_tile(tiles[i]);
-                  }
-                  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
-                  draw_pixmap(get_letter('1'), 100, 100, false, WHITE, "");
-                  draw_string("Random try", 10, 50, 200, 200, WHITE, "");
-                  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+                  update_game();
+                  draw_game(tiles, tile_no);
                   break;
                 default:
                   break;
@@ -137,18 +203,8 @@ int game() {
             else if (byte_counter == 2){
               mouse_data.bytes[2] = mouse_code;
               parse_packet(&mouse_data);
-              byte_counter = 0;
-            }
-            if (menu && mouse_data.lb){
-              if (mouse_xvariance > 350 && mouse_xvariance < 550 && mouse_yvariance > 200 && mouse_yvariance < 250){
-                s = GAME;
-                menu = false;
-              } else if (mouse_xvariance > 300 && mouse_xvariance < 500 && mouse_yvariance > 275 && mouse_yvariance < 325){
-                continue;
-                //s = Tutorial;
-              } else if (mouse_xvariance > 350 && mouse_xvariance < 450 && mouse_yvariance > 350 && mouse_yvariance < 400){
-                kbd_code = ESC_break;
-              }
+              byte_counter = 0;            
+              handle_mouse_events(&s, &mouse_data);
             }
           }
       }

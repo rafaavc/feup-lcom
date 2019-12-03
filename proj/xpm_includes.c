@@ -5,6 +5,7 @@
 #include <minix/driver.h>
 #include <sys/mman.h>
 #include "xpms/bg.xpm"
+#include "xpms/bg1.xpm"
 #include "xpms/block.xpm"
 #include "xpms/cursor_simple.xpm"
 #include "xpms/A.xpm"
@@ -83,6 +84,7 @@
 
 
 static xpm_image_t background;
+static xpm_image_t background1;
 static xpm_image_t block;
 static xpm_image_t mouse_simple;
 static xpm_image_t alphabet[73];
@@ -91,6 +93,7 @@ static xpm_image_t alphabet[73];
 
 void load_pixmaps() {
     xpm_load(background_xpm, XPM_8_8_8, &background);
+    xpm_load(background1_xpm, XPM_8_8_8, &background1);
     xpm_load(block_xpm, XPM_8_8_8, &block);
     xpm_load(cursor_simple_xpm, XPM_8_8_8, &mouse_simple);
 
@@ -167,10 +170,11 @@ void load_pixmaps() {
     xpm_load(and_xpm, XPM_8_8_8, &alphabet[70]);
     xpm_load(left_xpm, XPM_8_8_8, &alphabet[71]);
     xpm_load(right_xpm, XPM_8_8_8, &alphabet[72]);
-    
 }
 
-xpm_image_t get_background() { return background; }
+xpm_image_t get_background() { 
+    return background; 
+}
 
 xpm_image_t get_block() { return block; }
 
