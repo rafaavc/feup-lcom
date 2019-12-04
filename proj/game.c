@@ -15,18 +15,14 @@
 #include "game.h"
 #include "menus.h"
 
-extern uint8_t kbd_code, timer_counter;
-extern int mouse_xvariance, mouse_yvariance;
+extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[];
+extern int mouse_xvariance, mouse_yvariance, hook_id_mouse;
 
-extern uint8_t mouse_code;
-extern uint8_t bytes_read[];
-extern int hook_id_mouse;
+unsigned grid_height = 23, grid_width = 37;
 
-unsigned grid_height = 23;
-unsigned grid_width = 37;
+bool on = true, added_mouse_events_main_menu = false, added_mouse_events_pause = false, added_mouse_events_tutorial = false;
 
-bool on = true;
-bool added_mouse_events_main_menu = false, added_mouse_events_pause = false, added_mouse_events_tutorial = false;
+const unsigned triggers_mm_no = 3, triggers_p_no = 3, triggers_t_no = 1;
 
 MouseTrigger * mouse_triggers_main_menu[3];
 MouseTrigger * mouse_triggers_pause[3];
@@ -79,13 +75,14 @@ void execute_event(enum State *s) {
       current_event = NO_EVENT;
       break;
     case QUIT_GAME:
+      free_allocated_memory();
       on = false;
       break;
     case OPEN_TUTORIAL:
       *s = TUTORIAL;
       break;
     case END_GAME:
-      //clear_game();
+      clear_game();
       *s = MAIN_MENU;
       break;
     case OPEN_MAIN_MENU:
@@ -166,14 +163,14 @@ void handle_keyboard_events(enum State *s) {
 void handle_mouse_events(enum State *s, struct packet *mouse_data) {
   switch (*s) {
     case MAIN_MENU:
-      for (unsigned i = 0; i < 3; i++) {
+      for (unsigned i = 0; i < triggers_mm_no; i++) {
         if (check_mouse_overlap(mouse_triggers_main_menu[i])) {
           mt_set_mouse_over(mouse_triggers_main_menu[i]);
           break;
         }
       }
       if (mouse_data->lb) {
-        for (unsigned i = 0; i < 3; i++) {
+        for (unsigned i = 0; i < triggers_mm_no; i++) {
           if (check_mouse_overlap(mouse_triggers_main_menu[i])) {
             current_event = mt_get_event(mouse_triggers_main_menu[i]);
             break;
@@ -182,14 +179,14 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
       }
       break;
     case TUTORIAL:
-      for (unsigned i = 0; i < 1; i++) {
+      for (unsigned i = 0; i < triggers_t_no; i++) {
         if (check_mouse_overlap(mouse_triggers_tutorial[i])) {
           mt_set_mouse_over(mouse_triggers_tutorial[i]);
           break;
         }
       }
       if (mouse_data->lb) {
-        for (unsigned i = 0; i < 1; i++) {
+        for (unsigned i = 0; i < triggers_t_no; i++) {
           if (check_mouse_overlap(mouse_triggers_tutorial[i])) {
             current_event = mt_get_event(mouse_triggers_tutorial[i]);
             break;
@@ -198,14 +195,14 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
       }
       break;
     case PAUSE:
-      for (unsigned i = 0; i < 3; i++) {
+      for (unsigned i = 0; i < triggers_p_no; i++) {
         if (check_mouse_overlap(mouse_triggers_pause[i])) {
           mt_set_mouse_over(mouse_triggers_pause[i]);
           break;
         }
       }
       if (mouse_data->lb) {
-        for (unsigned i = 0; i < 3; i++) {
+        for (unsigned i = 0; i < triggers_p_no; i++) {
           if (check_mouse_overlap(mouse_triggers_pause[i])) {
             current_event = mt_get_event(mouse_triggers_pause[i]);
             break;
@@ -219,6 +216,14 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
   }
 }
 
+void free_allocated_memory() {
+
+}
+
+void clear_game() {
+
+}
+
 void update_game() {
 
 }
@@ -229,8 +234,6 @@ void draw_game(Tile * tiles[], const unsigned tile_no) {
     draw_tile(tiles[i]);
   }
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
-  draw_pixmap(get_letter('1'), 100, 100, false, color_palette[0], "");
-  draw_string("Random try", 10, 50, 200, 200, color_palette[0], "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
@@ -263,10 +266,8 @@ int game() {
 
   if (vg_init(0x115) == NULL) return 1;
 
-
-  const unsigned int tile_no = 9;
+  const unsigned tile_no = 9;
   Tile * tiles[9];
-
   create_board(tiles, tile_no);
 
   enum State s; 

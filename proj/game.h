@@ -25,6 +25,10 @@ void handle_keyboard_events(enum State *s);
 
 void handle_mouse_events(enum State *s, struct packet *mouse_data);
 
+void free_allocated_memory();
+
+void clear_game();
+
 void update_game();
 
 void draw_game(Tile * tiles[], const unsigned tile_no);
