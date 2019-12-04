@@ -1,6 +1,7 @@
 #include "board_tile.h"
 #include "mouse_trigger.h"
 #include <stdio.h>
+#include "player.h"
 
 enum State {
     MAIN_MENU,
@@ -31,7 +32,7 @@ void clear_game();
 
 void update_game();
 
-void draw_game(Tile * tiles[], const unsigned tile_no);
+void draw_game(Tile * tiles[], const unsigned tile_no, Player *ps[]);
 
 int game();
 

@@ -240,14 +240,19 @@ void update_game() {
 
 }
 
-void draw_game(Tile * tiles[], const unsigned tile_no) {
+void draw_game(Tile * tiles[], const unsigned tile_no, Player * players[]) {
   draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
   for (unsigned int i = 0; i < tile_no; i++) {
     draw_tile(tiles[i]);
   }
+  
+  draw_player(players[0]);
+  draw_player(players[1]);
+  //move(player1, 'w');
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
+
 
 int game() {
   int ipc_status;   // gets ipc_status
@@ -281,6 +286,10 @@ int game() {
   const unsigned tile_no = 9;
   Tile * tiles[9];
   create_board(tiles, tile_no);
+
+  Player * players[2];
+  players[0] = create_player(get_xres()/2 - 70, get_yres()/2 - 20, get_red_ball_animation(), 0);
+  players[1] = create_player(get_xres()/2 + 70, get_yres()/2 - 20, get_red_ball_animation(), 3);
 
   enum State s; 
   s = MAIN_MENU;
@@ -321,7 +330,7 @@ int game() {
                   break;
                 case GAME:
                   update_game();
-                  draw_game(tiles, tile_no);
+                  draw_game(tiles, tile_no, players);
                   break;
                 default:
                   break;

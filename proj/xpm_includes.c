@@ -81,6 +81,18 @@
 #include "xpms/point.xpm"
 #include "xpms/question.xpm"
 #include "xpms/quote.xpm"
+#include "xpms/rb1.xpm"
+#include "xpms/rb2.xpm"
+#include "xpms/rb3.xpm"
+#include "xpms/rb4.xpm"
+#include "xpms/rb5.xpm"
+#include "xpms/rb6.xpm"
+#include "xpms/rb7.xpm"
+#include "xpms/rb8.xpm"
+#include "xpms/rb9.xpm"
+#include "xpms/rb10.xpm"
+#include "xpms/rb11.xpm"
+#include "xpms/rb12.xpm"
 
 
 static xpm_image_t background;
@@ -88,8 +100,7 @@ static xpm_image_t background1;
 static xpm_image_t block;
 static xpm_image_t mouse_simple;
 static xpm_image_t alphabet[73];
-
-
+static xpm_image_t red_ball_animation[12];
 
 void load_pixmaps() {
     xpm_load(background_xpm, XPM_8_8_8, &background);
@@ -170,6 +181,19 @@ void load_pixmaps() {
     xpm_load(and_xpm, XPM_8_8_8, &alphabet[70]);
     xpm_load(left_xpm, XPM_8_8_8, &alphabet[71]);
     xpm_load(right_xpm, XPM_8_8_8, &alphabet[72]);
+
+    xpm_load(rb1_xpm, XPM_8_8_8, &red_ball_animation[0]);
+    xpm_load(rb2_xpm, XPM_8_8_8, &red_ball_animation[1]);
+    xpm_load(rb3_xpm, XPM_8_8_8, &red_ball_animation[2]);
+    xpm_load(rb4_xpm, XPM_8_8_8, &red_ball_animation[3]);
+    xpm_load(rb5_xpm, XPM_8_8_8, &red_ball_animation[4]);
+    xpm_load(rb6_xpm, XPM_8_8_8, &red_ball_animation[5]);
+    xpm_load(rb7_xpm, XPM_8_8_8, &red_ball_animation[6]);
+    xpm_load(rb8_xpm, XPM_8_8_8, &red_ball_animation[7]);
+    xpm_load(rb9_xpm, XPM_8_8_8, &red_ball_animation[8]);
+    xpm_load(rb10_xpm, XPM_8_8_8, &red_ball_animation[9]);
+    xpm_load(rb11_xpm, XPM_8_8_8, &red_ball_animation[10]);
+    xpm_load(rb12_xpm, XPM_8_8_8, &red_ball_animation[11]);
 }
 
 xpm_image_t get_background() { 
@@ -200,3 +224,5 @@ xpm_image_t get_letter(char c){
     else if (c == 41) return alphabet[72];
     else return alphabet[0];
 }
+
+xpm_image_t * get_red_ball_animation() { return red_ball_animation; }
