@@ -1,3 +1,5 @@
+#include "board_tile.h"
+
 enum State {
     MAIN_MENU,
     PAUSE,

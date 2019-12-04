@@ -12,9 +12,9 @@
 #include "utils.h"
 #include "xpm_includes.h"
 #include "mouse.h"
-#include "board_tile.h"
 #include "game.h"
 #include "menus.h"
+#include "mouse_trigger.h"
 
 extern uint8_t kbd_code, timer_counter;
 extern int mouse_xvariance, mouse_yvariance;
@@ -27,26 +27,106 @@ unsigned grid_height = 23;
 unsigned grid_width = 37;
 
 bool on = true;
+bool added_mouse_events_main_menu = false, added_mouse_events_pause = false;
+
+MouseTrigger * mouse_triggers_main_menu[3];
+MouseTrigger * mouse_triggers_pause[3];
+
+enum Event current_event = NO_EVENT;
+
+                    //      text    text_over   other    (Will make it easier to change all colors to dark/light theme)
+uint32_t color_palette[] = {WHITE, DIRTY_WHITE, BLACK};
 
 /*void create_game() {
     
 }
 */
 
+void execute_event(enum State *s) {
+  switch (current_event) {
+    case NO_EVENT:
+      break;
+    case START_GAME:
+      *s = GAME;
+      current_event = NO_EVENT;
+      break;
+    case QUIT_GAME:
+      on = false;
+      break;
+    case OPEN_TUTORIAL:
+      break;
+    default:
+      break;
+  }
+}
+
 void draw_main_menu() {
   draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
-  draw_string("Start Game", 10, 250, 200, 800, WHITE, "");
-  draw_string("Tutorial", 8, 300, 275, 800, WHITE, "");
-  draw_string("Quit", 4, 350, 350, 800, WHITE, "");
+
+
+/*
+
+    NEED TO MAKE FUNCTION TO DRAW STRINGS WITH EVENT LISTENING AND HOVER CAPABILITIES
+
+*/
+
+  if (added_mouse_events_main_menu && mt_get_mouse_over(mouse_triggers_main_menu[0])) {
+    draw_string_centered("Start Game", 10, get_xres()/2, 200, 800, color_palette[1], "");
+  } else {
+    draw_string_centered("Start Game", 10, get_xres()/2, 200, 800, color_palette[0], "");
+    if (!added_mouse_events_main_menu) {
+      mouse_triggers_main_menu[0] = create_mouse_trigger((get_xres()/2) - (get_string_width_normal("Start Game", 10)/2), 200, get_string_width_normal("Start Game", 10), N_LETTER_H, START_GAME);
+    }
+  }
+
+
+  if (added_mouse_events_main_menu && mt_get_mouse_over(mouse_triggers_main_menu[1])) {
+    draw_string_centered("Tutorial", 8, get_xres()/2, 275, 800, color_palette[1], "");
+  } else {
+    draw_string_centered("Tutorial", 8, get_xres()/2, 275, 800, color_palette[0], "");
+    if (!added_mouse_events_main_menu) {
+      mouse_triggers_main_menu[1] = create_mouse_trigger((get_xres()/2) - (get_string_width_normal("Tutorial", 8)/2), 275, get_string_width_normal("Tutorial", 8), N_LETTER_H, OPEN_TUTORIAL);
+    }
+  }
+
+  if (added_mouse_events_main_menu && mt_get_mouse_over(mouse_triggers_main_menu[2])) {
+    draw_string_centered("Quit", 4, get_xres()/2, 350, 800, color_palette[1], "");
+  } else {
+    draw_string_centered("Quit", 4, get_xres()/2, 350, 800, color_palette[0], "");
+    if (!added_mouse_events_main_menu) {
+      mouse_triggers_main_menu[2] = create_mouse_trigger((get_xres()/2) - (get_string_width_normal("Quit", 4)/2), 350, get_string_width_normal("Quit", 4), N_LETTER_H, QUIT_GAME);
+      added_mouse_events_main_menu = true;
+    }
+  }
+
+
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
 void draw_pause_menu() {
   draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
-  draw_string_centered("PAUSED", 6, get_xres()/2, 150, 800, WHITE, "");
-  draw_string_centered("Resume Game", 11, get_xres()/2, 280, 800, WHITE, "small");
-  draw_string_centered("Quit", 4, get_xres()/2, 330, 800, WHITE, "small");
+  draw_string_centered("PAUSED", 6, get_xres()/2, 150, 800, color_palette[0], "");
+
+
+  if (added_mouse_events_pause && mt_get_mouse_over(mouse_triggers_pause[0])) {
+    draw_string_centered("Resume Game", 11, get_xres()/2, 280, 800, color_palette[1], "small");
+  } else {
+    draw_string_centered("Resume Game", 11, get_xres()/2, 280, 800, color_palette[0], "small");
+    if (!added_mouse_events_pause) {
+      mouse_triggers_pause[0] = create_mouse_trigger((get_xres()/2) - (get_string_width_normal("Resume Game", 11)/(2*2)), 280, get_string_width_normal("Start Game", 11)/2, S_LETTER_H, START_GAME);
+    }
+  }
+
+  if (added_mouse_events_pause && mt_get_mouse_over(mouse_triggers_pause[1])) {
+    draw_string_centered("Quit", 4, get_xres()/2, 330, 800, color_palette[1], "small");
+  } else {
+    draw_string_centered("Quit", 4, get_xres()/2, 330, 800, color_palette[0], "small");
+    if (!added_mouse_events_pause) {
+      mouse_triggers_pause[1] = create_mouse_trigger((get_xres()/2) - (get_string_width_normal("Quit", 4)/(2*2)), 330, get_string_width_normal("Quit", 4)/2, S_LETTER_H, QUIT_GAME);
+      added_mouse_events_pause = true;
+    }
+  }
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
@@ -68,25 +148,39 @@ void handle_keyboard_events(enum State *s) {
   }
 }
 
+
+
 void handle_mouse_events(enum State *s, struct packet *mouse_data) {
   switch (*s) {
     case MAIN_MENU:
+      for (unsigned i = 0; i < 3; i++) {
+        if ((unsigned) mouse_xvariance > mt_get_xpos(mouse_triggers_main_menu[i]) && (unsigned) mouse_yvariance > mt_get_ypos(mouse_triggers_main_menu[i]) && (unsigned) mouse_xvariance < mt_get_endxpos(mouse_triggers_main_menu[i]) && (unsigned) mouse_yvariance < mt_get_endypos(mouse_triggers_main_menu[i])) {
+          mt_set_mouse_over(mouse_triggers_main_menu[i]);
+          break;
+        }
+      }
       if (mouse_data->lb) {
-        if (mouse_xvariance > 350 && mouse_xvariance < 550 && mouse_yvariance > 200 && mouse_yvariance < 250){
-          *s = GAME;
-        } else if (mouse_xvariance > 300 && mouse_xvariance < 500 && mouse_yvariance > 275 && mouse_yvariance < 325){
-          //s = Tutorial;
-        } else if (mouse_xvariance > 350 && mouse_xvariance < 450 && mouse_yvariance > 350 && mouse_yvariance < 400){
-          on = false;
+        for (unsigned i = 0; i < 3; i++) {
+          if ((unsigned) mouse_xvariance > mt_get_xpos(mouse_triggers_main_menu[i]) && (unsigned) mouse_yvariance > mt_get_ypos(mouse_triggers_main_menu[i]) && (unsigned) mouse_xvariance < mt_get_endxpos(mouse_triggers_main_menu[i]) && (unsigned) mouse_yvariance < mt_get_endypos(mouse_triggers_main_menu[i])) {
+            current_event = mt_get_event(mouse_triggers_main_menu[i]);
+            break;
+          }
         }
       }
       break;
     case PAUSE:
+      for (unsigned i = 0; i < 2; i++) {
+        if ((unsigned) mouse_xvariance > mt_get_xpos(mouse_triggers_pause[i]) && (unsigned) mouse_yvariance > mt_get_ypos(mouse_triggers_pause[i]) && (unsigned) mouse_xvariance < mt_get_endxpos(mouse_triggers_pause[i]) && (unsigned) mouse_yvariance < mt_get_endypos(mouse_triggers_pause[i])) {
+          mt_set_mouse_over(mouse_triggers_pause[i]);
+          break;
+        }
+      }
       if (mouse_data->lb) {
-        if (mouse_xvariance > 350 && mouse_xvariance < 550 && mouse_yvariance > 200 && mouse_yvariance < 250){
-          *s = GAME;
-        } else if (mouse_xvariance > 350 && mouse_xvariance < 450 && mouse_yvariance > 350 && mouse_yvariance < 400){
-          on = false;
+        for (unsigned i = 0; i < 2; i++) {
+          if ((unsigned) mouse_xvariance > mt_get_xpos(mouse_triggers_pause[i]) && (unsigned) mouse_yvariance > mt_get_ypos(mouse_triggers_pause[i]) && (unsigned) mouse_xvariance < mt_get_endxpos(mouse_triggers_pause[i]) && (unsigned) mouse_yvariance < mt_get_endypos(mouse_triggers_pause[i])) {
+            current_event = mt_get_event(mouse_triggers_pause[i]);
+            break;
+          }
         }
       }
       break;
@@ -105,8 +199,8 @@ void draw_game(Tile * tiles[], const unsigned tile_no) {
     draw_tile(tiles[i]);
   }
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
-  draw_pixmap(get_letter('1'), 100, 100, false, WHITE, "");
-  draw_string("Random try", 10, 50, 200, 200, WHITE, "");
+  draw_pixmap(get_letter('1'), 100, 100, false, color_palette[0], "");
+  draw_string("Random try", 10, 50, 200, 200, color_palette[0], "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
@@ -205,6 +299,7 @@ int game() {
               parse_packet(&mouse_data);
               byte_counter = 0;            
               handle_mouse_events(&s, &mouse_data);
+              execute_event(&s);
             }
           }
       }

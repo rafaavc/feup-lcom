@@ -48,30 +48,28 @@ int write_command_byte(uint8_t cmd){
 
 
 int send_command_to_mouse(uint8_t cmd){
-  uint32_t stat;                     //Variable that will contain the status register
-  uint32_t ack;                      //Variable that will contain the acknowledgement byte
+  uint8_t status_reg_content = 0, response = 0;
   do {
-    util_sys_inb(STATUS_REG, (uint8_t *)&stat); /*assuming it returns OK*/
-    //KBC_CMD_REG = Status Register - 0x64
-    if (stat & IBF) //Verify if input buffer is full
-      continue;
-    if (sys_outb(STATUS_REG, MS_WRITE_BYTE_CMD) != OK) //Write 0xD4 to kbc command register
-      return 1;
-    sys_inb(STATUS_REG, &stat); /*assuming it returns OK*/
-    //KBC_CMD_REG = Status Register - 0x64
-    if (stat & IBF) //Verify if input buffer is full
-      continue;
-    if (sys_outb(OUT_BUF, cmd) != OK) //Write mouse command to output buffer
-      return 1;
-    sys_inb(STATUS_REG, &stat); /*assuming it returns OK*/
-    //KBC_CMD_REG = Status Register - 0x64
-    if ((stat & OBF) && (stat & AUX)) { //Verify if output buffer is full and the byte received corresponds to mouse
-      if (sys_inb(OUT_BUF, &ack) != OK) //Read acknowledgement byte
-        return 1;
-      if (ack == ERROR) //If the acknowledgement byte is 0xFC, occured an error
-        return 1;
+
+    if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;
+    if ((status_reg_content & IBF) != 0) continue;
+
+    if (sys_outb(STATUS_REG, MS_WRITE_BYTE_CMD) != 0) return 1;
+
+    if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;
+    if ((status_reg_content & IBF) != 0) continue;
+
+    if (sys_outb(OUT_BUF, cmd) != 0) return 1;
+
+    if (util_sys_inb(STATUS_REG, &status_reg_content) != 0) return 1;
+    if ((status_reg_content & OBF) && (status_reg_content & AUX)) {
+
+      if (util_sys_inb(OUT_BUF, &response) != 0) return 1;
+      if (response == ERROR) return 1;
+
     }
-  } while (ack != ACK); //Continue until the acknowledgement byte is 0xFA
+
+  } while (response != ACK);
   return 0;
 }
 

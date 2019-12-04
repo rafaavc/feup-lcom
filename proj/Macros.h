@@ -102,9 +102,18 @@
 // Graphics
 #define INDEXED_MODE 0x105
 
+
+// Letters
+#define N_LETTER_H 60       /**< @brief Normal letter height */
+#define S_LETTER_H (N_LETTER_H/2)      /**< @brief Small letter height */
+#define SR_LETTER_H (N_LETTER_H/3)      /**< @brief Smaller letter height */
+
 //Colors
 #define PREDEF_COLOR 0xFF0000
 #define WHITE 0xFFFFFF
+#define DIRTY_WHITE 0xC0C0C0
+#define BLACK 0x000000
+
 
 
 #endif /* _LCOM_I8254_H */
