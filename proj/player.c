@@ -14,7 +14,7 @@
 extern unsigned grid_height;
 extern unsigned grid_width;
 
-Player * create_player(unsigned x, unsigned y, xpm_image_t * animation_idle[12]){
+Player * create_player(unsigned x, unsigned y, xpm_image_t animation_idle[12]){
     Player *p = (Player*) malloc(sizeof(*p));
     (*p).x = x;
     (*p).y = y;
@@ -44,6 +44,24 @@ void draw_player(Player *p){
   unsigned frame = next_animation_frame(p);
   (*p).x += (*p).xvel;
   (*p).y += (*p).yvel;
-  draw_pixmap(*(*p).animation_idle[frame],(*p).x,(*p).y,false,PREDEF_COLOR,"");
+  draw_pixmap((*p).animation_idle[frame],(*p).x,(*p).y,false,PREDEF_COLOR,"");
 }
 
+void move(Player *p, char direction){
+  if (direction == 'w'){
+    (*p).xvel = 3;
+    (*p).yvel = 3;
+  }
+  else if (direction == 'a'){
+    (*p).xvel = -3;
+    (*p).yvel = 3;
+  }
+  else if (direction == 's'){
+    (*p).xvel = -3;
+    (*p).yvel = -3;
+  }
+  else if (direction == 'd'){
+    (*p).xvel = 3;
+    (*p).yvel = -3;
+  }
+}
