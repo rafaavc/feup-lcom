@@ -66,7 +66,7 @@ void draw_text_button(bool *added_mouse_events, MouseTrigger * mouse_trigger[], 
   }
 }
 
-void execute_event(enum State *s) {
+void execute_event(enum State *s, Tile * tiles[], unsigned tile_no) {
   switch (current_event) {
     case NO_EVENT:
       break;
@@ -75,7 +75,7 @@ void execute_event(enum State *s) {
       current_event = NO_EVENT;
       break;
     case QUIT_GAME:
-      free_allocated_memory();
+      free_allocated_memory(tiles, tile_no);
       on = false;
       break;
     case OPEN_TUTORIAL:
@@ -216,8 +216,20 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
   }
 }
 
-void free_allocated_memory() {
-
+void free_allocated_memory(Tile * tiles[], unsigned tile_no) {
+  for (unsigned i = 0; i < triggers_mm_no; i++) {
+    free(mouse_triggers_main_menu[i]);
+  }
+  for (unsigned i = 0; i < triggers_p_no; i++) {
+    free(mouse_triggers_pause[i]);
+  }
+  for (unsigned i = 0; i < triggers_t_no; i++) {
+    free(mouse_triggers_tutorial[i]);
+  }
+  for (unsigned i = 0; i < tile_no; i++) {
+    free(tiles[i]);
+  }
+  free(get_double_buffer());
 }
 
 void clear_game() {
@@ -291,7 +303,7 @@ int game() {
           {
             kbc_ih();
             handle_keyboard_events(&s);
-            execute_event(&s);
+            execute_event(&s, tiles, tile_no);
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
@@ -334,7 +346,7 @@ int game() {
               parse_packet(&mouse_data);
               byte_counter = 0;            
               handle_mouse_events(&s, &mouse_data);
-              execute_event(&s);
+              execute_event(&s, tiles, tile_no);
             }
           }
       }
