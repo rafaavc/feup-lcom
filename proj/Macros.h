@@ -58,6 +58,10 @@
 
 
 #define ESC_break   0x81    /**< @brief ESC key BREAK CODE value  */
+#define W_break     0x91    /**< @brief w key BREAK CODE value  */
+#define A_break     0x9e    /**< @brief a key BREAK CODE value  */
+#define S_break     0x9f    /**< @brief s key BREAK CODE value  */
+#define D_break     0xa0    /**< @brief d key BREAK CODE value  */
 
 
 #define OUT_BUF 0x60        /**< @brief OUT_BUF port */
@@ -115,7 +119,10 @@
 #define BLACK 0x000000
 
 //Game
-#define BOARD_SIZE 9
+#define BOARD_SIZE 13
+
+//Debug
+//#define DEBUG
 
 
 

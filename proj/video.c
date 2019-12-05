@@ -89,6 +89,12 @@ void draw_hline(uint16_t x, uint16_t y, uint16_t width, uint32_t color) {
     }
 }
 
+void draw_vline(uint16_t x, uint16_t y, uint16_t height, uint32_t color) {
+    for (unsigned int i = 0; i < height; i++) {
+        draw_pixel(x, y + i, color);
+    }
+}
+
 void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uint32_t color) {
     for (unsigned int i = 0; i < height; i++) {
         draw_hline(x, y+i, width, color);

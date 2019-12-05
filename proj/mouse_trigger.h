@@ -5,7 +5,11 @@ enum Event {
     PAUSE_GAME,
     OPEN_TUTORIAL,
     END_GAME,
-    OPEN_MAIN_MENU
+    OPEN_MAIN_MENU,
+    PLAYER_MOVE_W,
+    PLAYER_MOVE_A,
+    PLAYER_MOVE_S,
+    PLAYER_MOVE_D
 };
 
 typedef struct {

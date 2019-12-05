@@ -1,6 +1,5 @@
 #include "player.h"
 #include "video.h"
-#include "Macros.h"
 #include <lcom/lcf.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -10,30 +9,29 @@
 
 #include <stddef.h>
 
-extern unsigned grid_height;
-extern unsigned grid_width;
+extern unsigned grid_height, grid_width, move_count;
 
-Player * create_player(unsigned x, unsigned y, xpm_image_t animation_idle[12], unsigned starting_an){
+Player * create_player(unsigned bi, unsigned bj, xpm_image_t animation_idle[12], unsigned starting_an) {
     Player *p = (Player*) malloc(sizeof(*p));
-    (*p).x = (int) x;
-    (*p).y = (int) y;
+    (*p).board_i = (int) bi;
+    (*p).board_j = (int) bj;
     (*p).counter = 0;
     (*p).animation_frame = starting_an;
-    (*p).xvel = 0;
-    (*p).yvel = 0;
+    (*p).moving = false;
+    (*p).name = "bi";
     for (int i = 0; i < 12; i++){
         (*p).animation_idle[i] = animation_idle[i];
     }
     return p;
 }
 
-int p_get_xpos(Player * p) { return (*p).x; }
+int p_get_j(Player * p) { return (*p).board_j; }
 
-int p_get_ypos(Player * p) { return (*p).y; }
+int p_get_i(Player * p) { return (*p).board_i; }
 
-int p_set_xvel(Player * p) { return (*p).xvel; }
+/*int p_set_xvel(Player * p) { return (*p).xvel; }
 
-int p_set_yvel(Player * p) { return (*p).yvel; }
+int p_set_yvel(Player * p) { return (*p).yvel; }*/
 
 unsigned next_animation_frame(Player *p) {
   (*p).animation_frame++;
@@ -48,31 +46,62 @@ void draw_player(Player *p) {
 
   if ((*p).counter % 4 == 0) // Changes frame at every 4 frames
     frame = next_animation_frame(p);
+  
+  unsigned i, j;
+  i = (*p).board_i - 2;
+  j = (*p).board_j;
 
-  if ((*p).counter % 2 == 0) {  
-    (*p).x += (*p).xvel;
-    (*p).y += (*p).yvel;
-  }
-  draw_pixmap((*p).animation_idle[frame], (*p).x - 21, (*p).y - 36, false, PREDEF_COLOR, "");
+  unsigned y = i*grid_height - ((((BOARD_SIZE - 1) * grid_height)/2));
+  unsigned x = j*grid_width - ((((BOARD_SIZE - 1) * grid_width)/2));
+
+  draw_pixmap((*p).animation_idle[frame], x, y, true, PREDEF_COLOR, "");
   (*p).counter++;
 }
 
-void move(Player *p, char direction) {
-  unsigned speed = 2;
+void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
+  //unsigned speed = 2;
   if (direction == 'w') {
-    (*p).xvel = speed + 1;
-    (*p).yvel = -speed;
+    if (board[(*p).board_i - 1][(*p).board_j + 1] != -1) {
+      player_move_w(p);
+    }
   }
   else if (direction == 'a'){
-    (*p).xvel = -speed - 1;
-    (*p).yvel = -speed;
+    if (board[(*p).board_i - 1][(*p).board_j - 1] != -1) {
+      player_move_a(p);
+    }
   }
   else if (direction == 's'){
-    (*p).xvel = -speed - 1;
-    (*p).yvel = speed;
+    if (board[(*p).board_i + 1][(*p).board_j - 1] != -1) {
+      player_move_s(p);
+    }
   }
   else if (direction == 'd'){
-    (*p).xvel = speed + 1;
-    (*p).yvel = speed;
+    if (board[(*p).board_i + 1][(*p).board_j + 1] != -1) {
+      player_move_d(p);
+    }
   }
+}
+
+void player_move_w(Player * p) {
+  (*p).board_i -= 1;
+  (*p).board_j += 1;
+  move_count++;
+}
+
+void player_move_a(Player * p) {
+  (*p).board_i -= 1;
+  (*p).board_j -= 1;
+  move_count++;
+}
+
+void player_move_s(Player * p) {
+  (*p).board_i += 1;
+  (*p).board_j -= 1;
+  move_count++;
+}
+
+void player_move_d(Player * p) {
+  (*p).board_i += 1;
+  (*p).board_j += 1;
+  move_count++;
 }
