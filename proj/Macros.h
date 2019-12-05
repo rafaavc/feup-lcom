@@ -114,6 +114,9 @@
 #define DIRTY_WHITE 0xC0C0C0
 #define BLACK 0x000000
 
+//Game
+#define BOARD_SIZE 9
+
 
 
 #endif /* _LCOM_I8254_H */

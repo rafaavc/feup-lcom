@@ -8,7 +8,6 @@
 #include "video.h"
 #include "keyboard.h"
 #include "timer.h"
-#include "Macros.h"
 #include "utils.h"
 #include "xpm_includes.h"
 #include "mouse.h"
@@ -58,7 +57,7 @@ void draw_text_button(bool *added_mouse_events, MouseTrigger * mouse_trigger[], 
   } else {
     draw_string_centered(s, ssize, x, y, max_length_per_line, color, relative_size);
     if (!(*added_mouse_events)) {
-      *mouse_trigger = create_mouse_trigger(x - (get_string_width_normal(s, ssize)/(module_size*2)), y, get_string_width_normal(s, ssize), height, event);
+      *mouse_trigger = create_mouse_trigger(x - (get_string_width_normal(s, ssize)/(module_size*2)), y, get_string_width_normal(s, ssize)/module_size, height, event);
       if (needs_to_set_added_mouse_events) {
         *added_mouse_events = true;
       }
@@ -66,7 +65,7 @@ void draw_text_button(bool *added_mouse_events, MouseTrigger * mouse_trigger[], 
   }
 }
 
-void execute_event(enum State *s, Tile * tiles[], unsigned tile_no) {
+void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * players[]) {
   switch (current_event) {
     case NO_EVENT:
       break;
@@ -75,7 +74,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no) {
       current_event = NO_EVENT;
       break;
     case QUIT_GAME:
-      free_allocated_memory(tiles, tile_no);
+      free_allocated_memory(tiles, tile_no, players);
       on = false;
       break;
     case OPEN_TUTORIAL:
@@ -216,7 +215,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
   }
 }
 
-void free_allocated_memory(Tile * tiles[], unsigned tile_no) {
+void free_allocated_memory(Tile * tiles[], unsigned tile_no, Player * players[]) {
   for (unsigned i = 0; i < triggers_mm_no; i++) {
     free(mouse_triggers_main_menu[i]);
   }
@@ -229,6 +228,9 @@ void free_allocated_memory(Tile * tiles[], unsigned tile_no) {
   for (unsigned i = 0; i < tile_no; i++) {
     free(tiles[i]);
   }
+  for (unsigned i = 0; i < 2; i++) {
+    free(players[i]);
+  }
   free(get_double_buffer());
 }
 
@@ -240,14 +242,24 @@ void update_game() {
 
 }
 
-void draw_game(Tile * tiles[], const unsigned tile_no, Player * players[]) {
+void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[]) {
   draw_pixmap(get_background(), 0, 0, true, PREDEF_COLOR, "");
-  for (unsigned int i = 0; i < tile_no; i++) {
-    draw_tile(tiles[i]);
+
+  for (unsigned i = 0; i < BOARD_SIZE; i++) {
+    for (unsigned j = 0; j < BOARD_SIZE; j++) {
+      if (board[i][j] != -1) {
+        if (!get_dragging(tiles[board[i][j]])) {
+          draw_tile(tiles[board[i][j]], grid_width*j, grid_height*i, false);
+        } else if (get_dragging(tiles[board[i][j]])) {
+          draw_tile(tiles[board[i][j]], mouse_xvariance - grid_width, mouse_yvariance - grid_height, true);
+        }
+      }
+    }
   }
   
   draw_player(players[0]);
   draw_player(players[1]);
+
   //move(player1, 'w');
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -285,7 +297,10 @@ int game() {
 
   const unsigned tile_no = 9;
   Tile * tiles[9];
-  create_board(tiles, tile_no);
+
+  int board[BOARD_SIZE][BOARD_SIZE]; // Each of the board's positions will hold either -1 or the position of the tile in the tiles array that occupies the position
+  create_tiles(tiles, tile_no);
+  create_board(board);
 
   Player * players[2];
   players[0] = create_player(get_xres()/2 - 70, get_yres()/2 - 20, get_red_ball_animation(), 0);
@@ -312,7 +327,7 @@ int game() {
           {
             kbc_ih();
             handle_keyboard_events(&s);
-            execute_event(&s, tiles, tile_no);
+            execute_event(&s, tiles, tile_no, players);
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
@@ -330,7 +345,7 @@ int game() {
                   break;
                 case GAME:
                   update_game();
-                  draw_game(tiles, tile_no, players);
+                  draw_game(board, tiles, tile_no, players);
                   break;
                 default:
                   break;
@@ -355,7 +370,7 @@ int game() {
               parse_packet(&mouse_data);
               byte_counter = 0;            
               handle_mouse_events(&s, &mouse_data);
-              execute_event(&s, tiles, tile_no);
+              execute_event(&s, tiles, tile_no, players);
             }
           }
       }

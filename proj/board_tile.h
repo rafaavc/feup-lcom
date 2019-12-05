@@ -1,19 +1,25 @@
+
+#include <lcom/lcf.h>
+#include "Macros.h"
+
 typedef struct {
-    int x, y;
+    unsigned state;
+    xpm_image_t states[3];
+    bool dragging;
 } Tile;
 
 
 
-Tile * create_tile(int x, int y);
+Tile * create_tile();
 
-void draw_tile(Tile *t);
+void draw_tile(Tile *t, unsigned x, unsigned y, bool dragging);
 
-void dragging_tile(Tile *t, int xvariance, int yvariance);
+void start_dragging_tile(Tile *t);
 
-void create_board(Tile*t[], const unsigned int n);
+void stop_dragging_tile(Tile *t);
 
-int get_xpos(Tile *t);
+void create_tiles(Tile*t[], const unsigned int n);
 
-int get_ypos(Tile *t);
+bool get_dragging(Tile *t);
 
-
+void create_board(int board[BOARD_SIZE][BOARD_SIZE]);
