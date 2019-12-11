@@ -62,6 +62,7 @@
 #define A_break     0x9e    /**< @brief a key BREAK CODE value  */
 #define S_break     0x9f    /**< @brief s key BREAK CODE value  */
 #define D_break     0xa0    /**< @brief d key BREAK CODE value  */
+#define ENTER_break 0x9c    /**< @brief ENTER key BREAK CODE value  */
 
 
 #define OUT_BUF 0x60        /**< @brief OUT_BUF port */

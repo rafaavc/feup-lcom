@@ -22,6 +22,7 @@ Player * create_player(unsigned bi, unsigned bj, xpm_image_t animation_idle[12],
     for (int i = 0; i < 12; i++){
         (*p).animation_idle[i] = animation_idle[i];
     }
+    (*p).next_x = (*p).next_y = 0;
     return p;
 }
 
@@ -54,6 +55,25 @@ void draw_player(Player *p) {
   unsigned y = i*grid_height - ((((BOARD_SIZE - 1) * grid_height)/2));
   unsigned x = j*grid_width - ((((BOARD_SIZE - 1) * grid_width)/2));
 
+  if (abs((*p).next_x) > 3){
+    x -= (*p).next_x;
+    if ((*p).next_x > 0){
+      (*p).next_x -= 3;
+    }
+    else {
+      (*p).next_x += 3;
+    }
+  }
+  if (abs((*p).next_y) > 2){
+    y -= (*p).next_y;
+    if ((*p).next_y > 0){
+      (*p).next_y -= 2;
+    }
+    else {
+      (*p).next_y += 2;
+    }
+  }
+
   draw_pixmap((*p).animation_idle[frame], x, y, true, PREDEF_COLOR, "");
   (*p).counter++;
 }
@@ -62,21 +82,29 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
   //unsigned speed = 2;
   if (direction == 'w') {
     if (board[(*p).board_i - 1][(*p).board_j + 1] != -1) {
+      (*p).next_x = 37;
+      (*p).next_y = -23;
       player_move_w(p);
     }
   }
   else if (direction == 'a'){
     if (board[(*p).board_i - 1][(*p).board_j - 1] != -1) {
+      (*p).next_x = -37;
+      (*p).next_y = -23;
       player_move_a(p);
     }
   }
   else if (direction == 's'){
     if (board[(*p).board_i + 1][(*p).board_j - 1] != -1) {
+      (*p).next_x = -37;
+      (*p).next_y = 23;
       player_move_s(p);
     }
   }
   else if (direction == 'd'){
     if (board[(*p).board_i + 1][(*p).board_j + 1] != -1) {
+      (*p).next_x = 37;
+      (*p).next_y = 23;
       player_move_d(p);
     }
   }

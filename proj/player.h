@@ -7,6 +7,7 @@ typedef struct {
     bool moving;
     xpm_image_t animation_idle[12];
     char * name;
+    int next_x, next_y; //How many pixels it's gonna move in x and y
 } Player;
 
 Player * create_player(unsigned x, unsigned y, xpm_image_t animation_idle[12], unsigned starting_an);

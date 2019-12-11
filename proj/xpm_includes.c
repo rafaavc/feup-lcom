@@ -200,6 +200,10 @@ xpm_image_t get_background() {
     return background; 
 }
 
+xpm_image_t get_background1(){
+    return background1;
+}
+
 xpm_image_t get_block() { return block; }
 
 xpm_image_t get_mouse_simple() { return mouse_simple; }

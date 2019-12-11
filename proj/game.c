@@ -181,6 +181,8 @@ void handle_keyboard_events(enum State *s) {
         current_event = PLAYER_MOVE_S;
       } else if (kbd_code == D_break) {
         current_event = PLAYER_MOVE_D;
+      } else if (kbd_code == ENTER_break && move_count == 1){
+        move_count++;
       }
       break;
     default:
