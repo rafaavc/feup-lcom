@@ -27,6 +27,8 @@ MouseTrigger * mouse_triggers_main_menu[3];
 MouseTrigger * mouse_triggers_pause[3];
 MouseTrigger * mouse_triggers_tutorial[1];
 
+unsigned error = 0, error_timer = 0;
+
 enum Event current_event = NO_EVENT;
 
                     //      text    text_over   other    (Will make it easier to change all colors to dark/light theme)
@@ -174,20 +176,12 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       if (kbd_code == ESC_break) {
         current_event = PAUSE_GAME;
       } else if (kbd_code == W_break) {
-        if (p_get_last_movement(players[current_player]) == 'w')
-          break;
         current_event = PLAYER_MOVE_W;
       } else if (kbd_code == A_break) {
-        if (p_get_last_movement(players[current_player]) == 'a')
-          break;
         current_event = PLAYER_MOVE_A;
       } else if (kbd_code == S_break) {
-        if (p_get_last_movement(players[current_player]) == 's')
-          break;
         current_event = PLAYER_MOVE_S;
       } else if (kbd_code == D_break) {
-        if (p_get_last_movement(players[current_player]) == 'd')
-          break;
         current_event = PLAYER_MOVE_D;
       } else if (kbd_code == ENTER_break && move_count == 1){
         move_count++;
@@ -281,9 +275,11 @@ void update_game(Player * players[]) {
     game_ends = true;
   } else {
     if (move_count == 2 && current_player == 0) {
+      p_set_last_movement(players[current_player],'x');
       current_player = 1;
       move_count = 0;
     } else if (move_count == 2) {
+      p_set_last_movement(players[current_player],'x');
       current_player = 0;
       move_count = 0;
     }
@@ -311,6 +307,18 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   } else {
     draw_player(players[0]);
     draw_player(players[1]);
+  }
+
+  switch(error){
+    case 1:
+      draw_string_centered("Can't return to initial position!", 33, get_xres()/2, 60, 800, color_palette[0], "small");
+      break;
+    default:
+      break;
+  }
+  if (error != 0 && error_timer == 120) {
+    error = 0;
+    error_timer = 0;
   }
   
   #ifdef DEBUG
@@ -427,6 +435,8 @@ int game() {
             timer_int_handler();
             if (timer_counter % (sys_hz()/fr_rate) == 0){
               frame_counter++;
+              if (error != 0)
+                error_timer++;
               switch(s) {
                 case MAIN_MENU:
                   draw_main_menu();

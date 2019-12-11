@@ -9,7 +9,8 @@
 
 #include <stddef.h>
 
-extern unsigned grid_height, grid_width, move_count;
+extern unsigned grid_height, grid_width, move_count, error;
+extern uint32_t color_palette[];
 
 Player * create_player(unsigned bi, unsigned bj, xpm_image_t animation_idle[12], unsigned starting_an) {
     Player *p = (Player*) malloc(sizeof(*p));
@@ -78,34 +79,56 @@ void draw_player(Player *p) {
   (*p).counter++;
 }
 
+
+
 void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
   //unsigned speed = 2;
   if (direction == 'w') {
+    if ((*p).last_movement == 's'){
+      error = 1;
+      return;
+    }
     if (board[(*p).board_i - 1][(*p).board_j + 1] != -1) {
       (*p).next_x = 37;
       (*p).next_y = -23;
       player_move_w(p);
+      (*p).last_movement = 'w';
     }
   }
   else if (direction == 'a'){
+    if ((*p).last_movement == 'd'){
+      error = 1;
+      return;
+    }
     if (board[(*p).board_i - 1][(*p).board_j - 1] != -1) {
       (*p).next_x = -37;
       (*p).next_y = -23;
       player_move_a(p);
+      (*p).last_movement = 'a';
     }
   }
   else if (direction == 's'){
+    if ((*p).last_movement == 'w'){
+      error = 1;
+      return;
+    }
     if (board[(*p).board_i + 1][(*p).board_j - 1] != -1) {
       (*p).next_x = -37;
       (*p).next_y = 23;
       player_move_s(p);
+      (*p).last_movement = 's';
     }
   }
   else if (direction == 'd'){
+    if ((*p).last_movement == 'a'){
+      error = 1;
+      return;
+    }
     if (board[(*p).board_i + 1][(*p).board_j + 1] != -1) {
       (*p).next_x = 37;
       (*p).next_y = 23;
       player_move_d(p);
+      (*p).last_movement = 'd';
     }
   }
 }

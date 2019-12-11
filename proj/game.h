@@ -23,7 +23,7 @@ void draw_tutorial();
 
 void draw_pause_menu();
 
-void handle_keyboard_events(enum State *s);
+void handle_keyboard_events(enum State *s, Player * players[]);
 
 void handle_mouse_events(enum State *s, struct packet *mouse_data);
 

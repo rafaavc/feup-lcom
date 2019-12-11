@@ -5,7 +5,6 @@
 #include "Macros.h"
 
 
-
 int timer_counter = 0;
 
 int hook_id_timer = TIMER_SEL0;
