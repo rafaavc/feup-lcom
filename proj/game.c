@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <string.h>
 #include "video.h"
 #include "keyboard.h"
 #include "timer.h"
@@ -27,7 +28,7 @@ MouseTrigger * mouse_triggers_main_menu[3];
 MouseTrigger * mouse_triggers_pause[3];
 MouseTrigger * mouse_triggers_tutorial[1];
 
-unsigned error = 0, error_timer = 0;
+unsigned error = 0, error_timer = 0, play_time = 0, timer_counter_play = 0, paused_time[2] ;
 
 enum Event current_event = NO_EVENT;
 
@@ -175,13 +176,15 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
     case GAME:
       if (kbd_code == ESC_break) {
         current_event = PAUSE_GAME;
-      } else if (kbd_code == W_break) {
+        paused_time[0] = timer_counter_play;
+        paused_time[1] = play_time;
+      } else if (kbd_code == W_break && !game_ends) {
         current_event = PLAYER_MOVE_W;
-      } else if (kbd_code == A_break) {
+      } else if (kbd_code == A_break && !game_ends) {
         current_event = PLAYER_MOVE_A;
-      } else if (kbd_code == S_break) {
+      } else if (kbd_code == S_break && !game_ends) {
         current_event = PLAYER_MOVE_S;
-      } else if (kbd_code == D_break) {
+      } else if (kbd_code == D_break && !game_ends) {
         current_event = PLAYER_MOVE_D;
       } else if (kbd_code == ENTER_break && move_count == 1){
         move_count++;
@@ -205,6 +208,8 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
         for (unsigned i = 0; i < triggers_mm_no; i++) {
           if (check_mouse_overlap(mouse_triggers_main_menu[i])) {
             current_event = mt_get_event(mouse_triggers_main_menu[i]);
+            timer_counter_play = 0;
+            play_time = 0;
             break;
           }
         }
@@ -237,6 +242,8 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data) {
         for (unsigned i = 0; i < triggers_p_no; i++) {
           if (check_mouse_overlap(mouse_triggers_pause[i])) {
             current_event = mt_get_event(mouse_triggers_pause[i]);
+            timer_counter_play = paused_time[0];
+            play_time = paused_time[1];
             break;
           }
         }
@@ -271,8 +278,15 @@ void clear_game() {
 }
 
 void update_game(Player * players[]) {
-  if ((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1]))) {
+  if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
     game_ends = true;
+  } else if (play_time == PLAY_TIME && !game_ends){
+    game_ends = true;
+    if (current_player == 0){
+      current_player = 1;
+    } else {
+      current_player = 0;
+    }
   } else {
     if (move_count == 2 && current_player == 0) {
       p_set_last_movement(players[current_player],'x');
@@ -309,13 +323,23 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     draw_player(players[1]);
   }
 
-  switch(error){
+  if (!game_ends){
+    if (play_time < PLAY_TIME){
+      char s[1];
+      sprintf(s, "%o", PLAY_TIME - play_time);
+      draw_string_centered(s, 1, get_xres()/2, 30, 800, color_palette[0], "");
+    } else {
+      draw_string_centered("0", 1, get_xres()/2, 30, 800, color_palette[0], "");
+    }
+    switch(error){
     case 1:
-      draw_string_centered("Can't return to initial position!", 33, get_xres()/2, 60, 800, color_palette[0], "small");
+      draw_string_centered("Can't return to initial position!", 33, get_xres()/2, 80, 800, color_palette[0], "small");
       break;
     default:
       break;
+    }
   }
+  
   if (error != 0 && error_timer == 120) {
     error = 0;
     error_timer = 0;
@@ -433,6 +457,9 @@ int game() {
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
+            if (timer_counter_play % sys_hz() == 0){
+              play_time++;
+            }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
               frame_counter++;
               if (error != 0)

@@ -121,6 +121,7 @@
 
 //Game
 #define BOARD_SIZE 13
+#define PLAY_TIME 9
 
 //Debug
 //#define DEBUG

@@ -11,6 +11,7 @@
 
 extern unsigned grid_height, grid_width, move_count, error;
 extern uint32_t color_palette[];
+extern unsigned play_time, timer_counter_play;
 
 Player * create_player(unsigned bi, unsigned bj, xpm_image_t animation_idle[12], unsigned starting_an) {
     Player *p = (Player*) malloc(sizeof(*p));
@@ -93,6 +94,8 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).next_y = -23;
       player_move_w(p);
       (*p).last_movement = 'w';
+      play_time = 0;
+      timer_counter_play = 0;
     }
   }
   else if (direction == 'a'){
@@ -105,6 +108,8 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).next_y = -23;
       player_move_a(p);
       (*p).last_movement = 'a';
+      play_time = 0;
+      timer_counter_play = 0;
     }
   }
   else if (direction == 's'){
@@ -117,6 +122,8 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).next_y = 23;
       player_move_s(p);
       (*p).last_movement = 's';
+      play_time = 0;
+      timer_counter_play = 0;
     }
   }
   else if (direction == 'd'){
@@ -129,6 +136,8 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).next_y = 23;
       player_move_d(p);
       (*p).last_movement = 'd';
+      play_time = 0;
+      timer_counter_play = 0;
     }
   }
 }
