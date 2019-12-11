@@ -154,7 +154,7 @@ void draw_pause_menu() {
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
-void handle_keyboard_events(enum State *s) {
+void handle_keyboard_events(enum State *s, Player * players[]) {
   switch (*s) {
     case MAIN_MENU:
       if (kbd_code == ESC_break) {
@@ -174,12 +174,20 @@ void handle_keyboard_events(enum State *s) {
       if (kbd_code == ESC_break) {
         current_event = PAUSE_GAME;
       } else if (kbd_code == W_break) {
+        if (p_get_last_movement(players[current_player]) == 'w')
+          break;
         current_event = PLAYER_MOVE_W;
       } else if (kbd_code == A_break) {
+        if (p_get_last_movement(players[current_player]) == 'a')
+          break;
         current_event = PLAYER_MOVE_A;
       } else if (kbd_code == S_break) {
+        if (p_get_last_movement(players[current_player]) == 's')
+          break;
         current_event = PLAYER_MOVE_S;
       } else if (kbd_code == D_break) {
+        if (p_get_last_movement(players[current_player]) == 'd')
+          break;
         current_event = PLAYER_MOVE_D;
       } else if (kbd_code == ENTER_break && move_count == 1){
         move_count++;
@@ -412,7 +420,7 @@ int game() {
           if (msg.m_notify.interrupts & irq_kbd)
           {
             kbc_ih();
-            handle_keyboard_events(&s);
+            handle_keyboard_events(&s, players);
             execute_event(&s, tiles, tile_no, players, board);
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received

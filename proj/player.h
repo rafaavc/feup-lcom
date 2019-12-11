@@ -8,6 +8,7 @@ typedef struct {
     xpm_image_t animation_idle[12];
     char * name;
     int next_x, next_y; //How many pixels it's gonna move in x and y
+    char last_movement;
 } Player;
 
 Player * create_player(unsigned x, unsigned y, xpm_image_t animation_idle[12], unsigned starting_an);
@@ -33,3 +34,7 @@ void player_move_a(Player * p);
 void player_move_s(Player * p);
 
 void player_move_d(Player * p);
+
+void p_set_last_movement(Player *p, char lmov);
+
+char p_get_last_movement(Player *p);

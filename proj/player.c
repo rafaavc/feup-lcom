@@ -133,3 +133,11 @@ void player_move_d(Player * p) {
   (*p).board_j += 1;
   move_count++;
 }
+
+void p_set_last_movement(Player *p, char lmov){
+  (*p).last_movement = lmov;
+}
+
+char p_get_last_movement(Player *p){
+  return(*p).last_movement;
+}
