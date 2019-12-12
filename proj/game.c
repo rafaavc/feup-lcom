@@ -326,7 +326,7 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   if (!game_ends){
     if (play_time < PLAY_TIME){
       char s[1];
-      sprintf(s, "%o", PLAY_TIME - play_time);
+      sprintf(s, "%d", PLAY_TIME - play_time);
       draw_string_centered(s, 1, get_xres()/2, 30, 800, color_palette[0], "");
     } else {
       draw_string_centered("0", 1, get_xres()/2, 30, 800, color_palette[0], "");
