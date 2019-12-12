@@ -13,3 +13,5 @@ xpm_image_t get_mouse_simple();
 xpm_image_t get_letter(char c);
 
 xpm_image_t * get_red_ball_animation();
+
+xpm_image_t * get_blue_ball_animation();

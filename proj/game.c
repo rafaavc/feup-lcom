@@ -430,7 +430,7 @@ int game() {
 
   Player * players[2];
   players[0] = create_player(6, 4, get_red_ball_animation(), 0);
-  players[1] = create_player(6, 8, get_red_ball_animation(), 3);
+  players[1] = create_player(6, 8, get_blue_ball_animation(), 3);
 
   enum State s; 
   s = MAIN_MENU;
