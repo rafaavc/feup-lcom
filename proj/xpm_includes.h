@@ -8,6 +8,8 @@ xpm_image_t get_background1();
 
 xpm_image_t get_block();
 
+xpm_image_t get_block1();
+
 xpm_image_t get_mouse_simple();
 
 xpm_image_t get_letter(char c);

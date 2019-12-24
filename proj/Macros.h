@@ -120,8 +120,9 @@
 #define BLACK 0x000000
 
 //Game
-#define BOARD_SIZE 13
-#define PLAY_TIME 9
+#define BOARD_SIZE 17
+#define PLAY_TIME 30
+#define DEFAULT_BLOCK_COORDINATE -999
 
 //Debug
 //#define DEBUG

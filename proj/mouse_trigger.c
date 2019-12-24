@@ -19,6 +19,7 @@ MouseTrigger * create_mouse_trigger(unsigned x, unsigned y, unsigned width, unsi
     (*t).height = height;
     (*t).event = event;
     (*t).mouse_over = false;
+    (*t).obj = NULL;
     return t;
 }
 
@@ -45,6 +46,14 @@ bool mt_get_mouse_over(MouseTrigger *t) {
 
 void mt_set_mouse_over(MouseTrigger *t) {
     (*t).mouse_over = true;
+}
+
+void mt_set_obj(MouseTrigger *t, void * o) {
+    (*t).obj = o;
+}
+
+void * mt_get_obj(MouseTrigger *t) {
+    return (*t).obj;
 }
 
 

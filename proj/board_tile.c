@@ -19,6 +19,7 @@ Tile * create_tile() {
     Tile *t = (Tile *) malloc(sizeof(*t));
     (*t).state = 0;
     (*t).states[0] = get_block();
+    (*t).states[1] = get_block1();
     (*t).dragging = false;
     return t;
 }
@@ -33,10 +34,22 @@ void draw_tile(Tile *t, unsigned x, unsigned y, bool dragging) {
 
 void start_dragging_tile(Tile *t) {
     (*t).dragging = true;
+    (*t).state = 0;
 }
 
-void stop_dragging_tile(Tile *t) {
+void stop_dragging_tile(Tile *t, bool changed_position) {
     (*t).dragging = false;
+    if (!changed_position) {
+        (*t).state = 1;
+    }
+}
+
+void toggle_need_to_be_moved(Tile *t) {
+    if ((*t).state == 1) {
+        (*t).state = 0;
+    } else {
+        (*t).state = 1;
+    }
 }
 
 void create_tiles(Tile*t[], const unsigned int n) {

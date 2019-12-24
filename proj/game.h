@@ -8,7 +8,9 @@ enum State {
     MAIN_MENU,
     TUTORIAL,
     PAUSE,
-    GAME
+    GAME,
+    GAME_MOVING_BLOCKS,
+    GAME_BLOCKS_MOVED
 };
 
 //Tile * create_game(const unsigned tile_no);
@@ -25,13 +27,15 @@ void draw_pause_menu();
 
 void handle_keyboard_events(enum State *s, Player * players[]);
 
-void handle_mouse_events(enum State *s, struct packet *mouse_data);
+void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]);
 
 void free_allocated_memory(Tile * tiles[], unsigned tile_no, Player * players[]);
 
 void clear_game();
 
-void update_game();
+void change_tile_position(int i, int j, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]);
+
+void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], enum State *s);
 
 void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player *ps[]);
 

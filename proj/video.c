@@ -12,6 +12,7 @@
 
 static void* video_mem;
 static void* double_buffer;
+static void* background_buffer;
 static uint8_t bits_per_pixel;
 static uint16_t xres, yres;
 static uint8_t red_screen_mask, blue_screen_mask, green_screen_mask;
@@ -48,6 +49,7 @@ void * (vg_init)(uint16_t mode){
 
     // Map memory
     double_buffer = (void *) malloc(size);
+    background_buffer = (void *) malloc(size);
     video_mem = vm_map_phys(SELF, (void *)mr.mr_base, size);
 
     if(video_mem == MAP_FAILED){
@@ -82,6 +84,20 @@ void draw_pixel(uint16_t x, uint16_t y, uint32_t color){
         memory++;
     }
 }
+
+void draw_pixel_bg_buffer(uint16_t x, uint16_t y, uint32_t color){
+    if (x >= xres || y >= yres)
+        return;
+    uint8_t *memory = background_buffer;
+    uint8_t bytes_per_pixel = (bits_per_pixel+7) / 8;
+
+    unsigned int pos = bytes_per_pixel * (xres * y + x);
+    memory += pos;
+    for (unsigned int i = 0; i < bytes_per_pixel; i++) {
+        *memory = color >> 8 * i;
+        memory++;
+    }
+}
     
 void draw_hline(uint16_t x, uint16_t y, uint16_t width, uint32_t color) {
     for (unsigned int i = 0; i < width; i++) {
@@ -102,7 +118,7 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
 }
 
 void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_t color1, char * relative_size) {
-    /*if (abs(x) > xres/2 || abs(y) > yres/2) {
+    /*if (abs(x) > xres/2 || abs(y) > yres/2) { 
       printf("Error: Invalid screen position for pixmap.\n");
       return;
     }*/
@@ -142,6 +158,57 @@ void draw_pixmap(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_
                 color = color1;
               }
               draw_pixel(x+(j/module_size), y+(i/module_size), color);
+            }            
+          }
+          map += bytes_per_pixel-1;
+        }
+      } else {
+        map += (bytes_per_pixel-1) * img.width;
+      }
+    }
+}
+
+void draw_bg_buffer(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_t color1, char * relative_size) {
+    /*if (abs(x) > xres/2 || abs(y) > yres/2) { 
+      printf("Error: Invalid screen position for pixmap.\n");
+      return;
+    }*/
+    unsigned module_size = 1;
+    if (strcmp(relative_size, "small") == 0) {
+      module_size = 2;
+    } else if (strcmp(relative_size, "smaller") == 0) {
+      module_size = 3;
+    }
+
+    
+    uint32_t color;
+    bool custom_color = false;
+    if (color1 != 0xFF0000) {
+      custom_color = true;
+    }
+
+    uint8_t bytes_per_pixel = (bits_per_pixel+7)/8;
+    uint8_t *map = img.bytes;
+    
+    if (centered) {
+      x = get_xres()/2 + x -(img.width/2);
+      y = get_yres()/2 + y -(img.height/2);
+    }
+
+    //draw_rectangle(0, 0, yres, xres, 0x0);
+    for (unsigned i = 0; i < img.height; i++) {
+      if (i % module_size == 0) {
+        for (unsigned j = 0; j < img.width; j++) {
+          if (j % module_size == 0) {
+            color = 0;
+            for (unsigned byte = 0; byte < bytes_per_pixel; byte++) {
+              color += map[img.width*i + j + byte] << byte * 8;
+            }
+            if (color != 0xFF0000) {
+              if (custom_color) {
+                color = color1;
+              }
+              draw_pixel_bg_buffer(x+(j/module_size), y+(i/module_size), color);
             }            
           }
           map += bytes_per_pixel-1;
@@ -266,6 +333,9 @@ void draw_string(char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_length
 
 void* get_double_buffer() {
   return double_buffer;
+}
+void* get_background_buffer() {
+  return background_buffer;
 }
 
 void increment_with_speed(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf, uint16_t speed) {

@@ -16,6 +16,7 @@ typedef struct {
     unsigned x, y, width, height;
     enum Event event;
     bool mouse_over;
+    void *obj;
 } MouseTrigger;
 
 
@@ -36,4 +37,8 @@ bool check_mouse_overlap(MouseTrigger *t);
 bool mt_get_mouse_over(MouseTrigger *t);
 
 void mt_set_mouse_over(MouseTrigger *t);
+
+void mt_set_obj(MouseTrigger *t, void * o);
+
+void * mt_get_obj(MouseTrigger *t);
 

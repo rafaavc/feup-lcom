@@ -14,9 +14,11 @@ Tile * create_tile();
 
 void draw_tile(Tile *t, unsigned x, unsigned y, bool dragging);
 
+void toggle_need_to_be_moved(Tile *t);
+
 void start_dragging_tile(Tile *t);
 
-void stop_dragging_tile(Tile *t);
+void stop_dragging_tile(Tile *t, bool changed_position);
 
 void create_tiles(Tile*t[], const unsigned int n);
 

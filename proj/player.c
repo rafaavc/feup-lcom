@@ -82,12 +82,12 @@ void draw_player(Player *p) {
 
 
 
-void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
+bool move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
   //unsigned speed = 2;
   if (direction == 'w') {
     if ((*p).last_movement == 's'){
       error = 1;
-      return;
+      return false;
     }
     if (board[(*p).board_i - 1][(*p).board_j + 1] != -1) {
       (*p).next_x = 37;
@@ -96,12 +96,14 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).last_movement = 'w';
       play_time = 0;
       timer_counter_play = 0;
+    } else {
+      return false;
     }
   }
   else if (direction == 'a'){
     if ((*p).last_movement == 'd'){
       error = 1;
-      return;
+      return false;
     }
     if (board[(*p).board_i - 1][(*p).board_j - 1] != -1) {
       (*p).next_x = -37;
@@ -110,12 +112,14 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).last_movement = 'a';
       play_time = 0;
       timer_counter_play = 0;
+    } else {
+      return false;
     }
   }
   else if (direction == 's'){
     if ((*p).last_movement == 'w'){
       error = 1;
-      return;
+      return false;
     }
     if (board[(*p).board_i + 1][(*p).board_j - 1] != -1) {
       (*p).next_x = -37;
@@ -124,12 +128,14 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).last_movement = 's';
       play_time = 0;
       timer_counter_play = 0;
+    } else {
+      return false;
     }
   }
   else if (direction == 'd'){
     if ((*p).last_movement == 'a'){
       error = 1;
-      return;
+      return false;
     }
     if (board[(*p).board_i + 1][(*p).board_j + 1] != -1) {
       (*p).next_x = 37;
@@ -138,8 +144,11 @@ void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
       (*p).last_movement = 'd';
       play_time = 0;
       timer_counter_play = 0;
+    } else {
+      return false;
     }
   }
+  return true;
 }
 
 void player_move_w(Player * p) {

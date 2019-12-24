@@ -25,7 +25,7 @@ unsigned next_animation_frame(Player *p);
 
 void draw_player(Player *p);
 
-void move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]);
+bool move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]); // returns true if player is able to make his move
 
 void player_move_w(Player * p);
 

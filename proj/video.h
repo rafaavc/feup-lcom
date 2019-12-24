@@ -12,6 +12,8 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
 
 void draw_pixmap(xpm_image_t xpm, uint16_t x, uint16_t y, bool centered, uint32_t color, char * s);
 
+void draw_bg_buffer(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint32_t color1, char * relative_size);
+
 unsigned get_letter_width_normal(char s);
 
 unsigned get_string_width_normal(char *s, unsigned length);
@@ -41,3 +43,5 @@ uint8_t get_blue_mask();
 void* get_video_mem();
 
 void* get_double_buffer();
+
+void* get_background_buffer();
