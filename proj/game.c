@@ -267,6 +267,7 @@ void change_tile_position(int i1, int j1, int board[BOARD_SIZE][BOARD_SIZE], Til
 }
 
 void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]) {
+  unsigned n;
   switch (*s) {
     case MAIN_MENU:
       for (unsigned i = 0; i < triggers_mm_no; i++) {
@@ -321,17 +322,11 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
       }
       break;
     case GAME_MOVING_BLOCKS:
-      for (unsigned i = 1; i < triggers_g_no; i++) {
-        if (check_mouse_overlap(mouse_triggers_game[i])) {
-          //printf("Mouse over tile");
-          break;
-        }
+      n = triggers_g_no;
+      if (only_one_move) {
+        n--;
       }
       if (mouse_data->lb) {
-        unsigned n = triggers_g_no;
-        if (only_one_move) {
-          n--;
-        }
         for (unsigned i = 1; i < n; i++) {
           if (check_mouse_overlap(mouse_triggers_game[i])) {
             if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
@@ -409,23 +404,38 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
       current_player = 0;
     }
   } else {
-    if (move_count == 2 && current_player == 0) {
+    if (move_count == 2) {
       if (*s == GAME_BLOCKS_MOVED) {
-        tile_move_count = 0;
-        only_one_move = false;
-        p_set_last_movement(players[current_player],'x');
-        current_player = 1;
-        move_count = 0;
+        p_set_last_movement(players[current_player],'x');  // resets player's last move
+
+        // toggles player
+        if (current_player == 0) {
+          current_player = 1;
+        } else {
+          current_player = 0;
+        }
+
+        tile_move_count = 0;    // resets count of tile movements
+        only_one_move = false;  // resets whether the player did only one move
+        move_count = 0;         // resets the move count
+
+        // resets the blocks to move to the predefined values
         blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
         blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
         blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
         blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+
+        // resets the mouse triggers
         free(mouse_triggers_game[1]);
         free(mouse_triggers_game[2]);
         mouse_triggers_game[1] = NULL;
         mouse_triggers_game[2] = NULL;
+
+        // evolves the state machine
         *s = GAME;
+
       } else if (*s == GAME) {
+
         // Getting the coordinates for the mouse trigger
         int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
         int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
@@ -450,47 +460,6 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
         
         *s = GAME_MOVING_BLOCKS;
       }
-    } else if (move_count == 2) {
-      if (*s == GAME_BLOCKS_MOVED) {
-        p_set_last_movement(players[current_player],'x');
-        tile_move_count = 0;
-        only_one_move = false;
-        current_player = 0;
-        move_count = 0;
-        blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
-        free(mouse_triggers_game[1]);
-        free(mouse_triggers_game[2]);
-        mouse_triggers_game[1] = NULL;
-        mouse_triggers_game[2] = NULL;
-        *s = GAME;
-      } else if (*s == GAME) {
-        // Getting the coordinates for the mouse trigger
-        int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
-        int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
-        x = get_xres()/2 + x -(grid_width/2);
-        y = get_yres()/2 + y -(grid_height/2);
-
-        mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-        mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
-        toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
-
-        if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
-          // Getting the coordinates for the mouse trigger
-          int x = blocks_to_move[1][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
-          int y = blocks_to_move[1][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
-          x = get_xres()/2 + x -(grid_width/2);
-          y = get_yres()/2 + y -(grid_height/2);
-
-          mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-          mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
-          toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
-        }
-        *s = GAME_MOVING_BLOCKS;
-      }
-
     }
   }
 }
