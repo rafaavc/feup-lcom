@@ -472,13 +472,14 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
       if (board[i][j] != -1) {
         if (!get_dragging(tiles[board[i][j]]) && tiles[board[i][j]] != t_being_dragged) {
           draw_tile(tiles[board[i][j]], grid_width*j, grid_height*i, false);
-        } 
-        else if (get_dragging(tiles[board[i][j]])) {
-          draw_tile(tiles[board[i][j]], mouse_xvariance - grid_width, mouse_yvariance - grid_height, true);
         }
       }
     }
   }
+  if (t_being_dragged != NULL) {
+    draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height, true);
+  }
+
   
   if (p_get_i(players[0]) > p_get_i(players[1])) {
     draw_player(players[1]);
