@@ -31,7 +31,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
 
 void free_allocated_memory(Tile * tiles[], unsigned tile_no, Player * players[]);
 
-void clear_game();
+void clear_game(Tile * tiles[], unsigned tile_no, Player * players[], int board[BOARD_SIZE][BOARD_SIZE]);
 
 void change_tile_position(int i, int j, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]);
 

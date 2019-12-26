@@ -91,7 +91,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       current_event = NO_EVENT;
       break;
     case END_GAME:
-      clear_game();
+      clear_game(tiles, tile_no, players, board);
       *s = MAIN_MENU;
       current_event = NO_EVENT;
       break;
@@ -247,7 +247,7 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       break;
     case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
       if (kbd_code == ESC_break) {
-        current_event = QUIT_GAME;
+        current_event = PAUSE_GAME;
       }
     default:
       break;
@@ -386,8 +386,22 @@ void free_allocated_memory(Tile * tiles[], unsigned tile_no, Player * players[])
   free(get_double_buffer());
 }
 
-void clear_game() {
+void clear_game(Tile * tiles[], unsigned tile_no, Player * players[2], int board[BOARD_SIZE][BOARD_SIZE]) {
+  create_tiles(tiles, tile_no);
+  create_board(board);
 
+  players[0] = create_player(8, 6, get_red_ball_animation(), 0);
+  players[1] = create_player(8, 10, get_blue_ball_animation(), 3);
+  current_player = 0;
+
+  only_one_move = game_ends = false;
+  tile_move_count = move_count = 0;
+  blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+  blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+  blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+  blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+  p_set_last_movement(players[0],'x');
+  p_set_last_movement(players[1],'x');
 }
 
 void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], enum State *s) {
@@ -593,19 +607,16 @@ int game() {
   Tile * tiles[9];
 
   int board[BOARD_SIZE][BOARD_SIZE]; // Each of the board's positions will hold either -1 or the position of the tile in the tiles array that occupies the position
-  create_tiles(tiles, tile_no);
-  create_board(board);
 
   #ifdef DEBUG
   print_game_board(board);
   #endif
 
   Player * players[2];
-  players[0] = create_player(8, 6, get_red_ball_animation(), 0);
-  players[1] = create_player(8, 10, get_blue_ball_animation(), 3);
 
   enum State s; 
   s = MAIN_MENU;
+  clear_game(tiles, tile_no, players, board);
 
   while (on)    //   Program exits when break code of escape key is read
   {
