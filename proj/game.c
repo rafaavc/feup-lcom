@@ -14,6 +14,7 @@
 #include "mouse.h"
 #include "game.h"
 #include "menus.h"
+#include "sp.h"
 
 extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[];
 extern int mouse_xvariance, mouse_yvariance, hook_id_mouse;
@@ -29,7 +30,9 @@ MouseTrigger * mouse_triggers_pause[3];
 MouseTrigger * mouse_triggers_tutorial[1];
 MouseTrigger * mouse_triggers_game[3] = {NULL, NULL, NULL}; // The 0 position will be the pause button, the rest the block(s) that need to be moved
 
-unsigned error = 0, error_timer = 0, play_time = 0, timer_counter_play = 0, paused_time[2];
+unsigned error = 0, error_timer = 0, play_time = 0, timer_counter_play = 0;
+unsigned paused_time[2];  // holds at 0 the seconds that the counter has before the game being paused and at 1 the timer ticks that it was at
+
 int blocks_to_move[2][2] = {{DEFAULT_BLOCK_COORDINATE, DEFAULT_BLOCK_COORDINATE}, {DEFAULT_BLOCK_COORDINATE, DEFAULT_BLOCK_COORDINATE}};  // blocks_to_move will hold the coordinates of the blocks that need to be moved ([[i, j], [i1, j1]])
 Tile * t_being_dragged = NULL;
 bool only_one_move = false; unsigned tile_move_count = 0;
@@ -577,7 +580,7 @@ int game() {
   int r;   // return value of driver receive
   message msg;
 
-  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2); // IRQ's of keyboard, timer and mouse
+  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2), irq_com1 = BIT(3); // IRQ's of keyboard, timer and mouse
   unsigned int frame_counter = 0;
 
   uint8_t fr_rate = 60;
@@ -587,16 +590,23 @@ int game() {
 
   load_pixmaps();
 
+  // Serial port
+  sp_set_conf(COM1, 8, 2, PARITY_odd, BR_1);
+  sp_print_conf(COM1);
+  sp_enable_interrupts(COM1);
+  sp_setup_fifo(COM1);
+  if (com1_subscribe_int(& irq_com1) != 0) return 1;
+
+  // Mouse
   if ((mouse_subscribe_int)(& irq_mouse) != 0) return 1;  // Subscribes mouse interruptions
-
   sys_irqdisable(&hook_id_mouse);
-
   //  ler command byte e ver se mouse está a 1 & enable stream mode
   send_command_to_mouse(ENABLE_DATA_REPORTING);
-
   sys_irqenable(&hook_id_mouse);
 
+  // Keyboard
   if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes keyboard interruptions
+  // Timer
   if (timer_subscribe_int(& irq_timer0) != 0) return 1;  // Subscribes Timer0 interruptions
 
   if (vg_init(0x115) == NULL) return 1;
@@ -637,6 +647,10 @@ int game() {
             kbc_ih();
             handle_keyboard_events(&s, players);
             execute_event(&s, tiles, tile_no, players, board);
+          }
+          if (msg.m_notify.interrupts & irq_com1) {
+            //printf("A Serial Port interrupt arrived!\n");
+            com1_ih();
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
@@ -693,6 +707,7 @@ int game() {
   if ((mouse_unsubscribe_int)() != 0) return 1;   // Unsubscribing mouse interruptions
   if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
+  if (com1_unsubscribe_int() != 0) return 1;
 
   vg_exit();
 

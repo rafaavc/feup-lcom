@@ -104,9 +104,87 @@
 #define MSB_INT16 0xFFFF      /**< @brief Largest number with 16 bits */
 
 
-// Graphics
-#define INDEXED_MODE 0x105
+/*
+---
+SERIAL PORT
+---
+*/
 
+// COM1
+#define COM1_IRQ 4
+#define COM1 0x3F8
+
+// LCR
+#define LCR_offset 3
+#define DL_bitmask BIT(7)
+#define SBE_bitmask BIT(6)
+
+// Interrupt Enable Register
+#define IER_offset 1
+#define received_data_int_enable BIT(0)
+#define transmitter_empty_int_enable BIT(0)
+#define receiver_line_status_int_enable BIT(0)
+
+// Interrupt Identification Register (with LCR DL disabled)
+#define IIR_offset 2 // only read
+#define IIR_int_status_bitmask BIT(0)
+#define IIR_int_origin_bitmask BIT(1)|BIT(2)|BIT(3)
+#define RECEIVED_DATA BIT(1)
+#define TRANSMITTER_EMPTY BIT(0) 
+#define LINE_STATUS BIT(0)|BIT(1)
+
+// FIFO Control Register
+#define FCR_offset 2 // write only
+#define ENABLE_FIFO BIT(0)
+#define FIFO_INT_TRIGGER_LVL_1 0
+#define FIFO_INT_TRIGGER_LVL_4 BIT(6)
+#define FIFO_INT_TRIGGER_LVL_8 BIT(7)
+#define FIFO_INT_TRIGGER_LVL_14 BIT(6)|BIT(7)
+#define CLEAR_RCV_FIFO BIT(1)
+#define CLEAR_TRANSMIT_FIFO BIT(2)
+
+// Divisor Latch (with LCR DL enabled)
+#define DLL_offset 0
+#define DLM_offset 1
+#define DL_divisor 115200
+
+// Bitrate
+#define BR_1 1200
+#define BR_2 2400
+#define BR_3 4800
+#define BR_4 9600
+#define BR_5 19200
+#define BR_6 38400
+#define BR_7 57600
+#define BR_8 115200
+
+// Parity
+#define PARITY_none 0x0
+#define PARITY_odd 0x1
+#define PARITY_even 0x3
+#define PARITY_1 0x5
+#define PARITY_0 0x7
+
+// Word Length
+#define WL_5 0x0
+#define WL_6 0x1
+#define WL_7 0x2
+#define WL_8 0x3
+
+/*
+---
+END serial port
+---
+*/
+
+
+/*
+---
+GRAPHICS
+---
+*/
+
+#define INDEXED_MODE 0x105
 
 // Letters
 #define N_LETTER_H 60       /**< @brief Normal letter height */
@@ -118,6 +196,12 @@
 #define WHITE 0xFFFFFF
 #define DIRTY_WHITE 0xC0C0C0
 #define BLACK 0x000000
+
+/*
+---
+END graphics
+---
+*/
 
 //Game
 #define BOARD_SIZE 17
