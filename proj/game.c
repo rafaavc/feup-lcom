@@ -42,10 +42,6 @@ enum Event current_event = NO_EVENT;
                     //      text    text_over   other    (Will make it easier to change all colors to dark/light theme)
 uint32_t color_palette[] = {WHITE, DIRTY_WHITE, BLACK};
 
-/*void create_game() {
-    
-}
-*/
 
 void draw_text_button(bool *added_mouse_events, MouseTrigger * mouse_trigger[], bool needs_to_set_added_mouse_events, enum Event event, char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_length_per_line, uint32_t color, uint32_t color_over, char * relative_size) {
   unsigned module_size = 1, height = N_LETTER_H;
@@ -580,7 +576,7 @@ int game() {
   int r;   // return value of driver receive
   message msg;
 
-  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2), irq_com1 = BIT(3); // IRQ's of keyboard, timer and mouse
+  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2), irq_com1 = 0; // IRQ's of keyboard, timer, mouse and com1
   unsigned int frame_counter = 0;
 
   uint8_t fr_rate = 60;
@@ -590,8 +586,10 @@ int game() {
 
   load_pixmaps();
 
+  /* IO Setup */
+
   // Serial port
-  sp_set_conf(COM1, 8, 2, PARITY_odd, BR_1);
+  sp_set_conf(COM1, 8, 2, PARITY_even, BR_4);
   sp_print_conf(COM1);
   sp_enable_interrupts(COM1);
   sp_setup_fifo(COM1);
@@ -606,29 +604,37 @@ int game() {
 
   // Keyboard
   if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes keyboard interruptions
+
   // Timer
   if (timer_subscribe_int(& irq_timer0) != 0) return 1;  // Subscribes Timer0 interruptions
 
+  // Video Card
   if (vg_init(0x115) == NULL) return 1;
+  
 
+  /* GAME Setup */
+
+  // Gets the background buffer ready
   draw_bg_buffer(get_background(), 0, 0, true, PREDEF_COLOR, "");
 
+  // Setting up the game
   const unsigned tile_no = 9;
   Tile * tiles[9];
 
   int board[BOARD_SIZE][BOARD_SIZE]; // Each of the board's positions will hold either -1 or the position of the tile in the tiles array that occupies the position
 
-  #ifdef DEBUG
-  print_game_board(board);
-  #endif
-
   Player * players[2];
 
+  // Initializing state machine
   enum State s; 
   s = MAIN_MENU;
+
+  // Creating a clean slate game
   clear_game(tiles, tile_no, players, board);
 
-  while (on)    //   Program exits when break code of escape key is read
+
+  /* Interrupt loop */
+  while (on)
   {
     kbd_code = 0;    //  Resets kbd_code
     if ( (r = driver_receive(ANY, &msg, &ipc_status) != 0))
@@ -649,9 +655,11 @@ int game() {
             execute_event(&s, tiles, tile_no, players, board);
           }
           if (msg.m_notify.interrupts & irq_com1) {
-            //printf("A Serial Port interrupt arrived!\n");
             com1_ih();
           }
+          /*if (msg.m_notify.interrupts & irq_com2) {
+            com2_ih();
+          }*/
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
             if (timer_counter_play % sys_hz() == 0){
@@ -704,11 +712,13 @@ int game() {
       }
     }
   }  // end of interrupt loop
+
   if ((mouse_unsubscribe_int)() != 0) return 1;   // Unsubscribing mouse interruptions
   if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
-  if (com1_unsubscribe_int() != 0) return 1;
+  if (com1_unsubscribe_int() != 0) return 1;   // unsubscribes COM1 interrupts
 
+  // Exiting video mode
   vg_exit();
 
   return 0;

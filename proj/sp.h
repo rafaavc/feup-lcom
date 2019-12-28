@@ -27,4 +27,6 @@ int sp_enable_interrupts(unsigned base);
 
 int sp_setup_fifo(unsigned base);
 
+int sp_print_lsr(unsigned base);
+
 void com1_ih();

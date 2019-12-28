@@ -119,19 +119,23 @@ SERIAL PORT
 #define DL_bitmask BIT(7)
 #define SBE_bitmask BIT(6)
 
+// LSR
+#define LSR_offset 5
+
+
 // Interrupt Enable Register
 #define IER_offset 1
 #define received_data_int_enable BIT(0)
-#define transmitter_empty_int_enable BIT(0)
-#define receiver_line_status_int_enable BIT(0)
+#define transmitter_empty_int_enable BIT(1)
+#define receiver_line_status_int_enable BIT(2)
 
 // Interrupt Identification Register (with LCR DL disabled)
 #define IIR_offset 2 // only read
 #define IIR_int_status_bitmask BIT(0)
-#define IIR_int_origin_bitmask BIT(1)|BIT(2)|BIT(3)
+#define IIR_int_origin_bitmask (BIT(1)|BIT(2)|BIT(3))
 #define RECEIVED_DATA BIT(1)
 #define TRANSMITTER_EMPTY BIT(0) 
-#define LINE_STATUS BIT(0)|BIT(1)
+#define LINE_STATUS (BIT(0)|BIT(1))
 
 // FIFO Control Register
 #define FCR_offset 2 // write only

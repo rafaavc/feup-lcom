@@ -11,7 +11,7 @@ int (com1_subscribe_int)(uint8_t *bit_no){
   hook_id_sp = (int) *bit_no; // saves bit_no value
   
   // subscribe a notification on interrupts
-  if (sys_irqsetpolicy(COM1_IRQ, IRQ_REENABLE, &hook_id_sp) != 0)
+  if (sys_irqsetpolicy(COM1_IRQ, IRQ_REENABLE|IRQ_EXCLUSIVE, &hook_id_sp) != 0)
     return 1;
   
   *bit_no = (uint8_t) BIT(*bit_no);
@@ -112,6 +112,16 @@ int sp_print_conf(unsigned base) {
   return 0;
 }
 
+int sp_print_lsr(unsigned base) {
+  uint8_t lsr;
+
+  if (util_sys_inb(base + LSR_offset, &lsr) != 0) return 1;
+
+  printf("LSR: %x\n", lsr);
+
+  return 0;
+}
+
 int sp_set_conf(unsigned base, unsigned word_length, unsigned stop_bits, unsigned parity, unsigned bitrate) {
   uint8_t lcr = 0;
 
@@ -173,13 +183,20 @@ int sp_enable_interrupts(unsigned base) {
 
   // Making sure that DLAB is at 0
   if (util_sys_inb(base + LCR_offset, &lcr) != 0) return 1;
-  lcr &= ~DL_bitmask;
-  if (sys_outb(base + LCR_offset, lcr) != 0) return 1;
+  if (lcr & DL_bitmask) {
+    printf("DLAB wasn't 0\n");
+    lcr &= ~DL_bitmask;
+    if (sys_outb(base + LCR_offset, lcr) != 0) return 1;
+  }
 
 
-  if (util_sys_inb(base + IER_offset, &interrupt_enable_register) != 0) return 1;
+  if (util_sys_inb(base + 1, &interrupt_enable_register) != 0) return 1;
+  
+  printf("IER: 0x%x\n", interrupt_enable_register);
 
-  interrupt_enable_register |= received_data_int_enable | transmitter_empty_int_enable | receiver_line_status_int_enable;
+  interrupt_enable_register = received_data_int_enable | transmitter_empty_int_enable | receiver_line_status_int_enable;
+
+  printf("IER: 0x%x\n", interrupt_enable_register);
 
   if (sys_outb(base + IER_offset, interrupt_enable_register) != 0) return 1;
 
@@ -189,7 +206,7 @@ int sp_enable_interrupts(unsigned base) {
 int sp_setup_fifo(unsigned base) {
   uint8_t fifo_control_register;
 
-  fifo_control_register = ENABLE_FIFO | FIFO_INT_TRIGGER_LVL_1;
+  fifo_control_register = ENABLE_FIFO | FIFO_INT_TRIGGER_LVL_1 | CLEAR_RCV_FIFO | CLEAR_TRANSMIT_FIFO;
   
   if (sys_outb(base + FCR_offset, fifo_control_register) != 0) return 0; 
 
@@ -201,8 +218,8 @@ void com1_ih() {
 
   util_sys_inb(COM1 + IIR_offset, &iir);
 
-  if( iir & IIR_int_status_bitmask ) {
-    switch( (iir & IIR_int_origin_bitmask) >> 1 ) {
+  if(! (iir & IIR_int_status_bitmask) ) {
+    switch( (iir & (IIR_int_origin_bitmask)) >> 1 ) {
       case RECEIVED_DATA:
         printf("COM1: Received data\n");
         break; /* read received character */
