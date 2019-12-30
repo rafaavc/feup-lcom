@@ -9,6 +9,9 @@ enum State {
     TUTORIAL,
     PAUSE,
     GAME,
+    CHOOSING_MODE,
+    CHOOSING_HOST,
+    WAITING_FOR_CONNECTION,
     GAME_MOVING_BLOCKS,
     GAME_BLOCKS_MOVED
 };
@@ -24,6 +27,10 @@ void draw_main_menu();
 void draw_tutorial();
 
 void draw_pause_menu();
+
+void draw_choosing_mode_menu();
+
+void draw_player1_prompt();
 
 void handle_keyboard_events(enum State *s, Player * players[]);
 

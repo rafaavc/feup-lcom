@@ -20,7 +20,7 @@ Player * create_player(unsigned bi, unsigned bj, xpm_image_t animation_idle[12],
     (*p).counter = 0;
     (*p).animation_frame = starting_an;
     (*p).moving = false;
-    (*p).name = "bi";
+    (*p).name = "";
     for (int i = 0; i < 12; i++){
         (*p).animation_idle[i] = animation_idle[i];
     }
@@ -31,6 +31,10 @@ Player * create_player(unsigned bi, unsigned bj, xpm_image_t animation_idle[12],
 int p_get_j(Player * p) { return (*p).board_j; }
 
 int p_get_i(Player * p) { return (*p).board_i; }
+
+void p_set_name(Player * p, char * name) {
+  (*p).name = name;
+}
 
 /*int p_set_xvel(Player * p) { return (*p).xvel; }
 

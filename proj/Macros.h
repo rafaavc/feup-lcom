@@ -58,6 +58,8 @@
 
 
 #define ESC_break   0x81    /**< @brief ESC key BREAK CODE value  */
+#define K1_break    0x82    /**< @brief 1 key BREAK CODE value  */
+#define K2_break    0x83    /**< @brief 2 key BREAK CODE value  */
 #define W_break     0x91    /**< @brief w key BREAK CODE value  */
 #define A_break     0x9e    /**< @brief a key BREAK CODE value  */
 #define S_break     0x9f    /**< @brief s key BREAK CODE value  */
@@ -114,6 +116,10 @@ SERIAL PORT
 #define COM1_IRQ 4
 #define COM1 0x3F8
 
+// COM2
+#define COM2_IRQ 3
+#define COM2 0x2F8
+
 // LCR
 #define LCR_offset 3
 #define DL_bitmask BIT(7)
@@ -135,7 +141,7 @@ SERIAL PORT
 #define IIR_int_origin_bitmask (BIT(1)|BIT(2)|BIT(3))
 #define RECEIVED_DATA BIT(1)
 #define TRANSMITTER_EMPTY BIT(0) 
-#define LINE_STATUS (BIT(0)|BIT(1))
+#define LINE_STATUS (BIT(0) | BIT(1))
 
 // FIFO Control Register
 #define FCR_offset 2 // write only

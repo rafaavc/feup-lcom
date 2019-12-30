@@ -17,6 +17,8 @@ int p_get_j(Player * p);
 
 int p_get_i(Player * p);
 
+void p_set_name(Player * p, char * name);
+
 int p_set_xvel(Player * p);
 
 int p_set_yvel(Player * p);

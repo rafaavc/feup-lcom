@@ -5,13 +5,15 @@
 #include "Macros.h"
 #include "utils.h"
 
-int hook_id_sp = 0;
+int hook_id_com1 = 0, hook_id_com2 = 0;
+extern bool host, host_has_been_set, sp_on, connected;
+extern uint8_t irq_com1, irq_com2;
 
 int (com1_subscribe_int)(uint8_t *bit_no){
-  hook_id_sp = (int) *bit_no; // saves bit_no value
+  hook_id_com1 = (int) *bit_no; // saves bit_no value
   
   // subscribe a notification on interrupts
-  if (sys_irqsetpolicy(COM1_IRQ, IRQ_REENABLE|IRQ_EXCLUSIVE, &hook_id_sp) != 0)
+  if (sys_irqsetpolicy(COM1_IRQ, IRQ_REENABLE|IRQ_EXCLUSIVE, &hook_id_com1) != 0)
     return 1;
   
   *bit_no = (uint8_t) BIT(*bit_no);
@@ -21,7 +23,27 @@ int (com1_subscribe_int)(uint8_t *bit_no){
 
 int (com1_unsubscribe_int)() {
   // removes notification subscriptions on interrupts
-  if (sys_irqrmpolicy(&hook_id_sp) != 0)
+  if (sys_irqrmpolicy(&hook_id_com1) != 0)
+    return 1;
+
+  return 0;
+}
+
+int (com2_subscribe_int)(uint8_t *bit_no){
+  hook_id_com2 = (int) *bit_no; // saves bit_no value
+  
+  // subscribe a notification on interrupts
+  if (sys_irqsetpolicy(COM2_IRQ, IRQ_REENABLE|IRQ_EXCLUSIVE, &hook_id_com2) != 0)
+    return 1;
+  
+  *bit_no = (uint8_t) BIT(*bit_no);
+
+  return 0;
+}
+
+int (com2_unsubscribe_int)() {
+  // removes notification subscriptions on interrupts
+  if (sys_irqrmpolicy(&hook_id_com2) != 0)
     return 1;
 
   return 0;
@@ -178,7 +200,7 @@ int sp_set_conf(unsigned base, unsigned word_length, unsigned stop_bits, unsigne
   return 0;
 }
 
-int sp_enable_interrupts(unsigned base) {
+int sp_enable_interrupts(unsigned base, bool host) {
   uint8_t interrupt_enable_register = 0, lcr = 0;
 
   // Making sure that DLAB is at 0
@@ -194,7 +216,19 @@ int sp_enable_interrupts(unsigned base) {
   
   printf("IER: 0x%x\n", interrupt_enable_register);
 
-  interrupt_enable_register = received_data_int_enable | transmitter_empty_int_enable | receiver_line_status_int_enable;
+  if (base == COM1) {
+    if (host) {
+      interrupt_enable_register = transmitter_empty_int_enable | receiver_line_status_int_enable;
+    } else {
+      interrupt_enable_register = received_data_int_enable | receiver_line_status_int_enable;
+    }
+  } else {
+    if (host) {
+      interrupt_enable_register = received_data_int_enable | receiver_line_status_int_enable;
+    } else {
+      interrupt_enable_register = transmitter_empty_int_enable | receiver_line_status_int_enable;
+    }
+  }
 
   printf("IER: 0x%x\n", interrupt_enable_register);
 
@@ -213,24 +247,103 @@ int sp_setup_fifo(unsigned base) {
   return 0;
 }
 
-void com1_ih() {
-  uint8_t iir;
+void sp_send_character(char c, bool reverse) {
+  if (reverse) {
+    if (host) {
+      sys_outb(COM2, c);
+      //printf("sent %c to COM2\n", c);
+    } else {
+      sys_outb(COM1, c);
+      //printf("sent %c to COM1\n", c);
+    }
+    return;
+  }
+  // This is what will happen in most cases: 
+  if (host) {
+    sys_outb(COM1, c);
+    //printf("sent %c to COM1\n", c);
+  } else {
+    sys_outb(COM2, c);
+    //printf("sent %c to COM2\n", c);
+  }
+}
 
-  util_sys_inb(COM1 + IIR_offset, &iir);
+void sp_init() {
+  sp_set_conf(COM1, 8, 2, PARITY_even, BR_4);
+  sp_set_conf(COM2, 8, 2, PARITY_even, BR_4);
+  sp_print_conf(COM1);
+  sp_print_conf(COM2);
+
+  sp_on = true;
+  com1_subscribe_int(&irq_com1);
+  com2_subscribe_int(&irq_com2);
+
+  printf("COM1");
+  sp_enable_interrupts(COM1, host);
+  sp_setup_fifo(COM1);
+
+  printf("COM1");
+  sp_enable_interrupts(COM2, host);
+  sp_setup_fifo(COM2);
+}
+
+void sp_terminate() {
+  com1_unsubscribe_int();   // unsubscribes COM1 interrupts
+  com2_unsubscribe_int();
+  sp_on = false;
+}
+
+int count = 3;
+
+void sp_ih(unsigned com, unsigned com_no) {
+  uint8_t iir;
+  uint8_t c;
+
+  util_sys_inb(com + IIR_offset, &iir);
 
   if(! (iir & IIR_int_status_bitmask) ) {
     switch( (iir & (IIR_int_origin_bitmask)) >> 1 ) {
       case RECEIVED_DATA:
-        printf("COM1: Received data\n");
-        break; /* read received character */
+        util_sys_inb(com, &c);
+        if (!connected) {
+          // This is the syncing process
+          if (c == 'a') {
+            //printf("Received an 'a'\n");
+            sp_send_character('b', false);
+            connected = true;
+          } else if (c == 'b') {
+            //printf("Received a 'b'\n");
+            connected = true;
+          } else {
+            printf("\n-- COM%d: Received data - %c\n", com_no, c);
+          }
+        } else {
+          printf("\n-- COM%d: Received data - %c\n", com_no, c);
+        }
+
+        // This line makes sure we receive the next received data interrupt
+        sp_send_character('b', true);
+        break;
       case TRANSMITTER_EMPTY:
-        printf("COM1: Transmitter empty\n");
-        break; /* put character to sent */
+        printf("\n-- COM%d: Transmitter empty\n", com_no);
+        /*if (count > 0) {
+          sp_send_character('a', false);
+          count--;
+        }*//* else {
+          count--;
+        }
+        if (count == -1) {
+          sp_send_character('b', true);
+          count --;
+        }*/
+        break;
       case LINE_STATUS:
-        printf("COM1: Line status\n");
-        break; /* notify upper level */
+        printf("COM%d: Line status interrupt. ", com_no);
+        sp_print_lsr(com);
+        break;
       default:
-        printf("COM1 IH: Received an interrupt I can't handle :(\n");
+        printf("COM%d IH: Received an interrupt I can't handle :(\nIIR: 0x%x, ", com_no, iir);
+        sp_print_lsr(com);
         break;
     }
   }

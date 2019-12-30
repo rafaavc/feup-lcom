@@ -1,6 +1,9 @@
 enum Event {
     NO_EVENT,
-    START_GAME,
+    START_CHOOSING_MODE,
+    START_GAME_SP,
+    START_GAME_NO_SP,
+    CONNECT_SP,
     QUIT_GAME,
     PAUSE_GAME,
     OPEN_TUTORIAL,
