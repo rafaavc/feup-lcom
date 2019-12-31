@@ -465,7 +465,7 @@ void sp_ih(unsigned com, unsigned com_no) {
         //printf("\n-- COM%d: Transmitter empty\n", com_no);
         if ((host && (com == COM1)) || (!host && (com == COM2))) {
           if (connected) {
-            if (charqueue_front(transmission_queue) != 0) {
+            if (!charqueue_empty(transmission_queue) != 0) {
               //printf("Sending %c\n", charqueue_front(transmission_queue));
               sp_send_character(charqueue_pop(transmission_queue), false); // pops the character from the queue and sends it
             }
