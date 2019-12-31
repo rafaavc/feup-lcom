@@ -367,6 +367,18 @@ void sp_terminate() {
   sp_on = false;
 }
 
+void start_transmission(char c) {
+  unsigned com;
+  if (host) com = COM1;
+  else com = COM2;
+  while (true) {
+    if ((sp_get_lsr(com) & BIT(5)) != 0) {  // Checking if the transmitter is ready
+      sp_send_character(c, false);  // indicates that the info being received belongs to a string
+      break;
+    }
+  }
+}
+
 void transmit_mouse_bytes() {
 
 }
@@ -386,29 +398,27 @@ void transmit_player_data() {
 
 
 void transmit_string(char * str, unsigned str_len) {
-  //charqueue_push(transmission_queue, 'S');  // start character
-
   for (unsigned i = 0; i < str_len; i++) {
     charqueue_push(transmission_queue, str[i]);
   }
+  charqueue_push(transmission_queue, '\0');  // end character
 
-  charqueue_push(transmission_queue, 'f');  // end character
-
-  sp_send_character('S', false);  // indicates that the info being received belongs to a string
+  start_transmission('S');
 }
 
 void retrieve_info_from_queue() {
   if (charqueue_front(reception_queue) == 'S') {  // Receiving a string
     charqueue_pop(reception_queue);
+
     char str[charqueue_size(reception_queue)];
     unsigned i = 0;
+
     while (!charqueue_empty(reception_queue)) {
       str[i] = charqueue_pop(reception_queue);
       i++;
     }
-    str[i] = '\0';
     printf("Received string: %s\n", str);
-  } else if (charqueue_front(reception_queue) == 'M') {
+  } else if (charqueue_front(reception_queue) == 'M') {  // Receiving a mouse packet
 
   }
 }
@@ -439,7 +449,8 @@ void sp_ih(unsigned com, unsigned com_no) {
             }
           } else {
             //printf("\n-- COM%d: Received data - %c\n", com_no, c);
-            if (c == 'f') {  // 'f' is the char that represents that a piece of information has been fully received
+            if (c == '\0') {  // 'f' is the char that represents that a piece of information has been fully received
+              charqueue_push(reception_queue, c);
               retrieve_info_from_queue();
             } else {
               charqueue_push(reception_queue, c);

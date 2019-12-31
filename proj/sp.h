@@ -52,6 +52,8 @@ void sp_terminate();
 
 void sp_send_character(char c, bool reverse);
 
+void start_transmission(char c);
+
 void transmit_string(char * str, unsigned str_len);
 
 void retrieve_info_from_queue();
