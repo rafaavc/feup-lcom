@@ -140,6 +140,7 @@ SERIAL PORT
 #define IIR_int_status_bitmask BIT(0)
 #define IIR_int_origin_bitmask (BIT(1)|BIT(2)|BIT(3))
 #define RECEIVED_DATA BIT(1)
+#define RECEIVED_DATA_1 (BIT(2)|BIT(1)) // From extensive testing we realised that received data could be either 010 or 110
 #define TRANSMITTER_EMPTY BIT(0) 
 #define LINE_STATUS (BIT(0) | BIT(1))
 

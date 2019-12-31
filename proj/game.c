@@ -102,7 +102,6 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
     case CONNECT_SP:
       sp_init();
       sp_send_character('a', false);
-      sp_send_character('b', true);
       *s = WAITING_FOR_CONNECTION;
       current_event = NO_EVENT;
       //sp_sync();
@@ -349,8 +348,6 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       break;
     case WAITING_FOR_CONNECTION:
       if (kbd_code == ESC_break) {
-        sp_terminate();
-        multi_computer = false;
         current_event = END_GAME;
       } 
       break;
@@ -360,6 +357,7 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
         paused_time[0] = timer_counter_play;
         paused_time[1] = play_time;
       } else if (kbd_code == W_break && !game_ends) {
+        transmit_string("Hey", 3);
         current_event = PLAYER_MOVE_W;
       } else if (kbd_code == A_break && !game_ends) {
         current_event = PLAYER_MOVE_A;
@@ -621,6 +619,80 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
   }
 }
 
+void update_game_mp(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], enum State *s) {
+  if ((only_one_move && tile_move_count == 1) || tile_move_count == 2) {
+    *s = GAME_BLOCKS_MOVED;
+  }
+  if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
+    game_ends = true;
+  } else if (play_time == PLAY_TIME && !game_ends){
+    game_ends = true;
+    if (current_player == 0){
+      current_player = 1;
+    } else {
+      current_player = 0;
+    }
+  } else {
+    if (move_count == 2) {
+      if (*s == GAME_BLOCKS_MOVED) {
+        p_set_last_movement(players[current_player],'x');  // resets player's last move
+
+        // toggles player
+        if (current_player == 0) {
+          current_player = 1;
+        } else {
+          current_player = 0;
+        }
+
+        tile_move_count = 0;    // resets count of tile movements
+        only_one_move = false;  // resets whether the player did only one move
+        move_count = 0;         // resets the move count
+
+        // resets the blocks to move to the predefined values
+        blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+        blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+        blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+        blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+
+        // resets the mouse triggers
+        free(mouse_triggers_game[1]);
+        free(mouse_triggers_game[2]);
+        mouse_triggers_game[1] = NULL;
+        mouse_triggers_game[2] = NULL;
+
+        // evolves the state machine
+        *s = GAME;
+
+      } else if (*s == GAME) {
+
+        // Getting the coordinates for the mouse trigger
+        int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
+        int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
+        x = get_xres()/2 + x -(grid_width/2);
+        y = get_yres()/2 + y -(grid_height/2);
+
+        mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+        mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+        toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+
+        if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
+          // Getting the coordinates for the mouse trigger
+          int x = blocks_to_move[1][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
+          int y = blocks_to_move[1][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
+          x = get_xres()/2 + x -(grid_width/2);
+          y = get_yres()/2 + y -(grid_height/2);
+
+          mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+          mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+          toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+        }
+        
+        *s = GAME_MOVING_BLOCKS;
+      }
+    }
+  }
+}
+
 void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[]) {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
@@ -792,14 +864,14 @@ int game() {
           }
           if (sp_on) {
             if (msg.m_notify.interrupts & irq_com1) {
-              if (multi_computer || !multi_computer) {
+              if (multi_computer) {
                 sp_ih(COM1, 1);
               } else {
                 printf("Serial Port (COM1) interrupt, but not in 'multi computer mode'.\n");
               }
             }
             if (msg.m_notify.interrupts & irq_com2) {
-              if (multi_computer || !multi_computer) {
+              if (multi_computer) {
                 sp_ih(COM2, 2);
               } else {
                 printf("Serial Port (COM2) interrupt, but not in 'multi computer mode'.\n");
@@ -810,15 +882,6 @@ int game() {
             timer_int_handler();
             if (timer_counter_play % sys_hz() == 0){
               play_time++;
-              /*if (play_time == 3) {
-                if (!host_has_been_set) {
-                  printf("PLAY TIME == 3, SENDING 'a' CHARACTER\n");
-                  sys_outb(COM1, 'a');
-                } else {
-                  printf("PLAY TIME == 3, BUST HOST IS SET\n");
-                }
-
-              }*/
             }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
               frame_counter++;
@@ -843,13 +906,17 @@ int game() {
                 case WAITING_FOR_CONNECTION:
                   draw_waiting_for_connection();
                   if (connected) {
-                    printf("Connection successful");
+                    printf("Connection successful\n");
                     s = GAME;
                     play_time = 0;
                   }
                   break;
                 case GAME: case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
-                  update_game(players, board, tiles, &s);
+                  if (multi_computer) {
+                    update_game_mp(players, board, tiles, &s);
+                  } else {
+                    update_game(players, board, tiles, &s);
+                  }
                   draw_game(board, tiles, tile_no, players);
                   break;
                 default:

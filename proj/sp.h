@@ -44,10 +44,16 @@ int sp_setup_fifo(unsigned base);
 
 int sp_print_lsr(unsigned base);
 
+uint8_t sp_get_lsr(unsigned base);
+
 void sp_init();
 
 void sp_terminate();
 
 void sp_send_character(char c, bool reverse);
+
+void transmit_string(char * str, unsigned str_len);
+
+void retrieve_info_from_queue();
 
 void sp_ih(unsigned mode, unsigned com_no);
