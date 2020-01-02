@@ -24,8 +24,8 @@ Tile * create_tile() {
     return t;
 }
 
-void draw_tile(Tile *t, unsigned x, unsigned y, bool dragging) {
-    if (!dragging) {
+void draw_tile(Tile *t, unsigned x, unsigned y) {
+    if (!(*t).dragging) {
         draw_pixmap((*t).states[(*t).state], (uint16_t) x - (((BOARD_SIZE - 1) * grid_width) / 2), (uint16_t) y - (((BOARD_SIZE - 1) * grid_height) / 2), true, PREDEF_COLOR, "");
     } else {
         draw_pixmap((*t).states[(*t).state], (uint16_t) x, (uint16_t) y, false, PREDEF_COLOR, "");

@@ -36,9 +36,6 @@ void p_set_name(Player * p, char * name) {
   (*p).name = name;
 }
 
-/*int p_set_xvel(Player * p) { return (*p).xvel; }
-
-int p_set_yvel(Player * p) { return (*p).yvel; }*/
 
 unsigned next_animation_frame(Player *p) {
   (*p).animation_frame++;

@@ -4,7 +4,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-
+/**
+ * @brief keyboard interrupts handler
+ * 
+ * Reads keyboard data and saves it to kbd_code
+ */
 void (kbc_ih)();
 
 

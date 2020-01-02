@@ -91,6 +91,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       break;
     case START_GAME_NO_SP:
       *s = GAME;
+      play_time = 0, timer_counter_play = 0;
       current_event = NO_EVENT;
       multi_computer = false;
       break;
@@ -269,7 +270,7 @@ void draw_choosing_host_menu() {
 
   draw_string_centered("Type 1 or 2.", 12, get_xres()/2, 300, 800, color_palette[0], "small");
   
-  draw_string_centered("IMPORTANT! You need to make sure you opponent chooses a different player.", 73, get_xres()/2, 350, 800, color_palette[0], "smaller");
+  draw_string_centered("IMPORTANT! You need to make sure your opponent chooses a different player.", 74, get_xres()/2, 350, 800, color_palette[0], "smaller");
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -357,7 +358,6 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
         paused_time[0] = timer_counter_play;
         paused_time[1] = play_time;
       } else if (kbd_code == W_break && !game_ends) {
-        transmit_string("Hey", 3);
         current_event = PLAYER_MOVE_W;
       } else if (kbd_code == A_break && !game_ends) {
         current_event = PLAYER_MOVE_A;
@@ -373,6 +373,8 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
     case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
       if (kbd_code == ESC_break) {
         current_event = PAUSE_GAME;
+        paused_time[0] = timer_counter_play;
+        paused_time[1] = play_time;
       }
     default:
       break;
@@ -553,6 +555,10 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
     game_ends = true;
   } else if (play_time == PLAY_TIME && !game_ends){
     game_ends = true;
+    blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+    blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+    blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+    blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
     if (current_player == 0){
       current_player = 1;
     } else {
@@ -632,7 +638,7 @@ void update_game_mp(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile 
     } else {
       current_player = 0;
     }
-  } else {
+  } else if (!game_ends) {
     if (move_count == 2) {
       if (*s == GAME_BLOCKS_MOVED) {
         p_set_last_movement(players[current_player],'x');  // resets player's last move
@@ -700,19 +706,21 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     for (unsigned j = 0; j < BOARD_SIZE; j++) {
       if (board[i][j] != -1) {
         if (!get_dragging(tiles[board[i][j]]) && tiles[board[i][j]] != t_being_dragged) {
-          draw_tile(tiles[board[i][j]], grid_width*j, grid_height*i, false);
+          draw_tile(tiles[board[i][j]], grid_width*j, grid_height*i);
         }
       }
     }
   }
   if (t_being_dragged != NULL) {
-    draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height, true);
+    draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height);
   }
 
   
   if (p_get_i(players[0]) > p_get_i(players[1])) {
     draw_player(players[1]);
     draw_player(players[0]);
+  } else if (game_ends && (p_get_i(players[0]) == p_get_i(players[1]))){
+    draw_player(players[current_player]);
   } else {
     draw_player(players[0]);
     draw_player(players[1]);
@@ -887,6 +895,7 @@ int game() {
               frame_counter++;
               if (error != 0)
                 error_timer++;
+              draw_grid();
               switch(s) {
                 case MAIN_MENU:
                   draw_main_menu();

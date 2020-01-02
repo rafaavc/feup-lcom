@@ -183,7 +183,7 @@ void draw_bg_buffer(xpm_image_t img, uint16_t x, uint16_t y, bool centered, uint
     
     uint32_t color;
     bool custom_color = false;
-    if (color1 != 0xFF0000) {
+    if (color1 != PREDEF_COLOR) {
       custom_color = true;
     }
 
@@ -336,48 +336,6 @@ void* get_double_buffer() {
 }
 void* get_background_buffer() {
   return background_buffer;
-}
-
-void increment_with_speed(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf, uint16_t speed) {
-    if (*xi != xf) {
-      if (xf-*xi >= speed) {
-        *xi += speed;
-      } else if (*xi -xf >= speed){
-        *xi -= speed;
-      } else {
-        *xi = xf;
-      }
-    }
-    if (*yi != yf) {
-      if (yf-*yi >= speed) {
-        *yi += speed;
-      } else if (*yi-yf >= speed) { 
-        *yi -= speed;
-      } else {
-        *yi = yf;
-      }
-    }
-}
-
-void increment_with_one(uint16_t *xi, uint16_t *yi, uint16_t xf, uint16_t yf) {
-    if (*xi != xf) {
-      if (xf-*xi >= 1) {
-        *xi += 1;
-      } else if (*xi -xf >= 1){
-        *xi -= 1;
-      } else {
-        *xi = xf;
-      }
-    }
-    if (*yi != yf) {
-      if (yf-*yi >= 1) {
-        *yi += 1;
-      } else if (*yi-yf >= 1) { 
-        *yi -= 1;
-      } else {
-        *yi = yf;
-      }
-    }
 }
 
 int get_mode_info(uint16_t mode, vbe_mode_info_t *vmi_p) {

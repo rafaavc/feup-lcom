@@ -1,3 +1,8 @@
+/**
+ * @brief handles timer interrupts
+ * 
+ * increments both timer_counter and timer_counter_play
+ */
 void (timer_int_handler)();
 
 /**
@@ -8,10 +13,6 @@ void (timer_int_handler)();
  * @return Return 0 upon success and non-zero otherwise
  */
 int (timer_subscribe_int)(uint8_t *bit_no);
-
-int (timer_set_frequency)(uint8_t timer, uint32_t freq);
-
-int (timer_get_conf)(uint8_t timer, uint8_t *st);
 
 /**
  * @brief Unsubscribes Timer 0 interrupts
