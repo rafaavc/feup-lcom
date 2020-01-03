@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "game.h"
-#include "queue.h"
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)
@@ -29,6 +28,19 @@ int main(int argc, char *argv[]) {
 }
 
 int(proj_main_loop)(int argc, char *argv[]) {
+  /*charqueue * q = create_charqueue();
+  charqueue_push(q, 'a');
+  charqueue_push(q, 'b');
+  charqueue_push(q, 'c');
+  charqueue_push(q, 'd');
+  char * s = charqueue_to_string(q);
+  printf("%s\n", s);
+  free(s);
+  charqueue_remove_last(q);
+  s = charqueue_to_string(q);
+  printf("%s\n", s);
+  free(s);
+  charqueue_print(q);*/
   if (game() != 0) return 1;
   return 0;
 }

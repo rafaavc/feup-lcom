@@ -28,7 +28,7 @@ void charqueue_push(charqueue *q, uint8_t value) {
         (*((*q).last)).next = qn;
         (*q).last = qn;
     }
-    (*q).size++;
+    (*q).size = (*q).size + 1;
 }
 
 uint8_t charqueue_pop(charqueue *q) {
@@ -44,7 +44,7 @@ uint8_t charqueue_pop(charqueue *q) {
     free((*q).first);
     (*q).first = new_first;
 
-    (*q).size--;
+    (*q).size = (*q).size - 1;
 
     return value;
 }
@@ -67,4 +67,45 @@ void charqueue_make_empty(charqueue *q) {
 
 unsigned charqueue_size(charqueue *q) {
     return (*q).size;
+}
+
+void charqueue_remove_last(charqueue *q) {
+    if (charqueue_empty(q)) return;
+
+    charqueue *q1 = create_charqueue();
+    while (!charqueue_empty(q)) {
+        if ((*q).first == (*q).last) {
+            charqueue_pop(q);
+        } else {
+            charqueue_push(q1, charqueue_pop(q));
+        }
+    }
+    while (!charqueue_empty(q1)) {
+        charqueue_push(q, charqueue_pop(q1));
+    }
+
+    free(q1);
+}
+
+char * charqueue_to_string(charqueue *q) {
+    if (charqueue_empty(q)) return "";
+    char * str = malloc(sizeof(char[charqueue_size(q)+1]));
+
+    charqueue *q1 = create_charqueue();
+    unsigned i = 0;
+    char c;
+    while (!charqueue_empty(q)) {
+        charqueue_push(q1, charqueue_pop(q));
+    }
+    
+    while (!charqueue_empty(q1)) {
+        c = charqueue_pop(q1);
+        str[i] = c;
+        charqueue_push(q, c);
+        i++;
+    }
+    str[i] = '\0';
+    free(q1);
+    return str;
+
 }

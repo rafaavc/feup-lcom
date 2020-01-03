@@ -57,14 +57,40 @@
 /**@}*/
 
 
-#define ESC_break   0x81    /**< @brief ESC key BREAK CODE value  */
-#define K1_break    0x82    /**< @brief 1 key BREAK CODE value  */
-#define K2_break    0x83    /**< @brief 2 key BREAK CODE value  */
-#define W_break     0x91    /**< @brief w key BREAK CODE value  */
-#define A_break     0x9e    /**< @brief a key BREAK CODE value  */
-#define S_break     0x9f    /**< @brief s key BREAK CODE value  */
-#define D_break     0xa0    /**< @brief d key BREAK CODE value  */
-#define ENTER_break 0x9c    /**< @brief ENTER key BREAK CODE value  */
+#define ESC_break   0x81      /**< @brief ESC key BREAK CODE value  */
+#define K1_break    0x82      /**< @brief 1 key BREAK CODE value  */
+#define K2_break    0x83      /**< @brief 2 key BREAK CODE value  */
+
+#define W_break     0x91      /**< @brief w key BREAK CODE value  */
+#define A_break     0x9e      /**< @brief a key BREAK CODE value  */
+#define S_break     0x9f      /**< @brief s key BREAK CODE value  */
+#define D_break     0xa0      /**< @brief d key BREAK CODE value  */
+
+#define B_break     0xb0      /**< @brief b key BREAK CODE value  */
+#define C_break     0xae      /**< @brief c key BREAK CODE value  */
+#define E_break     0x92      /**< @brief e key BREAK CODE value  */
+#define F_break     0xa1      /**< @brief f key BREAK CODE value  */
+#define G_break     0xa2      /**< @brief g key BREAK CODE value  */
+#define H_break     0xa3      /**< @brief h key BREAK CODE value  */
+#define I_break     0x97      /**< @brief i key BREAK CODE value  */
+#define J_break     0xa4      /**< @brief j key BREAK CODE value  */
+#define K_break     0xa5      /**< @brief k key BREAK CODE value  */
+#define L_break     0xa6      /**< @brief l key BREAK CODE value  */
+#define M_break     0xb2      /**< @brief m key BREAK CODE value  */
+#define N_break     0xb1      /**< @brief n key BREAK CODE value  */
+#define O_break     0x98      /**< @brief o key BREAK CODE value  */
+#define P_break     0x99      /**< @brief p key BREAK CODE value  */
+#define Q_break     0x90      /**< @brief q key BREAK CODE value  */
+#define R_break     0x93      /**< @brief r key BREAK CODE value  */
+#define T_break     0x94      /**< @brief t key BREAK CODE value  */
+#define U_break     0x96      /**< @brief u key BREAK CODE value  */
+#define V_break     0xaf      /**< @brief v key BREAK CODE value  */
+#define X_break     0xad      /**< @brief x key BREAK CODE value  */
+#define Y_break     0x95      /**< @brief y key BREAK CODE value  */
+#define Z_break     0xac      /**< @brief z key BREAK CODE value  */
+
+#define ENTER_break 0x9c      /**< @brief ENTER key BREAK CODE value  */
+#define BACKSPACE_break 0x8e  /**< @brief BACKSPACE key BREAK CODE value  */
 
 
 #define OUT_BUF 0x60        /**< @brief OUT_BUF port */
@@ -218,6 +244,7 @@ END graphics
 #define BOARD_SIZE 17
 #define PLAY_TIME 30
 #define DEFAULT_BLOCK_COORDINATE -999
+#define MAX_NAME_SIZE 15
 
 //Debug
 //#define DEBUG

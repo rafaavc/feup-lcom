@@ -16,6 +16,7 @@
 #include "menus.h"
 #include "sp.h"
 
+
 extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[], p1_kbd_code;
 extern int mouse_xvariance, mouse_yvariance, hook_id_mouse, p1_mouse_xvariance, p1_mouse_yvariance;
 extern bool p1_mouse_lb;
@@ -50,8 +51,11 @@ uint32_t color_palette[] = {WHITE, DIRTY_WHITE, BLACK};
 bool multi_computer = false; // Whether the serial port module is needed
 bool host = false; // Whether this machine is the host, case multi_computer == true
 bool sp_on = false; // Whether the sp is subscribed or not
-bool connected = false;
+bool connected = false;  // Whether the two players are connected~
 
+charqueue * player1_name;
+charqueue * player2_name;
+bool enter_key = false;
 
 void draw_text_button(bool *added_mouse_events, MouseTrigger * mouse_trigger[], bool needs_to_set_added_mouse_events, enum Event event, char* s, int ssize, uint16_t x, uint16_t y, uint16_t max_length_per_line, uint32_t color, uint32_t color_over, char * relative_size) {
   unsigned module_size = 1, height = N_LETTER_H;
@@ -286,17 +290,34 @@ void draw_waiting_for_connection() {
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
+void draw_string_input(unsigned x, unsigned y, uint32_t color, charqueue * input) {
+  char * input_str;
+  input_str = charqueue_to_string(input);
+  unsigned ssize = strlen(input_str);
+
+  unsigned string_width = get_string_width_normal(input_str, ssize) / 2;
+
+  draw_string_centered(input_str, ssize, x, y - 35, 800, color, "small");
+  if (string_width < 100) {
+    draw_hline(x - 50, y, 100, color);
+    draw_hline(x - 50, y+1, 100, color);
+    draw_hline(x - 50, y+2, 100, color);
+  } else {
+    draw_hline(x - (string_width/2), y, string_width, color);
+    draw_hline(x - (string_width/2), y+1, string_width, color);
+    draw_hline(x - (string_width/2), y+2, string_width, color);
+  }
+  free(input_str);
+}
+
 void draw_player1_prompt() {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
-  draw_string_centered("Player 1 - Insert your name:", 6, get_xres()/2, 150, 800, color_palette[0], "");
+  draw_string_centered("Player 1", 8, get_xres()/2, 150, 800, color_palette[0], "");
+  draw_string_centered("Insert your name:", 17, get_xres()/2, 250, 800, color_palette[0], "small");
+  
+  draw_string_input(get_xres()/2, 400, color_palette[0], player1_name);
 
-  /*draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[0], false, START_GAME_NO_SP, "Multiplayer on this computer", 28, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-
-  draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[1], false, START_GAME_SP, "Multiplayer on two computers", 28, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-
-  draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[2], true, END_GAME, "Return", 6, get_xres()/2, 360, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-*/
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
@@ -304,16 +325,112 @@ void draw_player1_prompt() {
 void draw_player2_prompt() {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
-  draw_string_centered("Player 2 - Insert your name:", 6, get_xres()/2, 150, 800, color_palette[0], "");
+  draw_string_centered("Player 2", 8, get_xres()/2, 150, 800, color_palette[0], "");
+  draw_string_centered("Insert your name:", 17, get_xres()/2, 250, 800, color_palette[0], "small");
+  
+  draw_string_input(get_xres()/2, 400, color_palette[0], player2_name);
 
-  /*draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[0], false, START_GAME_NO_SP, "Multiplayer on this computer", 28, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-
-  draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[1], false, START_GAME_SP, "Multiplayer on two computers", 28, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-
-  draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[2], true, END_GAME, "Return", 6, get_xres()/2, 360, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-*/
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+}
+
+void get_letter_input(charqueue * q) {
+  if (strlen(charqueue_to_string(q)) == MAX_NAME_SIZE) {
+    enter_key = true;
+    return;
+  }
+  switch (kbd_code) {
+    case A_break:
+      charqueue_push(q, 'A');
+      break;
+    case B_break:
+      charqueue_push(q, 'B');
+      break;
+    case C_break:
+      charqueue_push(q, 'C');
+      break;
+    case D_break:
+      charqueue_push(q, 'D');
+      break;
+    case E_break:
+      charqueue_push(q, 'E');
+      break;
+    case F_break:
+      charqueue_push(q, 'F');
+      break;
+    case G_break:
+      charqueue_push(q, 'G');
+      break;
+    case H_break:
+      charqueue_push(q, 'H');
+      break;
+    case I_break:
+      charqueue_push(q, 'I');
+      break;
+    case J_break:
+      charqueue_push(q, 'J');
+      break;
+    case K_break:
+      charqueue_push(q, 'K');
+      break;
+    case L_break:
+      charqueue_push(q, 'L');
+      break;
+    case M_break:
+      charqueue_push(q, 'M');
+      break;
+    case N_break:
+      charqueue_push(q, 'N');
+      break;
+    case O_break:
+      charqueue_push(q, 'O');
+      break;
+    case P_break:
+      charqueue_push(q, 'P');
+      break;
+    case Q_break:
+      charqueue_push(q, 'Q');
+      break;
+    case R_break:
+      charqueue_push(q, 'R');
+      break;
+    case S_break:
+      charqueue_push(q, 'S');
+      break;
+    case T_break:
+      charqueue_push(q, 'T');
+      break;
+    case U_break:
+      charqueue_push(q, 'U');
+      break;
+    case V_break:
+      charqueue_push(q, 'V');
+      break;
+    case W_break:
+      charqueue_push(q, 'W');
+      break;
+    case X_break:
+      charqueue_push(q, 'X');
+      break;
+    case Y_break:
+      charqueue_push(q, 'Y');
+      break;
+    case Z_break:
+      charqueue_push(q, 'Z');
+      break;
+    case BACKSPACE_break:
+      printf("Removed last");
+      charqueue_remove_last(q);
+      break;
+    case ENTER_break:
+      if (!charqueue_empty(q)) {
+        enter_key = true;
+      }
+      break;
+    default:
+      //printf("That key isn't mapped, %x\n", kbd_code);
+      break;
+  }
 }
 
 void handle_keyboard_events(enum State *s, Player * players[]) {
@@ -352,6 +469,20 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       if (kbd_code == ESC_break) {
         current_event = END_GAME;
       } 
+      break;
+    case PLAYER1_PROMPT:
+      if (kbd_code == ESC_break) {
+        current_event = END_GAME;
+      } else {
+        get_letter_input(player1_name);
+      }
+      break;
+    case PLAYER2_PROMPT:
+      if (kbd_code == ESC_break) {
+        current_event = END_GAME;
+      } else {
+        get_letter_input(player2_name);
+      }
       break;
     case GAME:
       if (multi_computer) {
@@ -657,6 +788,18 @@ void clear_game(Tile * tiles[], unsigned tile_no, Player * players[2], int board
   blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
   p_set_last_movement(players[0],'x');
   p_set_last_movement(players[1],'x');
+
+  if (player1_name != NULL) {
+    charqueue_make_empty(player1_name);
+    free(player1_name);
+  }
+  if (player2_name != NULL) {
+    charqueue_make_empty(player2_name);
+    free(player2_name);
+  }
+
+  player1_name = create_charqueue();
+  player2_name = create_charqueue();
 }
 
 void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], enum State *s) {
@@ -996,9 +1139,31 @@ int game() {
                   draw_waiting_for_connection();
                   if (connected) {
                     printf("Connection successful\n");
-                    s = GAME;
+                    if (host) {
+                      s = PLAYER1_PROMPT;
+                    } else {
+                      s = PLAYER2_PROMPT;
+                    }
                     play_time = 0;
                   }
+                  break;
+                case PLAYER1_PROMPT:
+                  draw_player1_prompt();
+                  if (enter_key) {
+                      p_set_name(players[0], charqueue_to_string(player1_name));
+                      s = GAME;
+                      enter_key = false;
+                  }
+                  play_time = 0;
+                  break;
+                case PLAYER2_PROMPT:
+                  draw_player2_prompt();
+                  if (enter_key) {
+                      p_set_name(players[1], charqueue_to_string(player2_name));
+                      s = GAME;
+                      enter_key = false;
+                  }
+                  play_time = 0;
                   break;
                 case GAME: case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
                   update_game(players, board, tiles, &s);

@@ -373,6 +373,11 @@ void sp_terminate() {
   com2_unsubscribe_int();
   sp_disable_interrupts(COM2, host);
 
+  charqueue_make_empty(reception_queue);
+  charqueue_make_empty(transmission_queue);
+  free(reception_queue);
+  free(transmission_queue);
+
   sp_on = false;
 }
 

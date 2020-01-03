@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "player.h"
 #include "Macros.h"
+#include "queue.h"
 
 
 /**
@@ -16,6 +17,8 @@ enum State {
     CHOOSING_MODE,  /**<  used when the players are choosing which mode to play  */
     CHOOSING_HOST,  /**<  used when the player is waiting for the other player to connect  */
     WAITING_FOR_CONNECTION, /**<  used when the player is waiting for the other player to connect  */
+    PLAYER1_PROMPT,         /**<  player 1 is choosing his details  */
+    PLAYER2_PROMPT,         /**<  player 2 is choosing his details  */
     GAME_MOVING_BLOCKS,     /**<  used when it's time for a player to move game blocks  */
     GAME_BLOCKS_MOVED       /**<  used to reset variables associated with moving blocks  */
 };
@@ -52,6 +55,12 @@ void draw_text_button(bool *added_mouse_events, MouseTrigger * mouse_trigger[], 
 void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * players[], int board[BOARD_SIZE][BOARD_SIZE]);
 
 /**
+ * @brief get's a letter from keyboard into the charqueue specified
+ * @param q - pointer to the charqueue that will receive the character
+ */
+void get_letter_input(charqueue * q);
+
+/**
  * @brief draws main menu screen
  * 
  * Draws the background, then all the strings and text buttons for the main menu and lastly the mouse
@@ -78,6 +87,8 @@ void draw_pause_menu();
  * Draws the background, then all the strings and text buttons for the choosing mode menu and lastly the mouse
  */
 void draw_choosing_mode_menu();
+
+void draw_string_input(unsigned x, unsigned y, uint32_t color, charqueue * input);
 
 void draw_player1_prompt();
 

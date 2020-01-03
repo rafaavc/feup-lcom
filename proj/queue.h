@@ -16,7 +16,7 @@ typedef struct {
 } charqueue;
 
 
-charqueue * create_charqueue();
+charqueue * create_charqueue(); 
 
 void charqueue_print(charqueue *q);
 
@@ -31,4 +31,8 @@ void charqueue_make_empty(charqueue *q);
 bool charqueue_empty(charqueue *q);
 
 unsigned charqueue_size(charqueue *q);
+
+void charqueue_remove_last(charqueue *q);
+
+char * charqueue_to_string(charqueue *q);
 
