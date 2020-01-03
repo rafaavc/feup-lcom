@@ -9,6 +9,7 @@
 #include "xpms/block.xpm"
 #include "xpms/block1.xpm"
 #include "xpms/cursor_simple.xpm"
+#include "xpms/cursor_secondary.xpm"
 #include "xpms/A.xpm"
 #include "xpms/a.xpm"
 #include "xpms/B.xpm"
@@ -113,6 +114,7 @@ static xpm_image_t background1;
 static xpm_image_t block;
 static xpm_image_t block1;
 static xpm_image_t mouse_simple;
+static xpm_image_t mouse_secondary;
 static xpm_image_t alphabet[73];
 static xpm_image_t red_ball_animation[12];
 static xpm_image_t blue_ball_animation[12];
@@ -123,6 +125,7 @@ void load_pixmaps() {
     xpm_load(block_xpm, XPM_8_8_8, &block);
     xpm_load(block1_xpm, XPM_8_8_8, &block1);
     xpm_load(cursor_simple_xpm, XPM_8_8_8, &mouse_simple);
+    xpm_load(cursor_secondary_xpm, XPM_8_8_8, &mouse_secondary);
 
     xpm_load(A_xpm, XPM_8_8_8, &alphabet[0]);
     xpm_load(B_xpm, XPM_8_8_8, &alphabet[1]);
@@ -238,6 +241,8 @@ xpm_image_t get_block() { return block; }
 xpm_image_t get_block1() { return block1; }
 
 xpm_image_t get_mouse_simple() { return mouse_simple; }
+
+xpm_image_t get_mouse_secondary() { return mouse_secondary; }
 
 xpm_image_t get_letter(char c){
     if (c >= 65 && c <= 90) {

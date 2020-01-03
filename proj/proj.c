@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "game.h"
+#include "queue.h"
 
 int main(int argc, char *argv[]) {
   // sets the language of LCF messages (can be either EN-US or PT-PT)

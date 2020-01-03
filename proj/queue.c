@@ -12,9 +12,9 @@ charqueue * create_charqueue() {
 void charqueue_print(charqueue *q) {
 
     while (!charqueue_empty(q)) {
-        printf("%c ", charqueue_pop(q));
+        printf("%c,", charqueue_pop(q));
     }
-    printf("\n");
+    printf("|\n");
 }
 
 void charqueue_push(charqueue *q, uint8_t value) {
@@ -57,6 +57,12 @@ uint8_t charqueue_front(charqueue *q) {
 
 bool charqueue_empty(charqueue *q) {
     return ((*q).first == (*q).last) && ((*q).last == NULL);
+}
+
+void charqueue_make_empty(charqueue *q) {
+    while (!charqueue_empty(q)) {
+        charqueue_pop(q);
+    }
 }
 
 unsigned charqueue_size(charqueue *q) {

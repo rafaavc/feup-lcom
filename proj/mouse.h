@@ -35,7 +35,7 @@ int send_command_to_mouse(uint8_t cmd);
  * 
  * @param struct packet* mouse data with array of bytes received already 
  */
-void parse_packet(struct packet *mouse_data);
+void parse_packet(struct packet *mouse_data, bool update_mouse_variance);
 
 /**
  * @brief Handles mouse interrutps.

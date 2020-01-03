@@ -38,7 +38,9 @@ int sp_set_conf(unsigned base, unsigned word_length, unsigned stop_bits, unsigne
 
 int sp_print_conf(unsigned base);
 
-int sp_enable_interrupts(unsigned base);
+int sp_enable_interrupts(unsigned base, bool host);
+
+int sp_disable_interrupts(unsigned base, bool host);
 
 int sp_setup_fifo(unsigned base);
 
@@ -50,12 +52,16 @@ void sp_init();
 
 void sp_terminate();
 
-void sp_send_character(char c, bool reverse);
+void sp_send_character(uint8_t c, bool reverse);
 
-void start_transmission(char c);
+void charqueue_push_end_characters();
 
-void transmit_string(char * str, unsigned str_len);
+void transmit_string(char * str, uint8_t str_len);
 
-void retrieve_info_from_queue();
+void transmit_mouse_bytes(struct packet * mouse_data, unsigned mouse_xvariance, unsigned mouse_yvariance);
 
-void sp_ih(unsigned mode, unsigned com_no);
+void transmit_kbd_code(uint8_t kbd_code);
+
+int retrieve_info_from_queue();
+
+int sp_ih(unsigned mode, unsigned com_no);   // Returns a value based on whether it is needed to handle events

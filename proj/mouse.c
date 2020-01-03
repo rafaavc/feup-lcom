@@ -74,7 +74,7 @@ int send_command_to_mouse(uint8_t cmd){
 }
 
 
-void parse_packet(struct packet *mouse_data) {
+void parse_packet(struct packet *mouse_data, bool update_mouse_variance) {
   mouse_data->rb = (mouse_data->bytes[0] & RB_BIT);
   mouse_data->lb = (mouse_data->bytes[0] & LB_BIT);
   mouse_data->mb = (mouse_data->bytes[0] & MB_BIT);
@@ -93,19 +93,21 @@ void parse_packet(struct packet *mouse_data) {
   else {
     mouse_data->delta_y = mouse_data->bytes[2];
   }
-
-  mouse_xvariance += mouse_data->delta_x;
-  mouse_yvariance -= mouse_data->delta_y;
-  if (mouse_xvariance > get_xres() - 3) {
-    mouse_xvariance = get_xres() - 3;
-  } else if (mouse_xvariance <= 0) {
-    mouse_xvariance = 0;
-  } 
-  if (mouse_yvariance > get_yres() - 3) {
-    mouse_yvariance = get_yres() - 3;
-  } else if (mouse_yvariance <= 0) {
-    mouse_yvariance = 0;
-  } 
+  
+  if (update_mouse_variance) {
+    mouse_xvariance += mouse_data->delta_x;
+    mouse_yvariance -= mouse_data->delta_y;
+    if (mouse_xvariance > get_xres() - 3) {
+      mouse_xvariance = get_xres() - 3;
+    } else if (mouse_xvariance <= 0) {
+      mouse_xvariance = 0;
+    } 
+    if (mouse_yvariance > get_yres() - 3) {
+      mouse_yvariance = get_yres() - 3;
+    } else if (mouse_yvariance <= 0) {
+      mouse_yvariance = 0;
+    } 
+  }
 }
 
 void (mouse_ih)() {

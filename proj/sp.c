@@ -1,13 +1,22 @@
 #include <lcom/lcf.h>
 #include <stdint.h>
+#include <string.h>
 #include "Macros.h"
 #include "utils.h"
 #include "queue.h"
-#include <string.h>
+#include "mouse.h"
+#include "video.h"
+#include "sp.h"
+#include "keyboard.h"
 
 int hook_id_com1 = 0, hook_id_com2 = 0;
+int p1_mouse_xvariance = 400, p1_mouse_yvariance = 300;
+bool p1_mouse_lb = false;
+uint8_t p1_kbd_code = 0;
+
 extern bool host, host_has_been_set, sp_on, connected;
 extern uint8_t irq_com1, irq_com2;
+
 charqueue * transmission_queue = NULL;
 charqueue * reception_queue = NULL;
 
@@ -307,7 +316,7 @@ int sp_disable_fifo(unsigned base) {
   return 0;
 }
 
-void sp_send_character(char c, bool reverse) {
+void sp_send_character(uint8_t c, bool reverse) {
   if (reverse) {
     if (host) {
       sys_outb(COM2, c);
@@ -321,16 +330,16 @@ void sp_send_character(char c, bool reverse) {
   // This is what will happen in most cases: 
   if (host) {
     sys_outb(COM1, c);
-    printf("sent %c to COM1\n", c);
+    //printf("sent %c to COM1\n", c);
   } else {
     sys_outb(COM2, c);
-    printf("sent %c to COM2\n", c);
+    //printf("sent %c to COM2\n", c);
   }
 }
 
 void sp_init() {
-  sp_set_conf(COM1, 8, 2, PARITY_even, BR_5);
-  sp_set_conf(COM2, 8, 2, PARITY_even, BR_5);
+  sp_set_conf(COM1, 8, 2, PARITY_even, BR_8);
+  sp_set_conf(COM2, 8, 2, PARITY_even, BR_8);
   sp_print_conf(COM1);
   sp_print_conf(COM2);
 
@@ -367,27 +376,49 @@ void sp_terminate() {
   sp_on = false;
 }
 
-void start_transmission(char c) {
-  unsigned com;
-  if (host) com = COM1;
-  else com = COM2;
-  while (true) {
-    if ((sp_get_lsr(com) & BIT(5)) != 0) {  // Checking if the transmitter is ready
-      sp_send_character(c, false);  // indicates that the info being received belongs to a string
-      break;
-    }
+void transmit_mouse_bytes(struct packet * mouse_data, unsigned mouse_xvariance, unsigned mouse_yvariance) {
+  if (charqueue_empty(transmission_queue)) {  // Checking if the transmitter is ready
+    charqueue_push(transmission_queue, mouse_xvariance);
+    charqueue_push(transmission_queue, mouse_xvariance >> 8);
+    charqueue_push(transmission_queue, mouse_yvariance);
+    charqueue_push(transmission_queue, mouse_yvariance >> 8);
+
+    charqueue_push(transmission_queue, mouse_data->lb);
+    
+    charqueue_push_end_characters();  // end characters
+
+    sp_send_character('M', false);  // indicates that the info being received belongs to mouse
+  } else {
+    charqueue_push(transmission_queue, 'M');
+
+    charqueue_push(transmission_queue, mouse_xvariance);
+    charqueue_push(transmission_queue, mouse_xvariance >> 8);
+    charqueue_push(transmission_queue, mouse_yvariance);
+    charqueue_push(transmission_queue, mouse_yvariance >> 8);
+
+    charqueue_push(transmission_queue, mouse_data->lb);
+    
+    charqueue_push_end_characters();  // end characters
   }
 }
 
-void transmit_mouse_bytes() {
+void transmit_kbd_code(uint8_t kbd_code) {
+  if (charqueue_empty(transmission_queue)) {  // Checking if the transmitter is ready
+    charqueue_push(transmission_queue, kbd_code);
+    
+    charqueue_push_end_characters();  // end characters
 
+    sp_send_character('K', false);  // indicates that the info being received belongs to keyboard
+  } else {
+    charqueue_push(transmission_queue, 'K');
+
+    charqueue_push(transmission_queue, kbd_code);
+    
+    charqueue_push_end_characters();  // end characters
+  }
 }
 
-void transmit_kbd_code() {
-  
-}
-
-void transmit_game_state() {
+void transmit_game_event() {
 
 }
 
@@ -395,35 +426,83 @@ void transmit_player_data() {
 
 }
 
-
-
-void transmit_string(char * str, unsigned str_len) {
-  for (unsigned i = 0; i < str_len; i++) {
-    charqueue_push(transmission_queue, str[i]);
+void charqueue_push_end_characters() {
+  for (unsigned i = 0; i < 3; i++) {
+    charqueue_push(transmission_queue, '0');
   }
-  charqueue_push(transmission_queue, '\0');  // end character
-
-  start_transmission('S');
 }
 
-void retrieve_info_from_queue() {
+void transmit_string(char * str, uint8_t str_len) {
+  unsigned com;
+  if (host) com = COM1;
+  else com = COM2;
+
+  if (charqueue_empty(transmission_queue)) {  // Checking if the transmitter is ready
+    charqueue_push(transmission_queue, str_len);
+    for (unsigned i = 0; i < str_len; i++) {
+      charqueue_push(transmission_queue, str[i]);
+    }
+    charqueue_push_end_characters();
+
+    sp_send_character('S', false);
+  } else {
+    charqueue_push(transmission_queue, 'S');
+    charqueue_push(transmission_queue, str_len);
+    for (unsigned i = 0; i < str_len; i++) {
+      charqueue_push(transmission_queue, str[i]);
+    }
+    
+    charqueue_push_end_characters();
+  }
+}
+
+int retrieve_info_from_queue() {
+  int ret = 0;
   if (charqueue_front(reception_queue) == 'S') {  // Receiving a string
     charqueue_pop(reception_queue);
 
-    char str[charqueue_size(reception_queue)];
+    unsigned char_no = charqueue_pop(reception_queue) + 1;
+
+    char str[char_no];
     unsigned i = 0;
 
-    while (!charqueue_empty(reception_queue)) {
+    while (!charqueue_empty(reception_queue) && i < (char_no-1)) {
       str[i] = charqueue_pop(reception_queue);
       i++;
     }
+    str[i] = '\0';
     printf("Received string: %s\n", str);
+
   } else if (charqueue_front(reception_queue) == 'M') {  // Receiving a mouse packet
 
+    charqueue_pop(reception_queue);
+
+    p1_mouse_xvariance = charqueue_pop(reception_queue);
+    p1_mouse_xvariance |= (charqueue_pop(reception_queue) << 8);
+    p1_mouse_yvariance = charqueue_pop(reception_queue);
+    p1_mouse_yvariance |= (charqueue_pop(reception_queue) << 8);
+    p1_mouse_lb = charqueue_pop(reception_queue);
+
+    ret = 2;
+
+  } else if (charqueue_front(reception_queue) == 'K') {  // Receiving KBD code
+
+    charqueue_pop(reception_queue);
+
+    p1_kbd_code = charqueue_pop(reception_queue);
+
+    ret = 1;
   }
+  
+  charqueue_make_empty(reception_queue);
+
+  return ret;
 }
 
-void sp_ih(unsigned com, unsigned com_no) {
+unsigned zero_count = 0;
+
+int sp_ih(unsigned com, unsigned com_no) {
+  int ret = 0;
   uint8_t iir;
   uint8_t c = 0;
 
@@ -432,7 +511,7 @@ void sp_ih(unsigned com, unsigned com_no) {
   if(! (iir & IIR_int_status_bitmask) ) {
     switch( (iir & (IIR_int_origin_bitmask)) >> 1 ) {
       case RECEIVED_DATA: case RECEIVED_DATA_1:  // From extensive testing we realised that received data could be either 010 or 110
-        printf("\n-- COM%d: Received data - %c\n", com_no, c);
+        //printf("\n-- COM%d: Received data - %c\n", com_no, c);
         if ((host && (com == COM2)) || (!host && (com == COM1))) {
           util_sys_inb(com, &c);
           if (!connected) {
@@ -449,11 +528,16 @@ void sp_ih(unsigned com, unsigned com_no) {
             }
           } else {
             //printf("\n-- COM%d: Received data - %c\n", com_no, c);
-            if (c == '\0') {  // 'f' is the char that represents that a piece of information has been fully received
-              charqueue_push(reception_queue, c);
-              retrieve_info_from_queue();
+
+            charqueue_push(reception_queue, c);
+            if (c == '0') {  // '0' is the char that represents that a piece of information has been fully received
+              zero_count++;
+              if (zero_count == 3) {
+                zero_count = 0;
+                ret = retrieve_info_from_queue();
+              }
             } else {
-              charqueue_push(reception_queue, c);
+              zero_count = 0;
             }
           }
 
@@ -465,7 +549,7 @@ void sp_ih(unsigned com, unsigned com_no) {
         //printf("\n-- COM%d: Transmitter empty\n", com_no);
         if ((host && (com == COM1)) || (!host && (com == COM2))) {
           if (connected) {
-            if (!charqueue_empty(transmission_queue) != 0) {
+            if (!charqueue_empty(transmission_queue)) {
               //printf("Sending %c\n", charqueue_front(transmission_queue));
               sp_send_character(charqueue_pop(transmission_queue), false); // pops the character from the queue and sends it
             }
@@ -485,5 +569,6 @@ void sp_ih(unsigned com, unsigned com_no) {
         break;
     }
   }
+  return ret;
 }
 

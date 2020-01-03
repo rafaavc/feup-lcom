@@ -87,11 +87,20 @@ enum Event mt_get_event(MouseTrigger *t);
 /**
  * @brief checks if the mouse is on the MouseTrigger
  * 
- * @param t MouseTrigger to cehck from
+ * @param t MouseTrigger to check from
  * 
  * @return true if the mouse is over the MouseTrigger and false otherwise
  */
 bool check_mouse_overlap(MouseTrigger *t);
+
+/**
+ * @brief checks if the mouse from the other player is on the MouseTrigger (if Serial Port is being used)
+ * 
+ * @param t MouseTrigger to check from
+ * 
+ * @return true if the mouse is over the MouseTrigger and false otherwise
+ */
+bool p1_check_mouse_overlap(MouseTrigger *t);
 
 /**
  * @brief get method for mouse_over

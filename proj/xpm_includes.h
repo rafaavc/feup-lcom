@@ -31,9 +31,12 @@ xpm_image_t get_block1();
 xpm_image_t get_mouse_simple();
 
 /**
- * @brief get method for a letter, number and some symbols
- * 
- * @param c character to get
+ * @brief get method for the secondary mouse (Serial port opponent's mouse)
+ */
+xpm_image_t get_mouse_secondary();
+
+/**
+ * @brief get method for letters xpm_image_t
  */
 xpm_image_t get_letter(char c);
 

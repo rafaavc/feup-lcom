@@ -10,6 +10,7 @@
 #include <stddef.h>
 
 extern int mouse_xvariance, mouse_yvariance;
+extern int p1_mouse_xvariance, p1_mouse_yvariance; 
 
 MouseTrigger * create_mouse_trigger(unsigned x, unsigned y, unsigned width, unsigned height, enum Event event) {
     MouseTrigger *t = (MouseTrigger *) malloc(sizeof(*t));
@@ -35,6 +36,10 @@ enum Event mt_get_event(MouseTrigger *t) { return (*t).event; }
 
 bool check_mouse_overlap(MouseTrigger *t) {
     return (unsigned) mouse_xvariance > mt_get_xpos(t) && (unsigned) mouse_yvariance > mt_get_ypos(t) && (unsigned) mouse_xvariance < mt_get_endxpos(t) && (unsigned) mouse_yvariance < mt_get_endypos(t);
+}
+
+bool p1_check_mouse_overlap(MouseTrigger *t) {
+    return (unsigned) p1_mouse_xvariance > mt_get_xpos(t) && (unsigned) p1_mouse_yvariance > mt_get_ypos(t) && (unsigned) p1_mouse_xvariance < mt_get_endxpos(t) && (unsigned) p1_mouse_yvariance < mt_get_endypos(t);
 }
 
 bool mt_get_mouse_over(MouseTrigger *t) {

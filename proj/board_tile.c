@@ -41,6 +41,8 @@ void stop_dragging_tile(Tile *t, bool changed_position) {
     (*t).dragging = false;
     if (!changed_position) {
         (*t).state = 1;
+    } else {
+        (*t).state = 0;
     }
 }
 

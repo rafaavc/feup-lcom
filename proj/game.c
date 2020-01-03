@@ -16,8 +16,9 @@
 #include "menus.h"
 #include "sp.h"
 
-extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[];
-extern int mouse_xvariance, mouse_yvariance, hook_id_mouse;
+extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[], p1_kbd_code;
+extern int mouse_xvariance, mouse_yvariance, hook_id_mouse, p1_mouse_xvariance, p1_mouse_yvariance;
+extern bool p1_mouse_lb;
 
 uint8_t irq_com1 = 0, irq_com2 = 5;
 
@@ -353,22 +354,58 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       } 
       break;
     case GAME:
-      if (kbd_code == ESC_break) {
-        current_event = PAUSE_GAME;
-        paused_time[0] = timer_counter_play;
-        paused_time[1] = play_time;
-      } else if (kbd_code == W_break && !game_ends) {
-        current_event = PLAYER_MOVE_W;
-      } else if (kbd_code == A_break && !game_ends) {
-        current_event = PLAYER_MOVE_A;
-      } else if (kbd_code == S_break && !game_ends) {
-        current_event = PLAYER_MOVE_S;
-      } else if (kbd_code == D_break && !game_ends) {
-        current_event = PLAYER_MOVE_D;
-      } else if (kbd_code == ENTER_break && move_count == 1){
-        move_count++;
-        only_one_move = true;
+      if (multi_computer) {
+        if (kbd_code == ESC_break) {
+          current_event = PAUSE_GAME;
+          paused_time[0] = timer_counter_play;
+          paused_time[1] = play_time;
+        }
+        if ((host && (current_player == 0)) || (!host && (current_player == 1))) {
+          if (kbd_code == W_break && !game_ends) {
+            current_event = PLAYER_MOVE_W;
+          } else if (kbd_code == A_break && !game_ends) {
+            current_event = PLAYER_MOVE_A;
+          } else if (kbd_code == S_break && !game_ends) {
+            current_event = PLAYER_MOVE_S;
+          } else if (kbd_code == D_break && !game_ends) {
+            current_event = PLAYER_MOVE_D;
+          } else if (kbd_code == ENTER_break && move_count == 1){
+            move_count++;
+            only_one_move = true;
+          }
+        } else if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
+          if (p1_kbd_code == W_break && !game_ends) {
+            current_event = PLAYER_MOVE_W;
+          } else if (p1_kbd_code == A_break && !game_ends) {
+            current_event = PLAYER_MOVE_A;
+          } else if (p1_kbd_code == S_break && !game_ends) {
+            current_event = PLAYER_MOVE_S;
+          } else if (p1_kbd_code == D_break && !game_ends) {
+            current_event = PLAYER_MOVE_D;
+          } else if (p1_kbd_code == ENTER_break && move_count == 1){
+            move_count++;
+            only_one_move = true;
+          }
+        } 
+      } else {
+        if (kbd_code == ESC_break) {
+          current_event = PAUSE_GAME;
+          paused_time[0] = timer_counter_play;
+          paused_time[1] = play_time;
+        } else if (kbd_code == W_break && !game_ends) {
+          current_event = PLAYER_MOVE_W;
+        } else if (kbd_code == A_break && !game_ends) {
+          current_event = PLAYER_MOVE_A;
+        } else if (kbd_code == S_break && !game_ends) {
+          current_event = PLAYER_MOVE_S;
+        } else if (kbd_code == D_break && !game_ends) {
+          current_event = PLAYER_MOVE_D;
+        } else if (kbd_code == ENTER_break && move_count == 1){
+          move_count++;
+          only_one_move = true;
+        }
       }
+
       break;
     case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
       if (kbd_code == ESC_break) {
@@ -382,6 +419,7 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
 }
 
 void change_tile_position(int i1, int j1, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]) {
+  //print_game_board(board);
   for (unsigned i = 0; i < BOARD_SIZE; i++) {
     for (unsigned j = 0; j < BOARD_SIZE; j++) {
       if (tiles[board[i][j]] == t_being_dragged) {
@@ -469,37 +507,111 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
       if (only_one_move) {
         n--;
       }
-      if (mouse_data->lb) {
-        for (unsigned i = 1; i < n; i++) {
-          if (check_mouse_overlap(mouse_triggers_game[i])) {
-            if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
-              t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
-              start_dragging_tile(t_being_dragged);
-            }
-          }
-        }
-      }
-      if (!mouse_data->lb) {
-        if (t_being_dragged != NULL) {
-          bool changed = false;
-          for (unsigned i = 1; i < BOARD_SIZE-1; i++) {
-            for (unsigned j = 1; j < BOARD_SIZE-1; j++) {
-              if (board[i][j] == -1) {
-                if ((board[i+1][j+1] != -1 && tiles[board[i+1][j+1]] != t_being_dragged) || (board[i+1][j-1] != -1 && tiles[board[i+1][j-1]] != t_being_dragged) || (board[i-1][j+1] != -1 && tiles[board[i-1][j+1]] != t_being_dragged) || (board[i-1][j-1] != -1 && tiles[board[i-1][j-1]] != t_being_dragged)) {
-                  if (check_mouse_overlap(create_mouse_trigger(get_xres()/2 + (j*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2)) - (grid_width/2), (get_yres()/2) + (i*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2)) - (grid_height/2) - 20, grid_width, grid_height, NO_EVENT))) {
-                    changed = true;
-                    change_tile_position(i, j, board, tiles);
-                    stop_dragging_tile(t_being_dragged, true);
-                    t_being_dragged = NULL;
-                    tile_move_count++;
-                  }
+      if (multi_computer) {
+        if ((host && (current_player == 0)) || (!host && (current_player == 1))) {
+          if (mouse_data->lb) {
+            for (unsigned i = 1; i < n; i++) {
+              if (check_mouse_overlap(mouse_triggers_game[i])) {
+                if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
+                  t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
+                  start_dragging_tile(t_being_dragged);
                 }
               }
             }
           }
-          if (!changed) {
-            stop_dragging_tile(t_being_dragged, false);
-            t_being_dragged = NULL;
+          if (!mouse_data->lb) {
+            if (t_being_dragged != NULL) {
+              bool changed = false;
+              for (unsigned i = 1; i < BOARD_SIZE-1; i++) {
+                for (unsigned j = 1; j < BOARD_SIZE-1; j++) {
+                  if (board[i][j] == -1) {
+                    if ((board[i+1][j+1] != -1 && tiles[board[i+1][j+1]] != t_being_dragged) || (board[i+1][j-1] != -1 && tiles[board[i+1][j-1]] != t_being_dragged) || (board[i-1][j+1] != -1 && tiles[board[i-1][j+1]] != t_being_dragged) || (board[i-1][j-1] != -1 && tiles[board[i-1][j-1]] != t_being_dragged)) {
+                      if (check_mouse_overlap(create_mouse_trigger(get_xres()/2 + (j*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2)) - (grid_width/2), (get_yres()/2) + (i*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2)) - (grid_height/2) - 20, grid_width, grid_height, NO_EVENT))) {
+                        changed = true;
+                        change_tile_position(i, j, board, tiles);
+                        stop_dragging_tile(t_being_dragged, true);
+                        t_being_dragged = NULL;
+                        tile_move_count++;
+                      }
+                    }
+                  }
+                }
+              }
+              if (!changed) {
+                stop_dragging_tile(t_being_dragged, false);
+                t_being_dragged = NULL;
+              }
+            }
+          }
+        } else if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
+          if (p1_mouse_lb) {
+            for (unsigned i = 1; i < n; i++) {
+              if (p1_check_mouse_overlap(mouse_triggers_game[i])) {
+                if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
+                  t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
+                  start_dragging_tile(t_being_dragged);
+                }
+              }
+            }
+          }
+          if (!p1_mouse_lb) {
+            if (t_being_dragged != NULL) {
+              bool changed = false;
+              for (unsigned i = 1; i < BOARD_SIZE-1; i++) {
+                for (unsigned j = 1; j < BOARD_SIZE-1; j++) {
+                  if (board[i][j] == -1) {
+                    if ((board[i+1][j+1] != -1 && tiles[board[i+1][j+1]] != t_being_dragged) || (board[i+1][j-1] != -1 && tiles[board[i+1][j-1]] != t_being_dragged) || (board[i-1][j+1] != -1 && tiles[board[i-1][j+1]] != t_being_dragged) || (board[i-1][j-1] != -1 && tiles[board[i-1][j-1]] != t_being_dragged)) {
+                      if (p1_check_mouse_overlap(create_mouse_trigger(get_xres()/2 + (j*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2)) - (grid_width/2), (get_yres()/2) + (i*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2)) - (grid_height/2) - 20, grid_width, grid_height, NO_EVENT))) {
+                        changed = true;
+                        change_tile_position(i, j, board, tiles);
+                        stop_dragging_tile(t_being_dragged, true);
+                        t_being_dragged = NULL;
+                        tile_move_count++;
+                      }
+                    }
+                  }
+                }
+              }
+              if (!changed) {
+                stop_dragging_tile(t_being_dragged, false);
+                t_being_dragged = NULL;
+              }
+            }
+          }
+        }
+      } else {
+        if (mouse_data->lb) {
+          for (unsigned i = 1; i < n; i++) {
+            if (check_mouse_overlap(mouse_triggers_game[i])) {
+              if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
+                t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
+                start_dragging_tile(t_being_dragged);
+              }
+            }
+          }
+        }
+        if (!mouse_data->lb) {
+          if (t_being_dragged != NULL) {
+            bool changed = false;
+            for (unsigned i = 1; i < BOARD_SIZE-1; i++) {
+              for (unsigned j = 1; j < BOARD_SIZE-1; j++) {
+                if (board[i][j] == -1) {
+                  if ((board[i+1][j+1] != -1 && tiles[board[i+1][j+1]] != t_being_dragged) || (board[i+1][j-1] != -1 && tiles[board[i+1][j-1]] != t_being_dragged) || (board[i-1][j+1] != -1 && tiles[board[i-1][j+1]] != t_being_dragged) || (board[i-1][j-1] != -1 && tiles[board[i-1][j-1]] != t_being_dragged)) {
+                    if (check_mouse_overlap(create_mouse_trigger(get_xres()/2 + (j*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2)) - (grid_width/2), (get_yres()/2) + (i*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2)) - (grid_height/2) - 20, grid_width, grid_height, NO_EVENT))) {
+                      changed = true;
+                      change_tile_position(i, j, board, tiles);
+                      stop_dragging_tile(t_being_dragged, true);
+                      t_being_dragged = NULL;
+                      tile_move_count++;
+                    }
+                  }
+                }
+              }
+            }
+            if (!changed) {
+              stop_dragging_tile(t_being_dragged, false);
+              t_being_dragged = NULL;
+            }
           }
         }
       }
@@ -548,152 +660,156 @@ void clear_game(Tile * tiles[], unsigned tile_no, Player * players[2], int board
 }
 
 void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], enum State *s) {
-  if ((only_one_move && tile_move_count == 1) || tile_move_count == 2) {
-    *s = GAME_BLOCKS_MOVED;
-  }
-  if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
-    game_ends = true;
-  } else if (play_time == PLAY_TIME && !game_ends){
-    game_ends = true;
-    blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
-    blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
-    blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
-    blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
-    if (current_player == 0){
-      current_player = 1;
-    } else {
-      current_player = 0;
+  if (!multi_computer) {
+    if ((only_one_move && tile_move_count == 1) || tile_move_count == 2) {
+      *s = GAME_BLOCKS_MOVED;
     }
-  } else {
-    if (move_count == 2) {
-      if (*s == GAME_BLOCKS_MOVED) {
-        p_set_last_movement(players[current_player],'x');  // resets player's last move
+    if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
+      game_ends = true;
+    } else if (play_time == PLAY_TIME && !game_ends){
+      game_ends = true;
+      blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+      blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+      blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+      blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+      if (current_player == 0){
+        current_player = 1;
+      } else {
+        current_player = 0;
+      }
+    } else {
+      if (move_count == 2) {
+        if (*s == GAME_BLOCKS_MOVED) {
+          p_set_last_movement(players[current_player],'x');  // resets player's last move
 
-        // toggles player
-        if (current_player == 0) {
-          current_player = 1;
-        } else {
-          current_player = 0;
-        }
+          // toggles player
+          if (current_player == 0) {
+            current_player = 1;
+          } else {
+            current_player = 0;
+          }
 
-        tile_move_count = 0;    // resets count of tile movements
-        only_one_move = false;  // resets whether the player did only one move
-        move_count = 0;         // resets the move count
+          tile_move_count = 0;    // resets count of tile movements
+          only_one_move = false;  // resets whether the player did only one move
+          move_count = 0;         // resets the move count
 
-        // resets the blocks to move to the predefined values
-        blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+          // resets the blocks to move to the predefined values
+          blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+          blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+          blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+          blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
 
-        // resets the mouse triggers
-        free(mouse_triggers_game[1]);
-        free(mouse_triggers_game[2]);
-        mouse_triggers_game[1] = NULL;
-        mouse_triggers_game[2] = NULL;
+          // resets the mouse triggers
+          free(mouse_triggers_game[1]);
+          free(mouse_triggers_game[2]);
+          mouse_triggers_game[1] = NULL;
+          mouse_triggers_game[2] = NULL;
 
-        // evolves the state machine
-        *s = GAME;
+          // evolves the state machine
+          *s = GAME;
 
-      } else if (*s == GAME) {
+        } else if (*s == GAME) {
 
-        // Getting the coordinates for the mouse trigger
-        int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
-        int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
-        x = get_xres()/2 + x -(grid_width/2);
-        y = get_yres()/2 + y -(grid_height/2);
-
-        mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-        mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
-        toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
-
-        if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
           // Getting the coordinates for the mouse trigger
-          int x = blocks_to_move[1][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
-          int y = blocks_to_move[1][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
+          int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
+          int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
           x = get_xres()/2 + x -(grid_width/2);
           y = get_yres()/2 + y -(grid_height/2);
 
-          mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-          mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
-          toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+          mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+          mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+          toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+
+          if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
+            // Getting the coordinates for the mouse trigger
+            int x = blocks_to_move[1][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
+            int y = blocks_to_move[1][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
+            x = get_xres()/2 + x -(grid_width/2);
+            y = get_yres()/2 + y -(grid_height/2);
+
+            mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+            mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+            toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+          }
+          
+          *s = GAME_MOVING_BLOCKS;
         }
-        
-        *s = GAME_MOVING_BLOCKS;
       }
     }
-  }
-}
+  } else { 
+    /*****************************
+    // SERIAL PORT UPDATE GAME
+    *****************************/
 
-void update_game_mp(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], enum State *s) {
-  if ((only_one_move && tile_move_count == 1) || tile_move_count == 2) {
-    *s = GAME_BLOCKS_MOVED;
-  }
-  if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
-    game_ends = true;
-  } else if (play_time == PLAY_TIME && !game_ends){
-    game_ends = true;
-    if (current_player == 0){
-      current_player = 1;
-    } else {
-      current_player = 0;
+    if ((only_one_move && tile_move_count == 1) || tile_move_count == 2) {
+      *s = GAME_BLOCKS_MOVED;
     }
-  } else if (!game_ends) {
-    if (move_count == 2) {
-      if (*s == GAME_BLOCKS_MOVED) {
-        p_set_last_movement(players[current_player],'x');  // resets player's last move
+    if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
+      game_ends = true;
+    } else if (play_time == PLAY_TIME && !game_ends){
+      game_ends = true;
+      if (current_player == 0){
+        current_player = 1;
+      } else {
+        current_player = 0;
+      }
+    } else if (!game_ends) {
+      if (move_count == 2) {
+        if (*s == GAME_BLOCKS_MOVED) {
+          p_set_last_movement(players[current_player],'x');  // resets player's last move
 
-        // toggles player
-        if (current_player == 0) {
-          current_player = 1;
-        } else {
-          current_player = 0;
-        }
+          // toggles player
+          if (current_player == 0) {
+            current_player = 1;
+          } else {
+            current_player = 0;
+          }
 
-        tile_move_count = 0;    // resets count of tile movements
-        only_one_move = false;  // resets whether the player did only one move
-        move_count = 0;         // resets the move count
+          tile_move_count = 0;    // resets count of tile movements
+          only_one_move = false;  // resets whether the player did only one move
+          move_count = 0;         // resets the move count
 
-        // resets the blocks to move to the predefined values
-        blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
-        blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+          // resets the blocks to move to the predefined values
+          blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+          blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+          blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+          blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
 
-        // resets the mouse triggers
-        free(mouse_triggers_game[1]);
-        free(mouse_triggers_game[2]);
-        mouse_triggers_game[1] = NULL;
-        mouse_triggers_game[2] = NULL;
+          // resets the mouse triggers
+          free(mouse_triggers_game[1]);
+          free(mouse_triggers_game[2]);
+          mouse_triggers_game[1] = NULL;
+          mouse_triggers_game[2] = NULL;
 
-        // evolves the state machine
-        *s = GAME;
+          // evolves the state machine
+          *s = GAME;
 
-      } else if (*s == GAME) {
+        } else if (*s == GAME) {
 
-        // Getting the coordinates for the mouse trigger
-        int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
-        int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
-        x = get_xres()/2 + x -(grid_width/2);
-        y = get_yres()/2 + y -(grid_height/2);
-
-        mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-        mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
-        toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
-
-        if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
           // Getting the coordinates for the mouse trigger
-          int x = blocks_to_move[1][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
-          int y = blocks_to_move[1][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
+          int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
+          int y = blocks_to_move[0][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
           x = get_xres()/2 + x -(grid_width/2);
           y = get_yres()/2 + y -(grid_height/2);
 
-          mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-          mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
-          toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+          mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+          mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+          toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+
+          if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
+            // Getting the coordinates for the mouse trigger
+            int x = blocks_to_move[1][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
+            int y = blocks_to_move[1][0]*grid_height - (((BOARD_SIZE - 1) * grid_height) / 2);
+            x = get_xres()/2 + x -(grid_width/2);
+            y = get_yres()/2 + y -(grid_height/2);
+
+            mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+            mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+            toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+          }
+          
+          *s = GAME_MOVING_BLOCKS;
         }
-        
-        *s = GAME_MOVING_BLOCKS;
       }
     }
   }
@@ -712,7 +828,15 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     }
   }
   if (t_being_dragged != NULL) {
-    draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height);
+    if (!multi_computer) {
+      draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height);
+    } else {
+      if ((host && (current_player == 0)) || (!host && (current_player == 1))) {
+        draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height);
+      } else {
+        draw_tile(t_being_dragged, p1_mouse_xvariance - grid_width, p1_mouse_yvariance - grid_height);
+      }
+    }
   }
 
   
@@ -766,8 +890,90 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     }
     draw_string_centered(m, 14, get_xres()/2, 60, 800, color_palette[0], "");
   }
-
+  if (multi_computer) {
+    if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
+      draw_pixmap(get_mouse_secondary(), p1_mouse_xvariance, p1_mouse_yvariance, false, PREDEF_COLOR, "");
+    }
+  }
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+}
+
+void draw_game_mp(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[]) {
+  memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
+
+  for (unsigned i = 0; i < BOARD_SIZE; i++) {
+    for (unsigned j = 0; j < BOARD_SIZE; j++) {
+      if (board[i][j] != -1) {
+        if (!get_dragging(tiles[board[i][j]]) && tiles[board[i][j]] != t_being_dragged) {
+          draw_tile(tiles[board[i][j]], grid_width*j, grid_height*i);
+        }
+      }
+    }
+  }
+  if (t_being_dragged != NULL) {
+    if ((host && (current_player == 0)) || (!host && (current_player == 1))) {
+      draw_tile(t_being_dragged, mouse_xvariance - grid_width, mouse_yvariance - grid_height);
+    } else {
+      draw_tile(t_being_dragged, p1_mouse_xvariance - grid_width, p1_mouse_yvariance - grid_height);
+    }
+  }
+
+  
+  if (p_get_i(players[0]) > p_get_i(players[1])) {
+    draw_player(players[1]);
+    draw_player(players[0]);
+  } else {
+    draw_player(players[0]);
+    draw_player(players[1]);
+  }
+
+  if (!game_ends){
+    if (play_time < PLAY_TIME){
+      char s[10];
+      if (PLAY_TIME - play_time >= 10) {
+        sprintf(s, "%d", PLAY_TIME - play_time);
+      } else {
+        sprintf(s, "0%d", PLAY_TIME - play_time);
+      }
+      
+      draw_string_centered(s, 2, get_xres()/2, 30, 800, color_palette[0], "");
+    } else {
+      draw_string_centered("0", 1, get_xres()/2, 30, 800, color_palette[0], "");
+    }
+    switch(error){
+    case 1:
+      draw_string_centered("Can't return to initial position!", 33, get_xres()/2, 80, 800, color_palette[0], "small");
+      break;
+    default:
+      break;
+    }
+  }
+  
+  if (error != 0 && error_timer == 120) {
+    error = 0;
+    error_timer = 0;
+  }
+  
+  #ifdef DEBUG
+  draw_grid();
+  #endif
+
+  if (game_ends) {
+    char * m;
+    if (current_player == 0) {
+      m = "Player 0 wins!";
+    } else {
+      m = "Player 1 wins!";
+    }
+    draw_string_centered(m, 14, get_xres()/2, 60, 800, color_palette[0], "");
+  }
+
+  if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
+    draw_pixmap(get_mouse_secondary(), p1_mouse_xvariance, p1_mouse_yvariance, false, PREDEF_COLOR, "");
+  }
+  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
@@ -848,6 +1054,7 @@ int game() {
   // Creating a clean slate game
   clear_game(tiles, tile_no, players, board);
 
+  print_game_board(board);
 
   /* Interrupt loop */
   while (on)
@@ -867,20 +1074,49 @@ int game() {
           if (msg.m_notify.interrupts & irq_kbd)
           {
             kbc_ih();
+            if (sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
+              transmit_kbd_code(kbd_code);
+            }
             handle_keyboard_events(&s, players);
             execute_event(&s, tiles, tile_no, players, board);
           }
           if (sp_on) {
             if (msg.m_notify.interrupts & irq_com1) {
               if (multi_computer) {
-                sp_ih(COM1, 1);
+                switch(sp_ih(COM1, 1)) {
+                  case 0:
+                    break;
+                  case 1:
+                    handle_keyboard_events(&s, players);
+                    execute_event(&s, tiles, tile_no, players, board);
+                    break;
+                  case 2:
+                    handle_mouse_events(&s, &mouse_data, board, tiles);
+                    execute_event(&s, tiles, tile_no, players, board);
+                    break;
+                  default:
+                    break;
+                }
               } else {
                 printf("Serial Port (COM1) interrupt, but not in 'multi computer mode'.\n");
               }
             }
             if (msg.m_notify.interrupts & irq_com2) {
               if (multi_computer) {
-                sp_ih(COM2, 2);
+                switch(sp_ih(COM2, 2)) {
+                  case 0:
+                    break;
+                  case 1:
+                    handle_keyboard_events(&s, players);
+                    execute_event(&s, tiles, tile_no, players, board);
+                    break;
+                  case 2:
+                    handle_mouse_events(&s, &mouse_data, board, tiles);
+                    execute_event(&s, tiles, tile_no, players, board);
+                    break;
+                  default:
+                    break;
+                }
               } else {
                 printf("Serial Port (COM2) interrupt, but not in 'multi computer mode'.\n");
               }
@@ -921,11 +1157,7 @@ int game() {
                   }
                   break;
                 case GAME: case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
-                  if (multi_computer) {
-                    update_game_mp(players, board, tiles, &s);
-                  } else {
-                    update_game(players, board, tiles, &s);
-                  }
+                  update_game(players, board, tiles, &s);
                   draw_game(board, tiles, tile_no, players);
                   break;
                 default:
@@ -948,8 +1180,11 @@ int game() {
             }
             else if (byte_counter == 2){
               mouse_data.bytes[2] = mouse_code;
-              parse_packet(&mouse_data);
-              byte_counter = 0;            
+              parse_packet(&mouse_data, true);
+              byte_counter = 0;
+              if (sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
+                transmit_mouse_bytes(&mouse_data, mouse_xvariance, mouse_yvariance);
+              }      
               handle_mouse_events(&s, &mouse_data, board, tiles);
               execute_event(&s, tiles, tile_no, players, board);
             }

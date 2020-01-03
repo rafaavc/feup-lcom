@@ -26,6 +26,8 @@ uint8_t charqueue_pop(charqueue *q);
 
 uint8_t charqueue_front(charqueue *q);
 
+void charqueue_make_empty(charqueue *q);
+
 bool charqueue_empty(charqueue *q);
 
 unsigned charqueue_size(charqueue *q);
