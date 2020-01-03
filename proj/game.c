@@ -953,13 +953,14 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   #endif
 
   if (game_ends) {
-    char * m;
+    char *winner;
     if (current_player == 0) {
-      m = strcat(p1_name, " wins!");
+      winner = p1_name;
     } else {
-      m = strcat(p2_name, " wins!");
+      winner = p2_name;
     }
-    draw_string_centered(m, 14, get_xres()/2, 60, 800, color_palette[0], "");
+    draw_string_centered(winner, strlen(winner), get_xres()/2, 60, 800, color_palette[0], "");
+    draw_string_centered("wins!", 5, get_xres()/2, 120, 800, color_palette[0], "small");
   }
   if (multi_computer) {
     if ((host && (current_player == 1)) || (!host && (current_player == 0))) {

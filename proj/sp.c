@@ -561,7 +561,7 @@ int sp_ih(unsigned com, unsigned com_no) {
 
   util_sys_inb(com + IIR_offset, &iir);
 
-  if(! (iir & IIR_int_status_bitmask) ) {
+  if(!(iir & IIR_int_status_bitmask)) {
     switch( (iir & (IIR_int_origin_bitmask)) >> 1 ) {
       case RECEIVED_DATA: case RECEIVED_DATA_1:  // From extensive testing we realised that received data could be either 010 or 110
         //printf("\n-- COM%d: Received data - %c\n", com_no, c);
