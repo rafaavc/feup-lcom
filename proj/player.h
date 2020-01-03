@@ -48,8 +48,16 @@ int p_get_i(Player * p);
  * @brief set method for Player's name
  * 
  * @param p Player to change name
+ * @param name the name to give the player
  */
 void p_set_name(Player * p, char * name);
+
+/**
+ * @brief get method for Player's name
+ * @param p Player to get name
+ * @return player's name
+ */
+char * p_get_name(Player * p);
 
 /**
  * @brief updates animation frame to next one

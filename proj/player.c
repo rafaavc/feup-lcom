@@ -36,6 +36,9 @@ void p_set_name(Player * p, char * name) {
   (*p).name = name;
 }
 
+char * p_get_name(Player * p) {
+  return (*p).name;
+}
 
 unsigned next_animation_frame(Player *p) {
   (*p).animation_frame++;

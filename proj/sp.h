@@ -56,6 +56,8 @@ void sp_send_character(uint8_t c, bool reverse);
 
 void charqueue_push_end_characters();
 
+void transmit_player_data();
+
 void transmit_string(char * str, uint8_t str_len);
 
 void transmit_mouse_bytes(struct packet * mouse_data, unsigned mouse_xvariance, unsigned mouse_yvariance);

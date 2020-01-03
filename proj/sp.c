@@ -11,7 +11,7 @@
 
 int hook_id_com1 = 0, hook_id_com2 = 0;
 int p1_mouse_xvariance = 400, p1_mouse_yvariance = 300;
-bool p1_mouse_lb = false;
+bool p1_mouse_lb = false, received_player_data = false;
 uint8_t p1_kbd_code = 0;
 
 extern bool host, host_has_been_set, sp_on, connected;
@@ -19,6 +19,9 @@ extern uint8_t irq_com1, irq_com2;
 
 charqueue * transmission_queue = NULL;
 charqueue * reception_queue = NULL;
+extern charqueue * player1_name;
+extern charqueue * player2_name;
+
 
 int (com1_subscribe_int)(uint8_t *bit_no){
   hook_id_com1 = (int) *bit_no; // saves bit_no value
@@ -423,12 +426,38 @@ void transmit_kbd_code(uint8_t kbd_code) {
   }
 }
 
-void transmit_game_event() {
-
-}
-
 void transmit_player_data() {
+  char *str;
+  unsigned str_len;
+  if (host) {
+    str = charqueue_to_string(player1_name);
+  } else {
+    str = charqueue_to_string(player2_name);
+  }
+  str_len = strlen(str);
+  if (charqueue_empty(transmission_queue)) {  // Checking if the transmitter is ready
+    
+    charqueue_push(transmission_queue, str_len);
 
+    for (unsigned i = 0; i < str_len; i++) {
+      charqueue_push(transmission_queue, str[i]);
+    }
+
+    charqueue_push_end_characters();
+
+    sp_send_character('P', false);
+  } else {
+    charqueue_push(transmission_queue, 'P');
+
+    charqueue_push(transmission_queue, str_len);
+
+    for (unsigned i = 0; i < str_len; i++) {
+      charqueue_push(transmission_queue, str[i]);
+    }
+    
+    charqueue_push_end_characters();
+  }
+  free(str);
 }
 
 void charqueue_push_end_characters() {
@@ -438,10 +467,6 @@ void charqueue_push_end_characters() {
 }
 
 void transmit_string(char * str, uint8_t str_len) {
-  unsigned com;
-  if (host) com = COM1;
-  else com = COM2;
-
   if (charqueue_empty(transmission_queue)) {  // Checking if the transmitter is ready
     charqueue_push(transmission_queue, str_len);
     for (unsigned i = 0; i < str_len; i++) {
@@ -497,6 +522,29 @@ int retrieve_info_from_queue() {
     p1_kbd_code = charqueue_pop(reception_queue);
 
     ret = 1;
+  } else if (!received_player_data && charqueue_front(reception_queue) == 'P') {
+    charqueue_pop(reception_queue);
+
+    unsigned char_no = charqueue_pop(reception_queue) + 1;
+
+    char str[char_no];
+    unsigned i = 0;
+
+    while (!charqueue_empty(reception_queue) && i < (char_no-1)) {
+      str[i] = charqueue_pop(reception_queue);
+      i++;
+    }
+    str[i] = '\0';
+    if (host) {
+      for (unsigned i = 0; i < char_no-1; i++) {
+        charqueue_push(player2_name, str[i]);
+      }
+    } else {
+      for (unsigned i = 0; i < char_no-1; i++) {
+        charqueue_push(player1_name, str[i]);
+      }
+    }
+    received_player_data = true;
   }
   
   charqueue_make_empty(reception_queue);
@@ -533,7 +581,6 @@ int sp_ih(unsigned com, unsigned com_no) {
             }
           } else {
             //printf("\n-- COM%d: Received data - %c\n", com_no, c);
-
             charqueue_push(reception_queue, c);
             if (c == '0') {  // '0' is the char that represents that a piece of information has been fully received
               zero_count++;
@@ -545,9 +592,6 @@ int sp_ih(unsigned com, unsigned com_no) {
               zero_count = 0;
             }
           }
-
-          // This line makes sure we receive the next 'received data' interrupt
-          //sp_send_character('b', true);
         }
         break;
       case TRANSMITTER_EMPTY:

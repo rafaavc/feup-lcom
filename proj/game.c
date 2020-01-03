@@ -52,6 +52,7 @@ bool multi_computer = false; // Whether the serial port module is needed
 bool host = false; // Whether this machine is the host, case multi_computer == true
 bool sp_on = false; // Whether the sp is subscribed or not
 bool connected = false;  // Whether the two players are connected~
+extern bool received_player_data;
 
 charqueue * player1_name;
 charqueue * player2_name;
@@ -335,6 +336,7 @@ void draw_player2_prompt() {
 }
 
 void get_letter_input(charqueue * q) {
+  if (enter_key) return;
   if (strlen(charqueue_to_string(q)) == MAX_NAME_SIZE) {
     enter_key = true;
     return;
@@ -936,6 +938,10 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
       break;
     }
   }
+  char * p1_name = p_get_name(players[0]);
+  char * p2_name = p_get_name(players[1]);
+  draw_string(p1_name, strlen(p1_name), 30, 50, 400, color_palette[0], "small");
+  draw_string(p2_name, strlen(p2_name), 770 - (get_string_width_normal(p2_name, strlen(p2_name))/2), 50, 400, color_palette[0], "small");
   
   if (error != 0 && error_timer == 120) {
     error = 0;
@@ -949,9 +955,9 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   if (game_ends) {
     char * m;
     if (current_player == 0) {
-      m = "Player 0 wins!";
+      m = strcat(p1_name, " wins!");
     } else {
-      m = "Player 1 wins!";
+      m = strcat(p2_name, " wins!");
     }
     draw_string_centered(m, 14, get_xres()/2, 60, 800, color_palette[0], "");
   }
@@ -1150,18 +1156,26 @@ int game() {
                 case PLAYER1_PROMPT:
                   draw_player1_prompt();
                   if (enter_key) {
-                      p_set_name(players[0], charqueue_to_string(player1_name));
+                    p_set_name(players[0], charqueue_to_string(player1_name));
+                    transmit_player_data();
+                    if (received_player_data) {
+                      p_set_name(players[1], charqueue_to_string(player2_name));
                       s = GAME;
                       enter_key = false;
+                    }
                   }
                   play_time = 0;
                   break;
                 case PLAYER2_PROMPT:
                   draw_player2_prompt();
                   if (enter_key) {
-                      p_set_name(players[1], charqueue_to_string(player2_name));
+                    p_set_name(players[1], charqueue_to_string(player2_name));
+                    transmit_player_data();
+                    if (received_player_data) {
+                      p_set_name(players[0], charqueue_to_string(player1_name));
                       s = GAME;
                       enter_key = false;
+                    }
                   }
                   play_time = 0;
                   break;
