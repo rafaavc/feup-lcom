@@ -233,6 +233,7 @@ GRAPHICS
 #define WHITE 0xFFFFFF
 #define DIRTY_WHITE 0xC0C0C0
 #define BLACK 0x000000
+#define LESS_BLACK 0x333333
 
 /*
 ---

@@ -11,7 +11,7 @@
 
 int hook_id_com1 = 0, hook_id_com2 = 0;
 int p1_mouse_xvariance = 400, p1_mouse_yvariance = 300;
-bool p1_mouse_lb = false, received_player_data = false;
+bool p1_mouse_lb = false, received_player_data = false, opponent_quit = false;
 uint8_t p1_kbd_code = 0;
 
 extern bool host, host_has_been_set, sp_on, connected;
@@ -486,6 +486,29 @@ void transmit_string(char * str, uint8_t str_len) {
   }
 }
 
+void transmit_critical_event(char * type) {
+  uint8_t value;
+  printf("Transmitting critical event...\n");
+  if (strcmp(type, "disconnect") == 0) {
+    value = 'X';
+  } else {
+    printf("ERROR: Trying to transmit an unrecognisable critical event.\n");
+    return;
+  }
+  if (charqueue_empty(transmission_queue)) {  // Checking if the transmitter is ready
+    charqueue_push(transmission_queue, value);
+
+    charqueue_push_end_characters();
+
+    sp_send_character('C', false);
+  } else {
+    charqueue_push(transmission_queue, 'C');
+    charqueue_push(transmission_queue, value);
+    
+    charqueue_push_end_characters();
+  }
+}
+
 int retrieve_info_from_queue() {
   int ret = 0;
   if (charqueue_front(reception_queue) == 'S') {  // Receiving a string
@@ -522,7 +545,7 @@ int retrieve_info_from_queue() {
     p1_kbd_code = charqueue_pop(reception_queue);
 
     ret = 1;
-  } else if (!received_player_data && charqueue_front(reception_queue) == 'P') {
+  } else if (!received_player_data && charqueue_front(reception_queue) == 'P') {   // Receiving player data
     charqueue_pop(reception_queue);
 
     unsigned char_no = charqueue_pop(reception_queue) + 1;
@@ -545,6 +568,15 @@ int retrieve_info_from_queue() {
       }
     }
     received_player_data = true;
+  } else if (charqueue_front(reception_queue) == 'C') {    // Receiving critical event
+    printf("Received critical event\n");
+    charqueue_pop(reception_queue);
+
+    uint8_t value = charqueue_pop(reception_queue);
+
+    if (value == 'X') {
+      opponent_quit = true;
+    }
   }
   
   charqueue_make_empty(reception_queue);

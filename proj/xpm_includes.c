@@ -107,6 +107,7 @@
 #include "xpms/bb10.xpm"
 #include "xpms/bb11.xpm"
 #include "xpms/bb12.xpm"
+#include "rtc.h"
 
 
 static xpm_image_t background;
@@ -118,6 +119,7 @@ static xpm_image_t mouse_secondary;
 static xpm_image_t alphabet[73];
 static xpm_image_t red_ball_animation[12];
 static xpm_image_t blue_ball_animation[12];
+extern bool dark_mode;
 
 void load_pixmaps() {
     xpm_load(background_xpm, XPM_8_8_8, &background);
@@ -229,16 +231,28 @@ void load_pixmaps() {
 }
 
 xpm_image_t get_background() { 
-    return background; 
+    if (dark_mode) {
+        return background; 
+    } else {
+        return background1;
+    }
 }
 
-xpm_image_t get_background1(){
-    return background1;
+xpm_image_t get_block() { 
+    if (dark_mode) {
+        return block; 
+    } else {
+        return block;
+    }
 }
 
-xpm_image_t get_block() { return block; }
-
-xpm_image_t get_block1() { return block1; }
+xpm_image_t get_block1() { 
+    if (dark_mode) {
+        return block1; 
+    } else {
+        return block1;
+    }
+}
 
 xpm_image_t get_mouse_simple() { return mouse_simple; }
 

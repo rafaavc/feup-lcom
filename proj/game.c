@@ -19,7 +19,7 @@
 
 extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[], p1_kbd_code;
 extern int mouse_xvariance, mouse_yvariance, hook_id_mouse, p1_mouse_xvariance, p1_mouse_yvariance;
-extern bool p1_mouse_lb;
+extern bool p1_mouse_lb, opponent_quit;
 
 uint8_t irq_com1 = 0, irq_com2 = 5;
 
@@ -46,6 +46,11 @@ enum Event current_event = NO_EVENT;
 
                     //      text    text_over   other    (Will make it easier to change all colors to dark/light theme)
 uint32_t color_palette[] = {WHITE, DIRTY_WHITE, BLACK};
+uint32_t color_palette_dark[] = {WHITE, DIRTY_WHITE, BLACK};
+uint32_t color_palette_light[] = {BLACK, LESS_BLACK, WHITE};
+
+// RTC
+extern bool dark_mode;
 
 // Serial port variables
 bool multi_computer = false; // Whether the serial port module is needed
@@ -96,7 +101,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       current_event = NO_EVENT;
       break;
     case START_GAME_NO_SP:
-      *s = GAME;
+      *s = PLAYER1_PROMPT;
       play_time = 0, timer_counter_play = 0;
       current_event = NO_EVENT;
       multi_computer = false;
@@ -317,7 +322,11 @@ void draw_player1_prompt() {
   draw_string_centered("Player 1", 8, get_xres()/2, 150, 800, color_palette[0], "");
   draw_string_centered("Insert your name:", 17, get_xres()/2, 250, 800, color_palette[0], "small");
   
-  draw_string_input(get_xres()/2, 400, color_palette[0], player1_name);
+  draw_string_input(get_xres()/2, 370, color_palette[0], player1_name);
+
+  if (enter_key) {
+    draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
+  }
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -329,7 +338,11 @@ void draw_player2_prompt() {
   draw_string_centered("Player 2", 8, get_xres()/2, 150, 800, color_palette[0], "");
   draw_string_centered("Insert your name:", 17, get_xres()/2, 250, 800, color_palette[0], "small");
   
-  draw_string_input(get_xres()/2, 400, color_palette[0], player2_name);
+  draw_string_input(get_xres()/2, 370, color_palette[0], player2_name);
+
+  if (enter_key) {
+    draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
+  }
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -421,7 +434,6 @@ void get_letter_input(charqueue * q) {
       charqueue_push(q, 'Z');
       break;
     case BACKSPACE_break:
-      printf("Removed last");
       charqueue_remove_last(q);
       break;
     case ENTER_break:
@@ -448,6 +460,7 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       }
     case PAUSE:
       if (kbd_code == ESC_break) {
+        //transmit_critical_event("disconnect");
         current_event = END_GAME;
       }
       break;
@@ -458,7 +471,7 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       break;
     case CHOOSING_HOST:
       if (kbd_code == ESC_break) {
-        current_event = END_GAME;
+        current_event = OPEN_MAIN_MENU;
       } else if (kbd_code == K1_break) {
         host = true;
         current_event = CONNECT_SP;
@@ -519,7 +532,7 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
             move_count++;
             only_one_move = true;
           }
-        } 
+        }
       } else {
         if (kbd_code == ESC_break) {
           current_event = PAUSE_GAME;
@@ -821,6 +834,17 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
     } else {
       current_player = 0;
     }
+  } else if (opponent_quit) {
+    game_ends = true;
+    blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
+    blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
+    blocks_to_move[1][0] = DEFAULT_BLOCK_COORDINATE;
+    blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
+    if (!host){
+      current_player = 1;
+    } else {
+      current_player = 0;
+    }
   } else {
     if (move_count == 2) {
       if (*s == GAME_BLOCKS_MOVED) {
@@ -963,6 +987,9 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     draw_string_centered("wins!", 5, get_xres()/2, 120, 800, color_palette[0], "small");
   }
   if (multi_computer) {
+    if (opponent_quit) {
+      draw_string_centered("Opponent disconnected", 21, get_xres()/2, 570, 800, color_palette[0], "small");
+    }
     if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
       draw_pixmap(get_mouse_secondary(), p1_mouse_xvariance, p1_mouse_yvariance, false, PREDEF_COLOR, "");
     }
@@ -1049,6 +1076,12 @@ int game() {
   clear_game(tiles, tile_no, players, board);
 
   //print_game_board(board);
+
+  if (!dark_mode) {
+    for (unsigned i = 0; i < 3; i++) {
+      color_palette[i] = color_palette_light[i];
+    }
+  }
 
   /* Interrupt loop */
   while (on)
@@ -1158,10 +1191,15 @@ int game() {
                   draw_player1_prompt();
                   if (enter_key) {
                     p_set_name(players[0], charqueue_to_string(player1_name));
-                    transmit_player_data();
-                    if (received_player_data) {
-                      p_set_name(players[1], charqueue_to_string(player2_name));
-                      s = GAME;
+                    if (multi_computer) {
+                      transmit_player_data();
+                      if (received_player_data) {
+                        p_set_name(players[1], charqueue_to_string(player2_name));
+                        s = GAME;
+                        enter_key = false;
+                      }
+                    } else {
+                      s = PLAYER2_PROMPT;
                       enter_key = false;
                     }
                   }
@@ -1171,9 +1209,14 @@ int game() {
                   draw_player2_prompt();
                   if (enter_key) {
                     p_set_name(players[1], charqueue_to_string(player2_name));
-                    transmit_player_data();
-                    if (received_player_data) {
-                      p_set_name(players[0], charqueue_to_string(player1_name));
+                    if (multi_computer) {
+                      transmit_player_data();
+                      if (received_player_data) {
+                        p_set_name(players[0], charqueue_to_string(player1_name));
+                        s = GAME;
+                        enter_key = false;
+                      }
+                    } else {
                       s = GAME;
                       enter_key = false;
                     }

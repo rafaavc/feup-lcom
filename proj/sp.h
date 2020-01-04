@@ -62,6 +62,8 @@ void transmit_string(char * str, uint8_t str_len);
 
 void transmit_mouse_bytes(struct packet * mouse_data, unsigned mouse_xvariance, unsigned mouse_yvariance);
 
+void transmit_critical_event(char * type);
+
 void transmit_kbd_code(uint8_t kbd_code);
 
 int retrieve_info_from_queue();
