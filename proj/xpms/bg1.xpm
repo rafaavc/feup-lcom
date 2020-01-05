@@ -1,5 +1,5 @@
 /* XPM */
-static xpm_row_t background1_xpm[] = {
+static xpm_row_t bg1_xpm[] = {
 /* columns rows colors chars-per-pixel */
 "800 600 256 2 ",
 "   c #2E3131",

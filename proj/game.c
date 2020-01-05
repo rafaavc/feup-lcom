@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <lcom/lcf.h>
 #include <minix/driver.h>
-#include <sys/mman.h>
+#include <sys/mman.h> 
 #include <stddef.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -34,6 +34,8 @@ MouseTrigger * mouse_triggers_pause[3];
 MouseTrigger * mouse_triggers_choosing_menu[3];
 MouseTrigger * mouse_triggers_tutorial[1];
 MouseTrigger * mouse_triggers_game[3] = {NULL, NULL, NULL}; // The 0 position will be the pause button, the rest the block(s) that need to be moved
+
+Player * main_menu_animated_ball;
 
 unsigned error = 0, error_timer = 0, play_time = 0, timer_counter_play = 0;
 unsigned paused_time[2];  // holds at 0 the seconds that the counter has before the game being paused and at 1 the timer ticks that it was at
@@ -221,11 +223,22 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
 void draw_main_menu() {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
-  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[0], false, START_CHOOSING_MODE, "Start Game", 10, get_xres()/2, 200, 800, PREDEF_COLOR, PREDEF_COLOR, "");
+  uint32_t logo_color = WHITE;
+  if (!dark_mode) {
+    logo_color = BLACK;
+  }
+  draw_pixmap(get_logo(), get_xres()/2 - 230, 55, false, logo_color, "");
 
-  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[1], false, OPEN_TUTORIAL, "Tutorial", 8, get_xres()/2, 275, 800, PREDEF_COLOR, PREDEF_COLOR, "");
+  unsigned block_ball_posx = get_xres()/2 + 150;
+  unsigned block_ball_posy = 130;
+  draw_pixmap(get_block(), block_ball_posx, block_ball_posy, false, PREDEF_COLOR, "");
+  draw_player_custom(main_menu_animated_ball, block_ball_posx + 14, block_ball_posy - 45);
 
-  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[2], true, QUIT_GAME, "Quit", 4, get_xres()/2, 350, 800, PREDEF_COLOR, PREDEF_COLOR, "");
+  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[0], false, START_CHOOSING_MODE, "Start Game", 10, get_xres()/2, 275, 800, PREDEF_COLOR, PREDEF_COLOR, "");
+
+  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[1], false, OPEN_TUTORIAL, "Help", 4, get_xres()/2, 350, 800, PREDEF_COLOR, PREDEF_COLOR, "");
+
+  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[2], true, QUIT_GAME, "Quit", 4, get_xres()/2, 500, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -234,7 +247,22 @@ void draw_main_menu() {
 void draw_tutorial() {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
-  draw_string_centered("TUTORIAL", 8, get_xres()/2, 30, 800, color_palette[0], "");
+  draw_string_centered("HELP", 4, get_xres()/2, 30, 800, color_palette[0], "");
+
+  draw_string_centered("In game, use WASD to move your character. You have two moves.", 61, get_xres()/2, 120, 800, color_palette[0], "smaller");
+  
+  draw_pixmap(get_wasd(), get_xres()/2 - 60, 155, false, PREDEF_COLOR, "");
+
+  draw_string_centered("If you only want to move once, press ENTER after the first movement.", 68, get_xres()/2, 290, 800, color_palette[0], "smaller");
+  draw_string_centered("After you make your move(s),", 28, get_xres()/2, 320, 800, color_palette[0], "smaller");
+  draw_string_centered("you need to move the tiles you went over to a position that suits your strategy.", 80, get_xres()/2, 350, 800, color_palette[0], "smaller");
+  draw_string_centered("Press ESC to pause the game.", 28, get_xres()/2, 380, 800, color_palette[0], "smaller");
+
+  draw_string_centered("The objective of the game is to get at the same position as your opponent,", 74, get_xres()/2, 440, 800, color_palette[0], "smaller");
+  draw_string_centered("of course without letting him get to your position first.", 57, get_xres()/2, 470, 800, color_palette[0], "smaller");
+   
+  
+
 
   draw_text_button(&added_mouse_events_tutorial, &mouse_triggers_tutorial[0], true, OPEN_MAIN_MENU, "Return", 6, get_xres()/2, get_yres()-70, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
@@ -911,6 +939,8 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
 void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[], enum State *s) {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
+  draw_pixmap(get_wasd(), 50, get_yres()-110, false, PREDEF_COLOR, "small");
+
   for (unsigned i = 0; i < BOARD_SIZE; i++) {
     for (unsigned j = 0; j < BOARD_SIZE; j++) {
       if (board[i][j] != -1) {
@@ -1014,8 +1044,8 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     } else {
       winner = p2_name;
     }
-    draw_string_centered(winner, strlen(winner), get_xres()/2, 60, 800, color_palette[0], "");
-    draw_string_centered("wins!", 5, get_xres()/2, 120, 800, color_palette[0], "small");
+    draw_string_centered(winner, strlen(winner), get_xres()/2, 80, 800, color_palette[0], "");
+    draw_string_centered("wins!", 5, get_xres()/2, 140, 800, color_palette[0], "small");
   }
   if (multi_computer) {
     if (opponent_quit) {
@@ -1098,6 +1128,7 @@ int game() {
   int board[BOARD_SIZE][BOARD_SIZE]; // Each of the board's positions will hold either -1 or the position of the tile in the tiles array that occupies the position
 
   Player * players[2];
+  main_menu_animated_ball = create_player(0, 0, get_blue_ball_animation(), 0);
 
   // Initializing state machine
   enum State s; 

@@ -6,14 +6,19 @@
 void load_pixmaps();
 
 /**
+ * @brief get method for logo xpm
+ */
+xpm_image_t get_logo();
+
+/**
  * @brief get method for the day background xpm
  */
 xpm_image_t get_background();
 
 /**
- * @brief get method for the night background xpm
+ * @brief get method for the wasd pad xpm
  */
-xpm_image_t get_background1();
+xpm_image_t get_wasd();
 
 /**
  * @brief get method for a game's block

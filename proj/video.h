@@ -54,7 +54,7 @@ void draw_rectangle(uint16_t x, uint16_t y, uint16_t height, uint16_t width, uin
  * @param x x position of the initial pixel
  * @param y y position of the initial pixel
  * @param centered if the xpm is centered or not
- * @param color color of the pixel
+ * @param color color of the pixel if different from PREDEF_COLOR, will draw the xpm with every pixel of color 'color'
  * @param size size of the xpm. Can be "" (normal), "small" or "smaller"
  */
 void draw_pixmap(xpm_image_t xpm, uint16_t x, uint16_t y, bool centered, uint32_t color, char * size);

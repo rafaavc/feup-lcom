@@ -76,6 +76,15 @@ unsigned next_animation_frame(Player *p);
 void draw_player(Player *p);
 
 /**
+ * @brief draws player in custom x and y coordinates
+ * 
+ * @param p Player to draw 
+ * @param x coordinate x to draw player in
+ * @param y coordinate y to draw player in
+ */
+void draw_player_custom(Player *p, unsigned x, unsigned y);
+
+/**
  * @brief move the player on any directon
  * 
  * @param p Player to move

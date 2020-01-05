@@ -4,9 +4,13 @@
 #include <stdio.h>
 #include <minix/driver.h>
 #include <sys/mman.h>
+#include "xpms/logo.xpm"
 #include "xpms/bg.xpm"
 #include "xpms/bg1.xpm"
+#include "xpms/wasd_pad_white.xpm"
+#include "xpms/wasd_pad_black.xpm"
 #include "xpms/block.xpm"
+#include "xpms/block_light.xpm"
 #include "xpms/block1.xpm"
 #include "xpms/cursor_simple.xpm"
 #include "xpms/cursor_secondary.xpm"
@@ -109,10 +113,13 @@
 #include "xpms/bb12.xpm"
 #include "rtc.h"
 
-
+static xpm_image_t logo;
 static xpm_image_t background;
 static xpm_image_t background1;
+static xpm_image_t wasd_light;
+static xpm_image_t wasd_dark;
 static xpm_image_t block;
+static xpm_image_t block_light;
 static xpm_image_t block1;
 static xpm_image_t mouse_simple;
 static xpm_image_t mouse_secondary;
@@ -122,9 +129,13 @@ static xpm_image_t blue_ball_animation[12];
 extern bool dark_mode;
 
 void load_pixmaps() {
+    xpm_load(logo_xpm, XPM_8_8_8, &logo);
     xpm_load(background_xpm, XPM_8_8_8, &background);
-    xpm_load(background1_xpm, XPM_8_8_8, &background1);
+    xpm_load(bg1_xpm, XPM_8_8_8, &background1);
+    xpm_load(wasd_pad_white_xpm, XPM_8_8_8, &wasd_light);
+    xpm_load(wasd_pad_black_xpm, XPM_8_8_8, &wasd_dark);
     xpm_load(block_xpm, XPM_8_8_8, &block);
+    xpm_load(block_light_xpm, XPM_8_8_8, &block_light);
     xpm_load(block1_xpm, XPM_8_8_8, &block1);
     xpm_load(cursor_simple_xpm, XPM_8_8_8, &mouse_simple);
     xpm_load(cursor_secondary_xpm, XPM_8_8_8, &mouse_secondary);
@@ -230,6 +241,10 @@ void load_pixmaps() {
     xpm_load(bb12_xpm, XPM_8_8_8, &blue_ball_animation[11]);
 }
 
+xpm_image_t get_logo() {
+    return logo;
+} 
+
 xpm_image_t get_background() { 
     if (dark_mode) {
         return background; 
@@ -238,11 +253,19 @@ xpm_image_t get_background() {
     }
 }
 
+xpm_image_t get_wasd() { 
+    if (dark_mode) {
+        return wasd_light; 
+    } else {
+        return wasd_dark;
+    }
+}
+
 xpm_image_t get_block() { 
     if (dark_mode) {
         return block; 
     } else {
-        return block;
+        return block_light;
     }
 }
 

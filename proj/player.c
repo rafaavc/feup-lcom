@@ -84,7 +84,15 @@ void draw_player(Player *p) {
   (*p).counter++;
 }
 
+void draw_player_custom(Player *p, unsigned x, unsigned y) {
+  unsigned frame = (*p).animation_frame;
 
+  if ((*p).counter % 4 == 0) // Changes frame at every 4 frames
+    frame = next_animation_frame(p);
+
+  draw_pixmap((*p).animation_idle[frame], x, y, false, PREDEF_COLOR, "");
+  (*p).counter++;
+}
 
 bool move(Player *p, char direction, int board[BOARD_SIZE][BOARD_SIZE]) {
   //unsigned speed = 2;
