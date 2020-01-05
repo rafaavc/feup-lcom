@@ -488,9 +488,12 @@ void transmit_string(char * str, uint8_t str_len) {
 
 void transmit_critical_event(char * type) {
   uint8_t value;
-  printf("Transmitting critical event...\n");
   if (strcmp(type, "disconnect") == 0) {
     value = 'X';
+  } else if (strcmp(type, "pause_game") == 0) {
+    value = 'P';
+  } else if (strcmp(type, "resume_game") == 0) {
+    value = 'R';
   } else {
     printf("ERROR: Trying to transmit an unrecognisable critical event.\n");
     return;
@@ -510,6 +513,12 @@ void transmit_critical_event(char * type) {
 }
 
 int retrieve_info_from_queue() {
+  /*
+    ret = 1 -> kbd code
+    ret = 2 -> mouse code
+    ret = 3 -> pause game
+    ret = 4 -> resume game
+  */
   int ret = 0;
   if (charqueue_front(reception_queue) == 'S') {  // Receiving a string
     charqueue_pop(reception_queue);
@@ -576,6 +585,10 @@ int retrieve_info_from_queue() {
 
     if (value == 'X') {
       opponent_quit = true;
+    } else if (value == 'R') {
+      ret = 4;
+    } else if (value == 'P') {
+      ret = 3;
     }
   }
   

@@ -28,10 +28,10 @@ unsigned grid_height = 23, grid_width = 37, current_player = 0, move_count = 0; 
 
 bool on = true, added_mouse_events_main_menu = false, added_mouse_events_pause = false, added_mouse_events_tutorial = false, added_mouse_events_choosing_menu = false, game_ends = false;
 
-const unsigned triggers_mm_no = 3, triggers_p_no = 3, triggers_t_no = 1, triggers_g_no = 3, triggers_cm_no = 3;
+const unsigned triggers_mm_no = 3, triggers_p_no = 2, triggers_t_no = 1, triggers_g_no = 3, triggers_cm_no = 3;
 
 MouseTrigger * mouse_triggers_main_menu[3];
-MouseTrigger * mouse_triggers_pause[3];
+MouseTrigger * mouse_triggers_pause[2];
 MouseTrigger * mouse_triggers_choosing_menu[3];
 MouseTrigger * mouse_triggers_tutorial[1];
 MouseTrigger * mouse_triggers_game[3] = {NULL, NULL, NULL}; // The 0 position will be the pause button, the rest the block(s) that need to be moved
@@ -61,6 +61,7 @@ bool host = false; // Whether this machine is the host, case multi_computer == t
 bool sp_on = false; // Whether the sp is subscribed or not
 bool connected = false;  // Whether the two players are connected~
 extern bool received_player_data;
+bool sp_used = false;
 
 charqueue * player1_name;
 charqueue * player2_name;
@@ -111,11 +112,23 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       break;
     case START_GAME_SP:
       *s = CHOOSING_HOST;
-      current_event = NO_EVENT;
       multi_computer = true;
+      current_event = NO_EVENT;
+      break;
+    case RESUME_GAME:
+      *s = GAME;
+      current_event = NO_EVENT;
+      play_time = paused_time[0];
+      timer_counter_play = paused_time[1];
+      if (multi_computer) {
+        transmit_critical_event("resume_game");
+      }
       break;
     case CONNECT_SP:
-      sp_init();
+      if (!sp_on) {
+        sp_init();
+        sp_used = true;
+      }
       sp_send_character('a', false);
       *s = WAITING_FOR_CONNECTION;
       current_event = NO_EVENT;
@@ -125,10 +138,6 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       free_allocated_memory(tiles, tile_no, players);
       on = false;
       current_event = NO_EVENT;
-      if (multi_computer) {
-        sp_terminate();
-        multi_computer = false;
-      }
       break;
     case OPEN_TUTORIAL:
       *s = TUTORIAL;
@@ -138,19 +147,24 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       clear_game(tiles, tile_no, players, board);
       *s = MAIN_MENU;
       current_event = NO_EVENT;
-      sp_on = false;
-      if (multi_computer) {
+      if (sp_on) {
         sp_terminate();
-        multi_computer = false;
       }
+      multi_computer = false;
+      connected = false;
       break;
     case OPEN_MAIN_MENU:
       *s = MAIN_MENU;
       current_event = NO_EVENT;
       break;
     case PAUSE_GAME:
+      if (multi_computer) {
+        transmit_critical_event("pause_game");
+      }
       *s = PAUSE;
       current_event = NO_EVENT;
+      paused_time[0] = play_time;
+      paused_time[1] = timer_counter_play;
       break;
     case PLAYER_MOVE_W:
       prev_i = p_get_i(players[current_player]);
@@ -276,13 +290,11 @@ void draw_pause_menu() {
 
   draw_string_centered("PAUSED", 6, get_xres()/2, 150, 800, color_palette[0], "");
   if (multi_computer)
-    draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[0], false, START_GAME_SP, "Resume Game", 11, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+    draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[0], false, RESUME_GAME, "Resume Game", 11, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
   else
-    draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[0], false, START_GAME_NO_SP, "Resume Game", 11, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+    draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[0], false, RESUME_GAME, "Resume Game", 11, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
-  draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[1], false, END_GAME, "End Game", 8, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-
-  draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[2], true, QUIT_GAME, "Quit", 4, get_xres()/2, 360, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[1], true, END_GAME, "End Game", 8, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -295,8 +307,11 @@ void draw_choosing_mode_menu() {
 
   draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[0], false, START_GAME_NO_SP, "Multiplayer on this computer", 28, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
-  draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[1], false, START_GAME_SP, "Multiplayer on two computers", 28, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
-
+  if (!sp_used) {
+    draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[1], false, START_GAME_SP, "Multiplayer on two computers", 28, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  } else {
+    draw_string_centered("If you want to play on two computers again, please reload the game.", 67, get_xres()/2, 327, 800, color_palette[0], "smaller");
+  }
   draw_text_button(&added_mouse_events_choosing_menu, &mouse_triggers_choosing_menu[2], true, END_GAME, "Return", 6, get_xres()/2, 360, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
@@ -353,7 +368,7 @@ void draw_player1_prompt() {
   
   draw_string_input(get_xres()/2, 370, color_palette[0], player1_name);
 
-  if (enter_key) {
+  if (enter_key && multi_computer) {
     draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
   }
 
@@ -369,7 +384,7 @@ void draw_player2_prompt() {
   
   draw_string_input(get_xres()/2, 370, color_palette[0], player2_name);
 
-  if (enter_key) {
+  if (enter_key && multi_computer) {
     draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
   }
 
@@ -1190,6 +1205,18 @@ int game() {
                     handle_mouse_events(&s, &mouse_data, board, tiles);
                     execute_event(&s, tiles, tile_no, players, board);
                     break;
+                  case 3:
+                    if (s != PAUSE) {
+                      current_event = PAUSE_GAME;
+                      execute_event(&s, tiles, tile_no, players, board);
+                    }
+                    break;
+                  case 4:
+                    if (s != GAME) {
+                      current_event = RESUME_GAME;
+                      execute_event(&s, tiles, tile_no, players, board);
+                    }
+                    break;
                   default:
                     break;
                 }
@@ -1208,6 +1235,14 @@ int game() {
                     break;
                   case 2:
                     handle_mouse_events(&s, &mouse_data, board, tiles);
+                    execute_event(&s, tiles, tile_no, players, board);
+                    break;
+                  case 3:
+                    current_event = PAUSE_GAME;
+                    execute_event(&s, tiles, tile_no, players, board);
+                    break;
+                  case 4:
+                    current_event = RESUME_GAME;
                     execute_event(&s, tiles, tile_no, players, board);
                     break;
                   default:

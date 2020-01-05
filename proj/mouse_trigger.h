@@ -9,6 +9,7 @@ enum Event {
     CONNECT_SP,         /**< Change game to connecting serial port */
     QUIT_GAME,          /**< Quit game */
     PAUSE_GAME,         /**< Pause game */
+    RESUME_GAME,        /**< Resume game */
     OPEN_TUTORIAL,      /**< Open tutorial */
     END_GAME,           /**< End game and return to main menu */
     OPEN_MAIN_MENU,     /**< Open main menu */
