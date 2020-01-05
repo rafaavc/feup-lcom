@@ -20,6 +20,7 @@
 extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[], p1_kbd_code;
 extern int mouse_xvariance, mouse_yvariance, hook_id_mouse, p1_mouse_xvariance, p1_mouse_yvariance;
 extern bool p1_mouse_lb, opponent_quit;
+bool mouse_lb_pressed = false;
 
 uint8_t irq_com1 = 0, irq_com2 = 5;
 
@@ -607,6 +608,9 @@ void change_tile_position(int i1, int j1, int board[BOARD_SIZE][BOARD_SIZE], Til
 
 void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]) {
   unsigned n;
+  if (!mouse_data->lb) {
+    mouse_lb_pressed = false;
+  } 
   switch (*s) {
     case MAIN_MENU:
       for (unsigned i = 0; i < triggers_mm_no; i++) {
@@ -615,7 +619,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
           break;
         }
       }
-      if (mouse_data->lb) {
+      if (mouse_data->lb && !mouse_lb_pressed) {
         for (unsigned i = 0; i < triggers_mm_no; i++) {
           if (check_mouse_overlap(mouse_triggers_main_menu[i])) {
             current_event = mt_get_event(mouse_triggers_main_menu[i]);
@@ -633,7 +637,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
           break;
         }
       }
-      if (mouse_data->lb) {
+      if (mouse_data->lb && !mouse_lb_pressed) {
         for (unsigned i = 0; i < triggers_t_no; i++) {
           if (check_mouse_overlap(mouse_triggers_tutorial[i])) {
             current_event = mt_get_event(mouse_triggers_tutorial[i]);
@@ -649,7 +653,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
           break;
         }
       }
-      if (mouse_data->lb) {
+      if (mouse_data->lb && !mouse_lb_pressed) {
         for (unsigned i = 0; i < triggers_p_no; i++) {
           if (check_mouse_overlap(mouse_triggers_pause[i])) {
             current_event = mt_get_event(mouse_triggers_pause[i]);
@@ -667,7 +671,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
           break;
         }
       }
-      if (mouse_data->lb) {
+      if (mouse_data->lb && !mouse_lb_pressed) {
         for (unsigned i = 0; i < triggers_cm_no; i++) {
           if (check_mouse_overlap(mouse_triggers_choosing_menu[i])) {
             current_event = mt_get_event(mouse_triggers_choosing_menu[i]);
@@ -681,7 +685,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
       if (only_one_move) {
         n--;
       }
-      if (multi_computer) {
+      if (multi_computer && !mouse_lb_pressed) {
         if ((host && (current_player == 0)) || (!host && (current_player == 1))) {
           if (mouse_data->lb) {
             for (unsigned i = 1; i < n; i++) {
@@ -754,7 +758,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
           }
         }
       } else {
-        if (mouse_data->lb) {
+        if (mouse_data->lb && !mouse_lb_pressed) {
           for (unsigned i = 1; i < n; i++) {
             if (check_mouse_overlap(mouse_triggers_game[i])) {
               if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
@@ -792,6 +796,9 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
       break;
     default:
       break;
+  }
+  if (mouse_data->lb) {
+    mouse_lb_pressed = true;
   }
 }
 
