@@ -125,7 +125,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       current_event = NO_EVENT;
       play_time = paused_time[0];
       timer_counter_play = paused_time[1];
-      if (multi_computer && !opponent_quit) {
+      if (multi_computer && !opponent_quit && !turn_off) {
         transmit_critical_event("resume_game");
       }
       break;
@@ -164,7 +164,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       current_event = NO_EVENT;
       break;
     case PAUSE_GAME:
-      if (multi_computer && !opponent_quit) {
+      if (multi_computer && !opponent_quit && !turn_off) {
         transmit_critical_event("pause_game");
       }
       *s = PAUSE;
@@ -523,7 +523,6 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
       }
     case PAUSE:
       if (kbd_code == ESC_break) {
-        //transmit_critical_event("disconnect");
         current_event = END_GAME;
       }
       break;
@@ -1092,9 +1091,10 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   if (multi_computer) {
     if (opponent_quit) {
       draw_string_centered("Opponent disconnected", 21, get_xres()/2, 500, 800, color_palette[0], "small");
-    }
-    if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
-      draw_pixmap(get_mouse_secondary(), p1_mouse_xvariance, p1_mouse_yvariance, false, PREDEF_COLOR, "");
+    } else {
+      if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
+        draw_pixmap(get_mouse_secondary(), p1_mouse_xvariance, p1_mouse_yvariance, false, PREDEF_COLOR, "");
+      }
     }
   }
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
@@ -1205,7 +1205,7 @@ int game() {
           if (msg.m_notify.interrupts & irq_kbd)
           {
             kbc_ih();
-            if (!opponent_quit && sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
+            if (!opponent_quit && !turn_off && sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
               transmit_kbd_code(kbd_code);
             }
             handle_keyboard_events(&s, players);
@@ -1331,7 +1331,7 @@ int game() {
                   if (enter_key) {
                     p_set_name(players[0], charqueue_to_string(player1_name));
                     if (multi_computer) {
-                      if (!opponent_quit) {
+                      if (!opponent_quit && !turn_off) {
                         transmit_player_data();
                       }
                       if (received_player_data) {
@@ -1351,7 +1351,7 @@ int game() {
                   if (enter_key) {
                     p_set_name(players[1], charqueue_to_string(player2_name));
                     if (multi_computer) {
-                      if (!opponent_quit) {
+                      if (!opponent_quit && !turn_off) {
                         transmit_player_data();
                       }
                       if (received_player_data) {
@@ -1392,7 +1392,7 @@ int game() {
               mouse_data.bytes[2] = mouse_code;
               parse_packet(&mouse_data, true);
               byte_counter = 0;
-              if (!opponent_quit && sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
+              if (!opponent_quit && !turn_off && sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
                 transmit_mouse_bytes(&mouse_data, mouse_xvariance, mouse_yvariance);
               }      
               handle_mouse_events(&s, &mouse_data, board, tiles);
