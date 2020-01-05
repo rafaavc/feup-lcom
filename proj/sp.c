@@ -489,7 +489,7 @@ void transmit_string(char * str, uint8_t str_len) {
 void transmit_critical_event(char * type) {
   uint8_t value;
   if (strcmp(type, "disconnect") == 0) {
-    value = 'X';
+    value = 'D';
   } else if (strcmp(type, "pause_game") == 0) {
     value = 'P';
   } else if (strcmp(type, "resume_game") == 0) {
@@ -510,6 +510,7 @@ void transmit_critical_event(char * type) {
     
     charqueue_push_end_characters();
   }
+  printf("transmitted %s\n", type);
 }
 
 int retrieve_info_from_queue() {
@@ -578,12 +579,12 @@ int retrieve_info_from_queue() {
     }
     received_player_data = true;
   } else if (charqueue_front(reception_queue) == 'C') {    // Receiving critical event
-    printf("Received critical event\n");
     charqueue_pop(reception_queue);
 
     uint8_t value = charqueue_pop(reception_queue);
+    printf("Received critical event %c\n", value);
 
-    if (value == 'X') {
+    if (value == 'D') {
       opponent_quit = true;
     } else if (value == 'R') {
       ret = 4;

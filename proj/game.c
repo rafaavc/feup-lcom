@@ -41,6 +41,11 @@ Player * main_menu_animated_ball;
 unsigned error = 0, error_timer = 0, play_time = 0, timer_counter_play = 0;
 unsigned paused_time[2];  // holds at 0 the seconds that the counter has before the game being paused and at 1 the timer ticks that it was at
 
+// When the player disconnects during serial port mode, delay is needed so we can send the command to the opponent
+unsigned turn_off_delay_time_count = 0;
+bool turn_off = false;
+
+
 int blocks_to_move[2][2] = {{DEFAULT_BLOCK_COORDINATE, DEFAULT_BLOCK_COORDINATE}, {DEFAULT_BLOCK_COORDINATE, DEFAULT_BLOCK_COORDINATE}};  // blocks_to_move will hold the coordinates of the blocks that need to be moved ([[i, j], [i1, j1]])
 Tile * t_being_dragged = NULL;
 bool only_one_move = false; unsigned tile_move_count = 0;
@@ -56,12 +61,12 @@ uint32_t color_palette_light[] = {BLACK, LESS_BLACK, WHITE};
 extern bool dark_mode;
 
 // Serial port variables
-bool multi_computer = false; // Whether the serial port module is needed
+bool multi_computer = false; // Whether playing serial port mode or not
 bool host = false; // Whether this machine is the host, case multi_computer == true
 bool sp_on = false; // Whether the sp is subscribed or not
-bool connected = false;  // Whether the two players are connected~
-extern bool received_player_data;
-bool sp_used = false;
+bool connected = false;  // Whether the two players are connected
+extern bool received_player_data;   // whether this pc has received data from the other player
+bool sp_used = false;   // Whether the serial port was used during this instance of the app
 
 charqueue * player1_name;
 charqueue * player2_name;
@@ -120,7 +125,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       current_event = NO_EVENT;
       play_time = paused_time[0];
       timer_counter_play = paused_time[1];
-      if (multi_computer) {
+      if (multi_computer && !opponent_quit) {
         transmit_critical_event("resume_game");
       }
       break;
@@ -148,17 +153,18 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       *s = MAIN_MENU;
       current_event = NO_EVENT;
       if (sp_on) {
-        sp_terminate();
+        turn_off = true;
+        if (!opponent_quit) {
+          transmit_critical_event("disconnect");
+        }
       }
-      multi_computer = false;
-      connected = false;
       break;
     case OPEN_MAIN_MENU:
       *s = MAIN_MENU;
       current_event = NO_EVENT;
       break;
     case PAUSE_GAME:
-      if (multi_computer) {
+      if (multi_computer && !opponent_quit) {
         transmit_critical_event("pause_game");
       }
       *s = PAUSE;
@@ -275,9 +281,6 @@ void draw_tutorial() {
 
   draw_string_centered("The objective of the game is to get at the same position as your opponent,", 74, get_xres()/2, 440, 800, color_palette[0], "smaller");
   draw_string_centered("of course without letting him get to your position first.", 57, get_xres()/2, 470, 800, color_palette[0], "smaller");
-   
-  
-
 
   draw_text_button(&added_mouse_events_tutorial, &mouse_triggers_tutorial[0], true, OPEN_MAIN_MENU, "Return", 6, get_xres()/2, get_yres()-70, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
@@ -295,6 +298,12 @@ void draw_pause_menu() {
     draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[0], false, RESUME_GAME, "Resume Game", 11, get_xres()/2, 280, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
   draw_text_button(&added_mouse_events_pause, &mouse_triggers_pause[1], true, END_GAME, "End Game", 8, get_xres()/2, 320, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  
+  if (multi_computer) {
+    if (opponent_quit) {
+      draw_string_centered("Opponent disconnected", 21, get_xres()/2, 500, 800, color_palette[0], "small");
+    }
+  }
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -368,8 +377,13 @@ void draw_player1_prompt() {
   
   draw_string_input(get_xres()/2, 370, color_palette[0], player1_name);
 
-  if (enter_key && multi_computer) {
-    draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
+  if (multi_computer) {
+    if (enter_key) {
+      draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
+    }
+    if (opponent_quit) {
+      draw_string_centered("Opponent disconnected", 21, get_xres()/2, 550, 800, color_palette[0], "small");
+    }
   }
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
@@ -384,8 +398,13 @@ void draw_player2_prompt() {
   
   draw_string_input(get_xres()/2, 370, color_palette[0], player2_name);
 
-  if (enter_key && multi_computer) {
-    draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
+  if (multi_computer) {
+    if (enter_key) {
+      draw_string_centered("Waiting for opponent...", 23, get_xres()/2, 500, 800, color_palette[0], "small");
+    }
+    if (opponent_quit) {
+      draw_string_centered("Opponent disconnected", 21, get_xres()/2, 550, 800, color_palette[0], "small");
+    }
   }
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
@@ -844,6 +863,7 @@ void clear_game(Tile * tiles[], unsigned tile_no, Player * players[2], int board
   players[0] = create_player(8, 6, get_red_ball_animation(), 0);
   players[1] = create_player(8, 10, get_blue_ball_animation(), 3);
   current_player = 0;
+  opponent_quit = false;
 
   only_one_move = game_ends = false;
   tile_move_count = move_count = 0;
@@ -1071,7 +1091,7 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   }
   if (multi_computer) {
     if (opponent_quit) {
-      draw_string_centered("Opponent disconnected", 21, get_xres()/2, 570, 800, color_palette[0], "small");
+      draw_string_centered("Opponent disconnected", 21, get_xres()/2, 500, 800, color_palette[0], "small");
     }
     if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
       draw_pixmap(get_mouse_secondary(), p1_mouse_xvariance, p1_mouse_yvariance, false, PREDEF_COLOR, "");
@@ -1185,7 +1205,7 @@ int game() {
           if (msg.m_notify.interrupts & irq_kbd)
           {
             kbc_ih();
-            if (sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
+            if (!opponent_quit && sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
               transmit_kbd_code(kbd_code);
             }
             handle_keyboard_events(&s, players);
@@ -1206,13 +1226,13 @@ int game() {
                     execute_event(&s, tiles, tile_no, players, board);
                     break;
                   case 3:
-                    if (s != PAUSE) {
+                    if ((s == GAME) && !game_ends) {
                       current_event = PAUSE_GAME;
                       execute_event(&s, tiles, tile_no, players, board);
                     }
                     break;
                   case 4:
-                    if (s != GAME) {
+                    if ((s == PAUSE) && !game_ends) {
                       current_event = RESUME_GAME;
                       execute_event(&s, tiles, tile_no, players, board);
                     }
@@ -1238,12 +1258,16 @@ int game() {
                     execute_event(&s, tiles, tile_no, players, board);
                     break;
                   case 3:
-                    current_event = PAUSE_GAME;
-                    execute_event(&s, tiles, tile_no, players, board);
+                    if ((s == GAME) && !game_ends) {
+                      current_event = PAUSE_GAME;
+                      execute_event(&s, tiles, tile_no, players, board);
+                    }
                     break;
                   case 4:
-                    current_event = RESUME_GAME;
-                    execute_event(&s, tiles, tile_no, players, board);
+                    if ((s == PAUSE) && !game_ends) {
+                      current_event = RESUME_GAME;
+                      execute_event(&s, tiles, tile_no, players, board);
+                    }
                     break;
                   default:
                     break;
@@ -1257,6 +1281,17 @@ int game() {
             timer_int_handler();
             if (timer_counter_play % sys_hz() == 0){
               play_time++;
+              if (turn_off) {
+                if (turn_off_delay_time_count >= 1) {
+                  sp_terminate();
+                  multi_computer = false;
+                  connected = false;
+                  turn_off = false;
+                  turn_off_delay_time_count = 0;
+                }
+                turn_off_delay_time_count++;
+              }
+
             }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
               frame_counter++;
@@ -1296,7 +1331,9 @@ int game() {
                   if (enter_key) {
                     p_set_name(players[0], charqueue_to_string(player1_name));
                     if (multi_computer) {
-                      transmit_player_data();
+                      if (!opponent_quit) {
+                        transmit_player_data();
+                      }
                       if (received_player_data) {
                         p_set_name(players[1], charqueue_to_string(player2_name));
                         s = GAME;
@@ -1314,7 +1351,9 @@ int game() {
                   if (enter_key) {
                     p_set_name(players[1], charqueue_to_string(player2_name));
                     if (multi_computer) {
-                      transmit_player_data();
+                      if (!opponent_quit) {
+                        transmit_player_data();
+                      }
                       if (received_player_data) {
                         p_set_name(players[0], charqueue_to_string(player1_name));
                         s = GAME;
@@ -1353,7 +1392,7 @@ int game() {
               mouse_data.bytes[2] = mouse_code;
               parse_packet(&mouse_data, true);
               byte_counter = 0;
-              if (sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
+              if (!opponent_quit && sp_on && ((host && (current_player == 0)) || (!host && (current_player == 1)))) {
                 transmit_mouse_bytes(&mouse_data, mouse_xvariance, mouse_yvariance);
               }      
               handle_mouse_events(&s, &mouse_data, board, tiles);
