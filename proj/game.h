@@ -160,7 +160,7 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
  * @param tile_no number of tiles
  * @param players array with each Player
  */
-void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player *ps[]); 
+void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player *ps[], enum State *s); 
 
 // Function for debug purposes
 void print_game_board(int board[BOARD_SIZE][BOARD_SIZE]);

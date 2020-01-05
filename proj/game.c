@@ -823,7 +823,7 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
   }
   if (((p_get_i(players[0]) == p_get_i(players[1])) && (p_get_j(players[0]) == p_get_j(players[1])))) {
     game_ends = true;
-  } else if (play_time == PLAY_TIME && !game_ends){
+  } else if ((((play_time == PLAY_TIME) && ((*s) == GAME)) || ((play_time == PLAY_TIME_MOVING_BLOCKS) && ((*s) == GAME_MOVING_BLOCKS))) && !game_ends){
     game_ends = true;
     blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
     blocks_to_move[0][1] = DEFAULT_BLOCK_COORDINATE;
@@ -860,6 +860,7 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
         tile_move_count = 0;    // resets count of tile movements
         only_one_move = false;  // resets whether the player did only one move
         move_count = 0;         // resets the move count
+        play_time = 0;
 
         // resets the blocks to move to the predefined values
         blocks_to_move[0][0] = DEFAULT_BLOCK_COORDINATE;
@@ -877,6 +878,7 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
         *s = GAME;
 
       } else if (*s == GAME) {
+        play_time = 0;
 
         // Getting the coordinates for the mouse trigger
         int x = blocks_to_move[0][1]*grid_width - (((BOARD_SIZE - 1) * grid_width) / 2);
@@ -906,7 +908,7 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
   }
 }
 
-void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[]) {
+void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[], enum State *s) {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
   for (unsigned i = 0; i < BOARD_SIZE; i++) {
@@ -942,17 +944,46 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   }
 
   if (!game_ends){
-    if (play_time < PLAY_TIME){
-      char s[10];
-      if (PLAY_TIME - play_time >= 10) {
-        sprintf(s, "%d", PLAY_TIME - play_time);
+    if ((*s) == GAME) {
+      if (play_time < PLAY_TIME){
+        char s[10];
+        if (PLAY_TIME - play_time >= 10) {
+          sprintf(s, "%d", PLAY_TIME - play_time);
+        } else {
+          sprintf(s, "0%d", PLAY_TIME - play_time);
+        }
+        if (current_player == 0) {
+          draw_string(s, 2, 30, 100, 400, color_palette[0], "smaller");
+        } else {
+          draw_string(s, 2, 770 - (get_string_width_normal(s, strlen(s))/2), 100, 400, color_palette[0], "smaller");
+        }
       } else {
-        sprintf(s, "0%d", PLAY_TIME - play_time);
+        if (current_player == 0) {
+          draw_string("0", 1, 30, 100, 400, color_palette[0], "smaller");
+        } else {
+          draw_string("0", 1, 770 - (get_string_width_normal("0", 1)/2), 100, 400, color_palette[0], "smaller");
+        }
       }
-      
-      draw_string_centered(s, 2, get_xres()/2, 30, 800, color_palette[0], "");
-    } else {
-      draw_string_centered("0", 1, get_xres()/2, 30, 800, color_palette[0], "");
+    } else if ((*s) == GAME_MOVING_BLOCKS) {
+      if (play_time < PLAY_TIME_MOVING_BLOCKS){
+        char s[10];
+        if (PLAY_TIME_MOVING_BLOCKS - play_time >= 10) {
+          sprintf(s, "%d", PLAY_TIME_MOVING_BLOCKS - play_time);
+        } else {
+          sprintf(s, "0%d", PLAY_TIME_MOVING_BLOCKS - play_time);
+        }
+        if (current_player == 0) {
+          draw_string(s, 2, 30, 100, 400, color_palette[0], "smaller");
+        } else {
+          draw_string(s, 2, 770 - (get_string_width_normal(s, strlen(s))/2), 100, 400, color_palette[0], "smaller");
+        }
+      } else {
+        if (current_player == 0) {
+          draw_string("0", 1, 30, 100, 400, color_palette[0], "smaller");
+        } else {
+          draw_string("0", 1, 770 - (get_string_width_normal("0", 1)/2), 100, 400, color_palette[0], "smaller");
+        }
+      }
     }
     switch(error){
     case 1:
@@ -1107,7 +1138,7 @@ int game() {
             handle_keyboard_events(&s, players);
             execute_event(&s, tiles, tile_no, players, board);
           }
-          if (sp_on) {
+          if (sp_on && multi_computer) {
             if (msg.m_notify.interrupts & irq_com1) {
               if (multi_computer) {
                 switch(sp_ih(COM1, 1)) {
@@ -1225,7 +1256,7 @@ int game() {
                   break;
                 case GAME: case GAME_MOVING_BLOCKS: case GAME_BLOCKS_MOVED:
                   update_game(players, board, tiles, &s);
-                  draw_game(board, tiles, tile_no, players);
+                  draw_game(board, tiles, tile_no, players, &s);
                   break;
                 default:
                   break;

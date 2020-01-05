@@ -243,7 +243,8 @@ END graphics
 
 //Game
 #define BOARD_SIZE 17
-#define PLAY_TIME 30
+#define PLAY_TIME 10
+#define PLAY_TIME_MOVING_BLOCKS 30
 #define DEFAULT_BLOCK_COORDINATE -999
 #define MAX_NAME_SIZE 15
 
