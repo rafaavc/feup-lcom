@@ -28,13 +28,13 @@ unsigned grid_height = 23, grid_width = 37, current_player = 0, move_count = 0; 
 
 bool on = true, added_mouse_events_main_menu = false, added_mouse_events_pause = false, added_mouse_events_tutorial = false, added_mouse_events_choosing_menu = false, game_ends = false;
 
-const unsigned triggers_mm_no = 3, triggers_p_no = 2, triggers_t_no = 1, triggers_g_no = 3, triggers_cm_no = 3;
+const unsigned triggers_mm_no = 3, triggers_p_no = 2, triggers_t_no = 1, triggers_g_no = 2, triggers_cm_no = 3;
 
 MouseTrigger * mouse_triggers_main_menu[3];
 MouseTrigger * mouse_triggers_pause[2];
 MouseTrigger * mouse_triggers_choosing_menu[3];
 MouseTrigger * mouse_triggers_tutorial[1];
-MouseTrigger * mouse_triggers_game[3] = {NULL, NULL, NULL}; // The 0 position will be the pause button, the rest the block(s) that need to be moved
+MouseTrigger * mouse_triggers_game[2] = {NULL, NULL}; // the the block(s) that need to be moved
 
 Player * main_menu_animated_ball;
 
@@ -134,7 +134,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
         sp_init();
         sp_used = true;
       }
-      sp_send_character('a', false);
+      sp_send_character('a');
       *s = WAITING_FOR_CONNECTION;
       current_event = NO_EVENT;
       //sp_sync();
@@ -721,7 +721,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
       if (multi_computer && !mouse_lb_pressed) {
         if ((host && (current_player == 0)) || (!host && (current_player == 1))) {
           if (mouse_data->lb) {
-            for (unsigned i = 1; i < n; i++) {
+            for (unsigned i = 0; i < n; i++) {
               if (check_mouse_overlap(mouse_triggers_game[i])) {
                 if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
                   t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
@@ -756,7 +756,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
           }
         } else if ((host && (current_player == 1)) || (!host && (current_player == 0))) {
           if (p1_mouse_lb) {
-            for (unsigned i = 1; i < n; i++) {
+            for (unsigned i = 0; i < n; i++) {
               if (p1_check_mouse_overlap(mouse_triggers_game[i])) {
                 if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
                   t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
@@ -792,7 +792,7 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
         }
       } else {
         if (mouse_data->lb && !mouse_lb_pressed) {
-          for (unsigned i = 1; i < n; i++) {
+          for (unsigned i = 0; i < n; i++) {
             if (check_mouse_overlap(mouse_triggers_game[i])) {
               if (mt_get_obj(mouse_triggers_game[i]) != NULL && t_being_dragged == NULL) {
                 t_being_dragged = (Tile *) mt_get_obj(mouse_triggers_game[i]);
@@ -845,12 +845,20 @@ void free_allocated_memory(Tile * tiles[], unsigned tile_no, Player * players[])
   for (unsigned i = 0; i < triggers_t_no; i++) {
     free(mouse_triggers_tutorial[i]);
   }
+  for (unsigned i = 0; i < triggers_g_no; i++) {
+    free(mouse_triggers_game[i]);
+  }
+  for (unsigned i = 0; i < triggers_cm_no; i++) {
+    free(mouse_triggers_choosing_menu[i]);
+  }
   for (unsigned i = 0; i < tile_no; i++) {
     free(tiles[i]);
   }
   for (unsigned i = 0; i < 2; i++) {
     free(players[i]);
   }
+  free(player1_name);
+  free(player2_name);
   free(get_background_buffer());
   free(get_double_buffer());
 }
@@ -938,10 +946,10 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
         blocks_to_move[1][1] = DEFAULT_BLOCK_COORDINATE;
 
         // resets the mouse triggers
+        free(mouse_triggers_game[0]);
         free(mouse_triggers_game[1]);
-        free(mouse_triggers_game[2]);
+        mouse_triggers_game[0] = NULL;
         mouse_triggers_game[1] = NULL;
-        mouse_triggers_game[2] = NULL;
 
         // evolves the state machine
         *s = GAME;
@@ -955,8 +963,8 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
         x = get_xres()/2 + x -(grid_width/2);
         y = get_yres()/2 + y -(grid_height/2);
 
-        mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-        mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
+        mouse_triggers_game[0] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+        mt_set_obj(mouse_triggers_game[0], tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
         toggle_need_to_be_moved(tiles[board[blocks_to_move[0][0]][blocks_to_move[0][1]]]);
 
         if (blocks_to_move[1][0] != DEFAULT_BLOCK_COORDINATE) {
@@ -966,8 +974,8 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
           x = get_xres()/2 + x -(grid_width/2);
           y = get_yres()/2 + y -(grid_height/2);
 
-          mouse_triggers_game[2] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
-          mt_set_obj(mouse_triggers_game[2], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
+          mouse_triggers_game[1] = create_mouse_trigger(x, y - 20, grid_width, grid_height, NO_EVENT);
+          mt_set_obj(mouse_triggers_game[1], tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
           toggle_need_to_be_moved(tiles[board[blocks_to_move[1][0]][blocks_to_move[1][1]]]);
         }
         
@@ -1101,29 +1109,6 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
 
-// Functions for debug purposes
-void print_game_board(int board[BOARD_SIZE][BOARD_SIZE]) {
-  printf("Here is the game board :)");
-  for (unsigned i = 0; i < BOARD_SIZE; i++) {
-    printf("\n");
-    for (unsigned j = 0; j < BOARD_SIZE; j++) {
-      if (board[i][j] != -1)
-        printf("%d ", board[i][j]);
-      else
-        printf(". ");
-    }
-  }
-}
-void draw_grid() {
-  for (unsigned i = 0; i < 20; i++) {
-      if (i < 10) {
-        draw_hline(0, 300 + i*grid_height, get_xres(), BLACK);
-      } else {
-        draw_hline(0, 300 - (i%10)*grid_height, get_xres(), BLACK);
-      }
-    }
-}
-
 
 int game() {
   int ipc_status;   // gets ipc_status
@@ -1214,7 +1199,7 @@ int game() {
           if (sp_on && multi_computer) {
             if (msg.m_notify.interrupts & irq_com1) {
               if (multi_computer) {
-                switch(sp_ih(COM1, 1)) {
+                switch(sp_ih(COM1)) {
                   case 0:
                     break;
                   case 1:
@@ -1246,7 +1231,7 @@ int game() {
             }
             if (msg.m_notify.interrupts & irq_com2) {
               if (multi_computer) {
-                switch(sp_ih(COM2, 2)) {
+                switch(sp_ih(COM2)) {
                   case 0:
                     break;
                   case 1:

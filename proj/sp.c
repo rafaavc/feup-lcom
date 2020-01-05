@@ -319,17 +319,7 @@ int sp_disable_fifo(unsigned base) {
   return 0;
 }
 
-void sp_send_character(uint8_t c, bool reverse) {
-  if (reverse) {
-    if (host) {
-      sys_outb(COM2, c);
-      //printf("sent %c to COM2\n", c);
-    } else {
-      sys_outb(COM1, c);
-      //printf("sent %c to COM1\n", c);
-    }
-    return;
-  }
+void sp_send_character(uint8_t c) {
   // This is what will happen in most cases: 
   if (host) {
     sys_outb(COM1, c);
@@ -395,7 +385,7 @@ void transmit_mouse_bytes(struct packet * mouse_data, unsigned mouse_xvariance, 
     
     charqueue_push_end_characters();  // end characters
 
-    sp_send_character('M', false);  // indicates that the info being received belongs to mouse
+    sp_send_character('M');  // indicates that the info being received belongs to mouse
   } else {
     charqueue_push(transmission_queue, 'M');
 
@@ -416,7 +406,7 @@ void transmit_kbd_code(uint8_t kbd_code) {
     
     charqueue_push_end_characters();  // end characters
 
-    sp_send_character('K', false);  // indicates that the info being received belongs to keyboard
+    sp_send_character('K');  // indicates that the info being received belongs to keyboard
   } else {
     charqueue_push(transmission_queue, 'K');
 
@@ -445,7 +435,7 @@ void transmit_player_data() {
 
     charqueue_push_end_characters();
 
-    sp_send_character('P', false);
+    sp_send_character('P');
   } else {
     charqueue_push(transmission_queue, 'P');
 
@@ -474,7 +464,7 @@ void transmit_string(char * str, uint8_t str_len) {
     }
     charqueue_push_end_characters();
 
-    sp_send_character('S', false);
+    sp_send_character('S');
   } else {
     charqueue_push(transmission_queue, 'S');
     charqueue_push(transmission_queue, str_len);
@@ -503,14 +493,13 @@ void transmit_critical_event(char * type) {
 
     charqueue_push_end_characters();
 
-    sp_send_character('C', false);
+    sp_send_character('C');
   } else {
     charqueue_push(transmission_queue, 'C');
     charqueue_push(transmission_queue, value);
     
     charqueue_push_end_characters();
   }
-  printf("transmitted %s\n", type);
 }
 
 int retrieve_info_from_queue() {
@@ -582,7 +571,6 @@ int retrieve_info_from_queue() {
     charqueue_pop(reception_queue);
 
     uint8_t value = charqueue_pop(reception_queue);
-    printf("Received critical event %c\n", value);
 
     if (value == 'D') {
       opponent_quit = true;
@@ -600,10 +588,13 @@ int retrieve_info_from_queue() {
 
 unsigned zero_count = 0;
 
-int sp_ih(unsigned com, unsigned com_no) {
+int sp_ih(unsigned com) {
   int ret = 0;
   uint8_t iir;
   uint8_t c = 0;
+  
+  unsigned com_no;
+  if (com == COM2) com_no = 2; else com_no = 1;
 
   util_sys_inb(com + IIR_offset, &iir);
 
@@ -617,7 +608,7 @@ int sp_ih(unsigned com, unsigned com_no) {
             // This is the syncing process
             if (c == 'a') {
               //printf("Received an 'a'\n");
-              sp_send_character('b', false);
+              sp_send_character('b');
               connected = true;
             } else if (c == 'b') {
               //printf("Received a 'b'\n");
@@ -646,7 +637,7 @@ int sp_ih(unsigned com, unsigned com_no) {
           if (connected) {
             if (!charqueue_empty(transmission_queue)) {
               //printf("Sending %c\n", charqueue_front(transmission_queue));
-              sp_send_character(charqueue_pop(transmission_queue), false); // pops the character from the queue and sends it
+              sp_send_character(charqueue_pop(transmission_queue)); // pops the character from the queue and sends it
             }
           }
         }

@@ -119,7 +119,19 @@ bool mt_get_mouse_over(MouseTrigger *t);
  */
 void mt_set_mouse_over(MouseTrigger *t);
 
+/**
+ * @brief sets the mouse trigger object
+ * 
+ * @param t MouseTrigger to set
+ * @param o the object
+ */
 void mt_set_obj(MouseTrigger *t, void * o);
 
+/**
+ * @brief GET method for the mouse trigger object
+ * 
+ * @param t MouseTrigger to get object from
+ * @param o the object
+ */
 void * mt_get_obj(MouseTrigger *t);
 

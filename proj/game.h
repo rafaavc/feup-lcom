@@ -88,9 +88,54 @@ void draw_pause_menu();
  */
 void draw_choosing_mode_menu();
 
+/**
+ * @brief draws waiting for connection screen
+ * 
+ * Draws the background, then all the strings and text buttons for the choosing host menu and lastly the mouse
+ */
+void draw_waiting_for_connection();
+
+/**
+ * @brief draws choosing host menu screen
+ * 
+ * Draws the background, then all the strings and text buttons for the choosing host menu and lastly the mouse
+ */
+void draw_choosing_host_menu();
+
+/**
+ * @brief draws string input
+ * @param x the x position
+ * @param y the y position
+ * @param color the color to be drawn in
+ * @param input the charqueue that is serving has input
+ */
 void draw_string_input(unsigned x, unsigned y, uint32_t color, charqueue * input);
 
+/**
+ * @brief takes the kbd code and turns it into a letter that will be pushed to the queue given in the arguments
+ * @param q pointer to the charqueue that will receive the letter
+ */
+void get_letter_input(charqueue * q);
+
+/**
+ * @brief Draws the player1 prompt (a menu that let's him choose his name)
+ */
 void draw_player1_prompt();
+
+/**
+ * @brief Draws the player2 prompt (a menu that let's him choose his name)
+ */
+void draw_player1_prompt();
+
+/**
+ * @brief changes the position of the tile
+ * 
+ * @param i1 new position i
+ * @param j1 new position j
+ * @param board the game board
+ * @param tiles the array with all the tiles
+ */
+void change_tile_position(int i1, int j1, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]);
 
 /**
  * @brief handles keyboard events for each state of the game
@@ -161,11 +206,6 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
  * @param players array with each Player
  */
 void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player *ps[], enum State *s); 
-
-// Function for debug purposes
-void print_game_board(int board[BOARD_SIZE][BOARD_SIZE]);
-// also debug purposes
-void draw_grid();
 
 /**
  * @brief main function for the game

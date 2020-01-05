@@ -50,9 +50,9 @@
 
 /* READ-BACK COMMAND FORMAT */
 
-#define TIMER_RB_COUNT_  BIT(5)
-#define TIMER_RB_STATUS_ BIT(4)
-#define TIMER_RB_SEL(n)  BIT((n) + 1)
+#define TIMER_RB_COUNT_  BIT(5)         /**< @brief read back count bitmask */
+#define TIMER_RB_STATUS_ BIT(4)         /**< @brief read back status bitmask */
+#define TIMER_RB_SEL(n)  BIT((n) + 1)   /**< @brief read back select bitmask */
 
 /**@}*/
 
@@ -139,74 +139,74 @@ SERIAL PORT
 */
 
 // COM1
-#define COM1_IRQ 4
-#define COM1 0x3F8
+#define COM1_IRQ 4     /**< @brief COM1 IRQ */
+#define COM1 0x3F8     /**< @brief COM1 address */
 
 // COM2
-#define COM2_IRQ 3
-#define COM2 0x2F8
+#define COM2_IRQ 3      /**< @brief COM2 IRQ */
+#define COM2 0x2F8      /**< @brief COM2 address */
 
 // LCR
-#define LCR_offset 3
-#define DL_bitmask BIT(7)
-#define SBE_bitmask BIT(6)
+#define LCR_offset 3        /**< @brief offset of line control register (LCR) */
+#define DL_bitmask BIT(7)   /**< @brief bitmask of DLAB */
+#define SBE_bitmask BIT(6)  /**< @brief bitmask of set break enable (SBE) */
 
 // LSR
-#define LSR_offset 5
+#define LSR_offset 5    /**< @brief offset of line status register (LSR) */
 
 
 // Interrupt Enable Register
-#define IER_offset 1
-#define received_data_int_enable BIT(0)
-#define transmitter_empty_int_enable BIT(1)
-#define receiver_line_status_int_enable BIT(2)
+#define IER_offset 1                              /**< @brief offset of interrupt enable register (IER) */
+#define received_data_int_enable BIT(0)           /**< @brief bitmask of received data interruption */
+#define transmitter_empty_int_enable BIT(1)       /**< @brief bitmask of transmitter empty interruption */
+#define receiver_line_status_int_enable BIT(2)    /**< @brief bitmask of line status interruption*/
 
 // Interrupt Identification Register (with LCR DL disabled)
-#define IIR_offset 2 // only read
-#define IIR_int_status_bitmask BIT(0)
-#define IIR_int_origin_bitmask (BIT(1)|BIT(2)|BIT(3))
-#define RECEIVED_DATA BIT(1)
-#define RECEIVED_DATA_1 (BIT(2)|BIT(1)) // From extensive testing we realised that received data could be either 010 or 110
-#define TRANSMITTER_EMPTY BIT(0) 
-#define LINE_STATUS (BIT(0) | BIT(1))
+#define IIR_offset 2 // only read                       /**< @brief offset do interrupt identification register (IIR) */
+#define IIR_int_status_bitmask BIT(0)                   /**< @brief bitmask for interrupt status*/
+#define IIR_int_origin_bitmask (BIT(1)|BIT(2)|BIT(3))   /**< @brief bitmask for interrupt origin */
+#define RECEIVED_DATA BIT(1)                            /**< @brief bitmask for received data in IIR */
+#define RECEIVED_DATA_1 (BIT(2)|BIT(1))  /**< @brief From extensive testing we realised that received data could be either 010 or 110 */
+#define TRANSMITTER_EMPTY BIT(0)         /**< @brief bitmask for transmitter empty */
+#define LINE_STATUS (BIT(0) | BIT(1))    /**< @brief bitmask for line status */
 
 // FIFO Control Register
-#define FCR_offset 2 // write only
-#define ENABLE_FIFO BIT(0)
-#define FIFO_INT_TRIGGER_LVL_1 0
-#define FIFO_INT_TRIGGER_LVL_4 BIT(6)
-#define FIFO_INT_TRIGGER_LVL_8 BIT(7)
-#define FIFO_INT_TRIGGER_LVL_14 BIT(6)|BIT(7)
-#define CLEAR_RCV_FIFO BIT(1)
-#define CLEAR_TRANSMIT_FIFO BIT(2)
+#define FCR_offset 2 // write only                  /**< @brief offset of fifo contro register (FCR) */
+#define ENABLE_FIFO BIT(0)                          /**< @brief enable fifo bitmask */
+#define FIFO_INT_TRIGGER_LVL_1 0                    /**< @brief fifo interruption trigger level 1 bitmask */
+#define FIFO_INT_TRIGGER_LVL_4 BIT(6)               /**< @brief fifo interruption trigger level 4 bitmask */
+#define FIFO_INT_TRIGGER_LVL_8 BIT(7)               /**< @brief fifo interruption trigger level 8 bitmask */
+#define FIFO_INT_TRIGGER_LVL_14 BIT(6)|BIT(7)       /**< @brief fifo interruption trigger level 14 bitmask */
+#define CLEAR_RCV_FIFO BIT(1)                       /**< @brief bitmask of clear receive fifo */
+#define CLEAR_TRANSMIT_FIFO BIT(2)                  /**< @brief bitmask of clear transmit fifo */
 
 // Divisor Latch (with LCR DL enabled)
-#define DLL_offset 0
-#define DLM_offset 1
-#define DL_divisor 115200
+#define DLL_offset 0        /**< @brief offset of divisor latch least significant byte (DLL) */
+#define DLM_offset 1        /**< @brief offset of divisor latch most significant byte (DLM) */
+#define DL_divisor 115200   /**< @brief DL divisor */
 
 // Bitrate
-#define BR_1 1200
-#define BR_2 2400
-#define BR_3 4800
-#define BR_4 9600
-#define BR_5 19200
-#define BR_6 38400
-#define BR_7 57600
-#define BR_8 115200
+#define BR_1 1200       /**< @brief possible bitrate 1 */
+#define BR_2 2400       /**< @brief possible bitrate 2 */
+#define BR_3 4800       /**< @brief possible bitrate 3 */
+#define BR_4 9600       /**< @brief possible bitrate 4 */
+#define BR_5 19200      /**< @brief possible bitrate 5 */
+#define BR_6 38400      /**< @brief possible bitrate 6 */
+#define BR_7 57600      /**< @brief possible bitrate 7 */
+#define BR_8 115200     /**< @brief possible bitrate 8 */
 
 // Parity
-#define PARITY_none 0x0
-#define PARITY_odd 0x1
-#define PARITY_even 0x3
-#define PARITY_1 0x5
-#define PARITY_0 0x7
+#define PARITY_none 0x0     /**< @brief no parity bitmask */
+#define PARITY_odd 0x1      /**< @brief odd parity bitmask */
+#define PARITY_even 0x3     /**< @brief even parity bitmask */
+#define PARITY_1 0x5        /**< @brief parity 1 bitmask */
+#define PARITY_0 0x7        /**< @brief parity 0 bitmask */
 
 // Word Length
-#define WL_5 0x0
-#define WL_6 0x1
-#define WL_7 0x2
-#define WL_8 0x3
+#define WL_5 0x0        /**< @brief word length 5 bitmask */
+#define WL_6 0x1        /**< @brief word length 6 bitmask */
+#define WL_7 0x2        /**< @brief word length 7 bitmask */
+#define WL_8 0x3        /**< @brief word length 8 bitmask */
 
 /*
 ---
@@ -229,11 +229,11 @@ GRAPHICS
 #define SR_LETTER_H (N_LETTER_H/3)      /**< @brief Smaller letter height */
 
 //Colors
-#define PREDEF_COLOR 0xFF0000
-#define WHITE 0xFFFFFF
-#define DIRTY_WHITE 0xC0C0C0
-#define BLACK 0x000000
-#define LESS_BLACK 0x333333
+#define PREDEF_COLOR 0xFF0000   /**< @brief Predefined color (transparent) */
+#define WHITE 0xFFFFFF          /**< @brief white color */
+#define DIRTY_WHITE 0xC0C0C0    /**< @brief dirty white color */
+#define BLACK 0x000000          /**< @brief black color */
+#define LESS_BLACK 0x333333     /**< @brief less black color */
 
 /*
 ---
@@ -242,11 +242,11 @@ END graphics
 */
 
 //Game
-#define BOARD_SIZE 17
-#define PLAY_TIME 10
-#define PLAY_TIME_MOVING_BLOCKS 30
-#define DEFAULT_BLOCK_COORDINATE -999
-#define MAX_NAME_SIZE 15
+#define BOARD_SIZE 17           /**< @brief board size */
+#define PLAY_TIME 10            /**< @brief seconds to move the ball */
+#define PLAY_TIME_MOVING_BLOCKS 30      /**< @brief seconds to move the blocks */
+#define DEFAULT_BLOCK_COORDINATE -999   /**< @brief default block coordinate */
+#define MAX_NAME_SIZE 15                /**< @brief maximum player name size */
 
 //Debug
 //#define DEBUG
