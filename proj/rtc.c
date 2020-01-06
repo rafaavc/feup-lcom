@@ -12,12 +12,13 @@
 bool dark_mode = true;
 uint8_t rtc[3];
 
-void get_time_rtc(){
+bool get_time_rtc(){
     uint8_t regA = UPDATE_IN_PROGRESS, format;
-    while(regA & UPDATE_IN_PROGRESS) {
-        sys_outb(RTC_ADDR_REG, REG_A);
-        util_sys_inb(RTC_DATA_REG, &regA);
-    }
+
+    sys_outb(RTC_ADDR_REG, REG_A);
+    util_sys_inb(RTC_DATA_REG, &regA);
+
+    if (regA & UPDATE_IN_PROGRESS) return false;
 
     sys_outb(RTC_ADDR_REG, REG_B);
     util_sys_inb(RTC_DATA_REG, &format);
@@ -36,6 +37,7 @@ void get_time_rtc(){
             bcd_to_binary(&rtc[i]);
         }
     }
+    return true;
 }
 
 bool check_BCD(){

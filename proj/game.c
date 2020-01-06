@@ -1281,14 +1281,15 @@ int game() {
 
             }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
-              get_time_rtc();
-              if (rtc[0] < 0 || rtc[0] > 30) dark_mode = true;
-              else dark_mode = false;
-              printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
+              if (get_time_rtc()) {
+                if (rtc[0] < 0 || rtc[0] > 30) dark_mode = true;
+                else dark_mode = false;
+                printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
+              }
               frame_counter++;
               if (error != 0)
                 error_timer++;
-              draw_grid();
+              //draw_grid();
               switch(s) {
                 case MAIN_MENU:
                   draw_main_menu();

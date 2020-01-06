@@ -4,8 +4,9 @@
  * @brief Function to get time from the real time clock
  * 
  * Time comes in an array with 3 bytes in format [hours, minutes, seconds]
+ * @return true if it's not updating time and false otherwise
  */
-void get_time_rtc();
+bool get_time_rtc();
 
 /**
  * @brief checks if date is on BCD
