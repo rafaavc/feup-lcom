@@ -55,8 +55,6 @@ enum Event current_event = NO_EVENT;
 
                     //      text    text_over   other    (Will make it easier to change all colors to dark/light theme)
 uint32_t color_palette[] = {WHITE, DIRTY_WHITE, BLACK};
-uint32_t color_palette_dark[] = {WHITE, DIRTY_WHITE, BLACK};
-uint32_t color_palette_light[] = {BLACK, LESS_BLACK, WHITE};
 
 // RTC
 extern bool dark_mode;
@@ -246,11 +244,7 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
 void draw_main_menu() {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
-  uint32_t logo_color = WHITE;
-  if (!dark_mode) {
-    logo_color = BLACK;
-  }
-  draw_pixmap(get_logo(), get_xres()/2 - 230, 55, false, logo_color, "");
+  draw_pixmap(get_logo(), get_xres()/2 - 230, 55, false, color_palette[0], "");
 
   unsigned block_ball_posx = get_xres()/2 + 150;
   unsigned block_ball_posy = 130;
@@ -274,7 +268,7 @@ void draw_tutorial() {
 
   draw_string_centered("In game, use WASD to move your character. You have two moves.", 61, get_xres()/2, 120, 800, color_palette[0], "smaller");
   
-  draw_pixmap(get_wasd(), get_xres()/2 - 60, 155, false, PREDEF_COLOR, "");
+  draw_pixmap(get_wasd(), get_xres()/2 - 60, 155, false, color_palette[0], "");
 
   draw_string_centered("If you only want to move once, press ENTER after the first movement.", 68, get_xres()/2, 290, 800, color_palette[0], "smaller");
   draw_string_centered("After you make your move(s),", 28, get_xres()/2, 320, 800, color_palette[0], "smaller");
@@ -990,7 +984,7 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
 void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player * players[], enum State *s) {
   memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
 
-  draw_pixmap(get_wasd(), 50, get_yres()-110, false, PREDEF_COLOR, "small");
+  draw_pixmap(get_wasd(), 50, get_yres()-110, false, color_palette[0], "small");
 
   for (unsigned i = 0; i < BOARD_SIZE; i++) {
     for (unsigned j = 0; j < BOARD_SIZE; j++) {
@@ -1083,10 +1077,6 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
     error = 0;
     error_timer = 0;
   }
-  
-  #ifdef DEBUG
-  draw_grid();
-  #endif
 
   if (game_ends) {
     char *winner;
@@ -1172,12 +1162,6 @@ int game() {
   clear_game(tiles, tile_no, players, board);
 
   //print_game_board(board);
-
-  if (!dark_mode) {
-    for (unsigned i = 0; i < 3; i++) {
-      color_palette[i] = color_palette_light[i];
-    }
-  }
 
   /* Interrupt loop */
   while (on)
@@ -1274,15 +1258,9 @@ int game() {
             if (get_time_rtc()) {
                 if (rtc[0] < 0 || rtc[0] > 30) {
                   dark_mode = true;
-                  for (int i = 0; i < 3; i++){
-                    color_palette[i] = color_palette_dark[i];
-                  }
                 }
                 else {
                   dark_mode = false;
-                  for (int i = 0; i < 3; i++){
-                    color_palette[i] = color_palette_light[i];
-                  }
                 }
                 printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
               }
@@ -1307,7 +1285,6 @@ int game() {
               frame_counter++;
               if (error != 0)
                 error_timer++;
-              //draw_grid();
               switch(s) {
                 case MAIN_MENU:
                   draw_main_menu();

@@ -215,6 +215,21 @@ END serial port
 ---
 */
 
+/*
+---
+REAL TIME CLOCK
+---
+*/
+
+#define RTC_ADDR_REG    0x70    /**< @brief RTC address register */
+#define RTC_DATA_REG    0x71    /**< @brief RTC data register */
+
+/*
+---
+END real time clock
+---
+*/
+
 
 /*
 ---

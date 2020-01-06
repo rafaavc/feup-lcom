@@ -12,6 +12,7 @@
 #include "xpms/block.xpm"
 #include "xpms/block_light.xpm"
 #include "xpms/block1.xpm"
+#include "xpms/block_light1.xpm"
 #include "xpms/cursor_simple.xpm"
 #include "xpms/cursor_secondary.xpm"
 #include "xpms/A.xpm"
@@ -121,6 +122,7 @@ static xpm_image_t wasd_dark;
 static xpm_image_t block;
 static xpm_image_t block_light;
 static xpm_image_t block1;
+static xpm_image_t block_light1;
 static xpm_image_t mouse_simple;
 static xpm_image_t mouse_secondary;
 static xpm_image_t alphabet[73];
@@ -137,6 +139,7 @@ void load_pixmaps() {
     xpm_load(block_xpm, XPM_8_8_8, &block);
     xpm_load(block_light_xpm, XPM_8_8_8, &block_light);
     xpm_load(block1_xpm, XPM_8_8_8, &block1);
+    xpm_load(block_light1_xpm, XPM_8_8_8, &block_light1);
     xpm_load(cursor_simple_xpm, XPM_8_8_8, &mouse_simple);
     xpm_load(cursor_secondary_xpm, XPM_8_8_8, &mouse_secondary);
 
@@ -273,7 +276,7 @@ xpm_image_t get_block1() {
     if (dark_mode) {
         return block1; 
     } else {
-        return block1;
+        return block_light1;
     }
 }
 
