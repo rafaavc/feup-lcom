@@ -1,5 +1,10 @@
 #include <lcom/lcf.h>
 
+/** @defgroup XPM XPM
+ * @{
+ * Contains functions for handling xpms
+ */
+
 /**
  * @brief loads all the pixmaps needed for the program
  */
@@ -54,3 +59,5 @@ xpm_image_t * get_red_ball_animation();
  * @brief get method for the blue ball animation
  */
 xpm_image_t * get_blue_ball_animation();
+
+/** @}*/

@@ -1,3 +1,8 @@
+/** @defgroup Timer Timer
+ * @{
+ * Contains functions for timer
+ */
+
 /**
  * @brief handles timer interrupts
  * 
@@ -21,3 +26,4 @@ int (timer_subscribe_int)(uint8_t *bit_no);
  */
 int(timer_unsubscribe_int)();
 
+/** @}*/

@@ -1,3 +1,8 @@
+/** @defgroup MouseTrigger Mouse Trigger
+ * @{
+ * Contains functions for MouseTrigger
+ */
+
 /**
  * @brief enum for all the possible events to happen in the game
  */
@@ -26,10 +31,10 @@ enum Event {
  * @brief box where you can click to execute an event
  */
 typedef struct {
-    unsigned x /**< start postion of the box on the x axis */, y /**< start postion of the box on the y axis */, width /**< widht of the box */, height /**< height of the box */;
+    unsigned x /** start postion of the box on the x axis */, y /** start postion of the box on the y axis */, width /** widht of the box */, height /** height of the box */;
     enum Event event;   /**< event that happens when clicked */
     bool mouse_over;    /**< true if mouse is over the box and false otherwise */
-    void *obj;          /**<  */
+    void *obj;          /**< MouseTrigger's object */
 } MouseTrigger;
 
 /**
@@ -134,7 +139,7 @@ void mt_set_obj(MouseTrigger *t, void * o);
  * @brief GET method for the mouse trigger object
  * 
  * @param t MouseTrigger to get object from
- * @param o the object
  */
 void * mt_get_obj(MouseTrigger *t);
 
+/** @}*/

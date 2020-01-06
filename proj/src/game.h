@@ -5,6 +5,10 @@
 #include "Macros.h"
 #include "queue.h"
 
+/** @defgroup Game Game
+ * @{
+ * Contains main functions for Game
+ */
 
 /**
  * @brief enum for all the states in which the game can be
@@ -138,12 +142,12 @@ void draw_player1_prompt();
 /**
  * @brief changes the position of the tile
  * 
- * @param i1 new position i
- * @param j1 new position j
+ * @param i new position i
+ * @param j new position j
  * @param board the game board
  * @param tiles the array with all the tiles
  */
-void change_tile_position(int i1, int j1, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]);
+void change_tile_position(int i, int j, int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[]);
 
 /**
  * @brief handles keyboard events for each state of the game
@@ -157,7 +161,7 @@ void handle_keyboard_events(enum State *s, Player * players[]);
  * @brief handles mouse events for each state of the game
  * 
  * @param s state of the game
- * @param mouse_date organized info received by the mouse interrupt handler
+ * @param mouse_data organized info received by the mouse interrupt handler
  * @param board board to play
  * @param tiles board's tiles
  */
@@ -211,7 +215,8 @@ void update_game(Player * players[], int board[BOARD_SIZE][BOARD_SIZE], Tile * t
  * @param board board to play
  * @param tiles board's tiles
  * @param tile_no number of tiles
- * @param players array with each Player
+ * @param ps array with each Player
+ * @param s state of the game
  */
 void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned tile_no, Player *ps[], enum State *s); 
 
@@ -224,4 +229,4 @@ void draw_game(int board[BOARD_SIZE][BOARD_SIZE], Tile * tiles[], const unsigned
  */
 int game();
 
-
+/** @}*/

@@ -1,9 +1,14 @@
 #include <lcom/lcf.h>
 
+/** @defgroup SerialPort Serial Port
+ * @{
+ * Contains functions for serial port
+ */
+
 /**
  * @brief Subcribes interruptions for serial port (COM1)
  * 
- * @param uint8_t* Serial port hook id
+ * @param bit_no Serial port hook id
  * @return 0 upon success and non-zero otherwise
  */
 int (com1_subscribe_int)(uint8_t *bit_no);
@@ -18,7 +23,7 @@ int (com1_unsubscribe_int)();
 /**
  * @brief Subcribes interruptions for serial port (COM2)
  * 
- * @param uint8_t* Serial port hook id
+ * @param bit_no Serial port hook id
  * @return 0 upon success and non-zero otherwise
  */
 int (com2_subscribe_int)(uint8_t *bit_no);
@@ -168,3 +173,5 @@ int retrieve_info_from_queue();
  * @param com the address of the port (COM1 or COM2)
  */
 int sp_ih(unsigned com);   // Returns a value based on whether it is needed to handle events
+
+/** @}*/

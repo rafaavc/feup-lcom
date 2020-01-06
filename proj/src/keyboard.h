@@ -4,6 +4,11 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+/** @defgroup Keyboard Keyboard
+ * @{
+ * Contains functions for keyboard
+ */
+
 /**
  * @brief keyboard interrupts handler
  * 
@@ -32,8 +37,7 @@ int(kbd_unsubscribe_int)();
 /**
  * @brief Sends command byte to status reg
  * 
- * @param mask_enable the mask has the bits that it wants to change to enabled with value = 1    IF mask_enable = 0: Nothing changes
- *        mask_disable the mask has the bits that it wants to change to disabled with value = 0    IF mask_disable = 0: Nothing changes
+ * @param mask the mask has the bits that it wants to change to enabled with value = 1    IF mask = 0: Nothing changes
  * 
  * @return Return 0 upon success and non-zero otherwise
  */
@@ -45,5 +49,7 @@ int send_statusreg_commandbyte(uint8_t mask);
  * @return Return 0 upon success and non-zero otherwise
  */
 int enable_interrupts();
+
+/** @}*/
 
 #endif /* __KEYBOARD_H */

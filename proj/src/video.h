@@ -1,5 +1,10 @@
 #include <lcom/lcf.h>
 
+/** @defgroup Video Video
+ * @{
+ * Contains functions for graphics
+ */
+
 /**
  * @brief initiates minix's video mode
  * 
@@ -97,7 +102,7 @@ unsigned get_string_width_normal(char *s, unsigned length);
  * @param ssize string s size
  * @param x initial x position
  * @param y initial y position
- * @param max_lenght_per_line max lenght per line
+ * @param max_length_per_line max lenght per line
  * @param color color of the string
  * @param relative_size size of the string. Can be "" (normal), "small" or "smaller"
  */
@@ -188,3 +193,5 @@ void* get_double_buffer();
  * @return background buffer
  */
 void* get_background_buffer();
+
+/** @}*/

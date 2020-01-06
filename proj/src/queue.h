@@ -3,6 +3,11 @@
 #include <stdint.h>
 #include <stdio.h>
 
+/** @defgroup Queue Queue
+ * @{
+ * Contains functions for charqueue
+ */
+
 /**
  * @brief struct for charqueue node
  */
@@ -76,7 +81,7 @@ unsigned charqueue_size(charqueue *q);
 
 /**
  * @brief removes the last element from the charqueue
- * @param the charqueue
+ * @param q charqueue
  */
 void charqueue_remove_last(charqueue *q);
 
@@ -86,3 +91,4 @@ void charqueue_remove_last(charqueue *q);
  */
 char * charqueue_to_string(charqueue *q);
 
+/** @}*/

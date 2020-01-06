@@ -1,16 +1,21 @@
 #include <lcom/lcf.h>
 #include "Macros.h"
 
+/** @defgroup Player Player
+ * @{
+ * Contains functions for Player
+ */
+
 /**
  * @brief struct for a player animation
  */
 typedef struct {
-    unsigned counter /**< counter used to change player xpm only every 4 frames */, animation_frame /**< current animation frame of the player */;
-    int board_i /**< board position on x axis */ , board_j /**< board position on y axis */;
+    unsigned counter /** counter used to change player xpm only every 4 frames */, animation_frame /** current animation frame of the player */;
+    int board_i /** board position on x axis */ , board_j /** board position on y axis */;
     bool moving;                    /**< Player moving or stoped */
     xpm_image_t animation_idle[12]; /**< all the player's animation frames */
     char * name;                    /**< name of the player */
-    int next_x /**< Pixels remainig to move in x axis */, next_y /**< Pixels remaining to move in y axis */;
+    int next_x /** Pixels remainig to move in x axis */, next_y /** Pixels remaining to move in y axis */;
     char last_movement;             /**< Player's last movement (x if first movement of the turn) */
 } Player;
 
@@ -139,3 +144,5 @@ void p_set_last_movement(Player *p, char lmov);
  * @return Player's last movement
  */
 char p_get_last_movement(Player *p);
+
+/** @}*/

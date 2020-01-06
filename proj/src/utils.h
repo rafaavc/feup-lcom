@@ -9,7 +9,7 @@
 #include <stdint.h>
 
 #ifndef BIT
-#  define BIT(n) (1 << (n))
+#  define BIT(n) (1 << (n)) /**< definition of BIT */
 #endif
 
 /**
@@ -47,3 +47,5 @@ int (util_sys_inb)(int port, uint8_t *value);
  * @return Returns the MSbit
  */
 uint8_t (util_get_MSbit)(uint8_t val);
+
+/** @}*/

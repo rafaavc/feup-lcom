@@ -35,6 +35,11 @@ void draw_tile(Tile *t, unsigned x, unsigned y);
  */
 void toggle_need_to_be_moved(Tile *t);
 
+/** @defgroup BoardTile Board Tile
+ * @{
+ * Contains functions for Board Tile
+ */
+
 /**
  * @brief change dragging tile to true and state to initial
  * 
@@ -48,7 +53,7 @@ void start_dragging_tile(Tile *t);
  * If changed position state is set to 0 otherwise state is set 1
  * 
  * @param t tile to change
- * @param changed_postition true if the tile was changed and false if there was an error when changing
+ * @param changed_position true if the tile was changed and false if there was an error when changing
  */
 void stop_dragging_tile(Tile *t, bool changed_position);
 
@@ -73,3 +78,5 @@ bool get_dragging(Tile *t);
  * @param board game's board
  */
 void create_board(int board[BOARD_SIZE][BOARD_SIZE]);
+
+/** @}*/

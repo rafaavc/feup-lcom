@@ -1,8 +1,14 @@
 #include <lcom/lcf.h>
+
+/** @defgroup Mouse Mouse
+ * @{
+ * Contains functions for mouse
+ */
+
 /**
  * @brief Subcribes interruptions for mouse
  * 
- * @param uint8_t* Mouse_hook_id
+ * @param bit_no Mouse_hook_id
  * @return 0 upon success and non-zero otherwise
  */
 int (mouse_subscribe_int)(uint8_t *bit_no);
@@ -17,7 +23,7 @@ int (mouse_unsubscribe_int)();
 /**
  * @brief Writes a command through Output buffer
  * 
- * @param uint8_t command to write
+ * @param cmd command to write
  * @return 0 upon success and non-zero otherwise
  */
 int write_command_byte(uint8_t cmd);
@@ -25,7 +31,7 @@ int write_command_byte(uint8_t cmd);
 /**
  * @brief Sends a command through mouse Output buffer and verifies response
  * 
- * @param uint8_t command to write
+ * @param cmd command to write
  * @return 0 upon success and non-zero otherwise
  */
 int send_command_to_mouse(uint8_t cmd);
@@ -33,7 +39,8 @@ int send_command_to_mouse(uint8_t cmd);
 /**
  * @brief Breaks down the 3 bytes received to struct packet variable
  * 
- * @param struct packet* mouse data with array of bytes received already 
+ * @param mouse_data packet* mouse data with array of bytes received already 
+ * @param update_mouse_variance true if mouse variance is to be updated and false otherwise
  */
 void parse_packet(struct packet *mouse_data, bool update_mouse_variance);
 
@@ -61,3 +68,5 @@ void (timer_int_handler)();
  * @return 0 upon success and non-zero otherwise
  */
 int mouse_polling();
+
+/** @}*/
