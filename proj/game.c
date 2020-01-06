@@ -1284,11 +1284,15 @@ int game() {
               if (get_time_rtc()) {
                 if (rtc[0] < 0 || rtc[0] > 30) {
                   dark_mode = true;
-                  color_palette = color_palette_dark;
+                  for (int i = 0; i < 3; i++){
+                    color_palette[i] = color_palette_dark[i];
+                  }
                 }
                 else {
                   dark_mode = false;
-                  color_palette = color_palette_light;
+                  for (int i = 0; i < 3; i++){
+                    color_palette[i] = color_palette_light[i];
+                  }
                 }
                 printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
               }
