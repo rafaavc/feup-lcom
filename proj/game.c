@@ -1282,8 +1282,14 @@ int game() {
             }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
               if (get_time_rtc()) {
-                if (rtc[0] < 0 || rtc[0] > 30) dark_mode = true;
-                else dark_mode = false;
+                if (rtc[0] < 0 || rtc[0] > 30) {
+                  dark_mode = true;
+                  color_palette = color_palette_dark;
+                }
+                else {
+                  dark_mode = false;
+                  color_palette = color_palette_light;
+                }
                 printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
               }
               frame_counter++;
