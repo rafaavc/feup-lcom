@@ -13,6 +13,7 @@
 #define TIMER0_IRQ 0 /**< @brief Timer 0 IRQ line */
 #define KBD_IRQ 1 /**< @brief Keyboard IRQ line */
 #define MOUSE_IRQ 12 /**< @brief Mouse IRQ line */
+#define RTC_IRQ 8 /**< @brief RTC IRQ line */
 
 /* I/O port addresses */
 
@@ -268,6 +269,9 @@ REAL TIME CLOCK
 #define UPDATE_IN_PROGRESS BIT(7)
 #define FORMAT_24 BIT(1)
 #define RTC_BINARY BIT(2)
+#define UPDATE_INTERRUPTS BIT(4)
+#define PERIODIC_INTERRUPTS BIT(6)
+#define ALARM_INTERRUPTS BIT(5)
 
 /*
 ---

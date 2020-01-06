@@ -19,3 +19,12 @@ bool check_BCD();
  * @param number number to change
  */
 void bcd_to_binary(uint8_t* number);
+
+/**
+ * @brief Subrscribes RTC interrupts for updates
+ * @param bit_no bit number for policy
+ * @return 0 upon success and 1 otherwise
+ */
+int rtc_subsrcibe_int(uint8_t* bit_no);
+
+int (rtc_unsubscribe_int)();

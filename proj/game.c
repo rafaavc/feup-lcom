@@ -60,6 +60,7 @@ uint32_t color_palette_light[] = {BLACK, LESS_BLACK, WHITE};
 
 // RTC
 extern bool dark_mode;
+bool past_mode;
 
 // Serial port variables
 bool multi_computer = false; // Whether playing serial port mode or not
@@ -1116,7 +1117,7 @@ int game() {
   int r;   // return value of driver receive
   message msg;
 
-  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2); // IRQ's of keyboard, timer, mouse and com1
+  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2), irq_rtc = BIT(4); // IRQ's of keyboard, timer, mouse, rtc and com1
   unsigned int frame_counter = 0;
 
   uint8_t fr_rate = 60;
@@ -1135,6 +1136,9 @@ int game() {
   send_command_to_mouse(ENABLE_DATA_REPORTING);
   sys_irqenable(&hook_id_mouse);
 
+  // RTC
+  if (rtc_subsrcibe_int(&irq_rtc) != 0) return 1; // Subscries RTC interrupts on update
+
   // Keyboard
   if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes keyboard interruptions
 
@@ -1143,6 +1147,7 @@ int game() {
 
   // Video Card
   if (vg_init(0x115) == NULL) return 1;
+
   
 
   /* GAME Setup */
@@ -1186,6 +1191,7 @@ int game() {
 
     if (is_ipc_notify(ipc_status))
     {
+      printf("%X", msg.m_notify.interrupts);
       switch (_ENDPOINT_P(msg.m_source))
       {
         case HARDWARE:
@@ -1264,6 +1270,23 @@ int game() {
               }
             }
           }
+          if (msg.m_notify.interrupts & irq_rtc){ // RTC interrupt received
+            if (get_time_rtc()) {
+                if (rtc[0] < 0 || rtc[0] > 30) {
+                  dark_mode = true;
+                  for (int i = 0; i < 3; i++){
+                    color_palette[i] = color_palette_dark[i];
+                  }
+                }
+                else {
+                  dark_mode = false;
+                  for (int i = 0; i < 3; i++){
+                    color_palette[i] = color_palette_light[i];
+                  }
+                }
+                printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
+              }
+          }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
             if (timer_counter_play % sys_hz() == 0){
@@ -1281,21 +1304,6 @@ int game() {
 
             }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
-              if (get_time_rtc()) {
-                if (rtc[0] < 0 || rtc[0] > 30) {
-                  dark_mode = true;
-                  for (int i = 0; i < 3; i++){
-                    color_palette[i] = color_palette_dark[i];
-                  }
-                }
-                else {
-                  dark_mode = false;
-                  for (int i = 0; i < 3; i++){
-                    color_palette[i] = color_palette_light[i];
-                  }
-                }
-                printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
-              }
               frame_counter++;
               if (error != 0)
                 error_timer++;
@@ -1408,6 +1416,7 @@ int game() {
   if (mouse_unsubscribe_int() != 0) return 1;   // Unsubscribing mouse interruptions
   if (kbd_unsubscribe_int() != 0) return 1;   // Unsubscribing keyboard interruptions
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
+  if (rtc_unsubscribe_int() != 0) return 1; // Unsubscriber RTC interrupts
   // Exiting video mode
   vg_exit();
 
