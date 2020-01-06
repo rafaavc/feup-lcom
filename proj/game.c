@@ -15,9 +15,10 @@
 #include "game.h"
 #include "menus.h"
 #include "sp.h"
+#include "rtc.h"
 
 
-extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[], p1_kbd_code;
+extern uint8_t kbd_code, timer_counter, mouse_code, bytes_read[], p1_kbd_code, rtc[];
 extern int mouse_xvariance, mouse_yvariance, hook_id_mouse, p1_mouse_xvariance, p1_mouse_yvariance;
 extern bool p1_mouse_lb, opponent_quit;
 bool mouse_lb_pressed = false;
@@ -1123,6 +1124,7 @@ int game() {
   unsigned int byte_counter = 0;
   struct packet mouse_data;
 
+
   load_pixmaps();
 
   /* IO Setup */
@@ -1279,6 +1281,10 @@ int game() {
 
             }
             if (timer_counter % (sys_hz()/fr_rate) == 0){
+              get_time_rtc();
+              if (rtc[0] < 0 || rtc[0] > 30) dark_mode = true;
+              else dark_mode = false;
+              printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
               frame_counter++;
               if (error != 0)
                 error_timer++;

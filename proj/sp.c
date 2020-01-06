@@ -331,8 +331,8 @@ void sp_send_character(uint8_t c) {
 }
 
 void sp_init() {
-  sp_set_conf(COM1, 8, 2, PARITY_even, BR_8);
-  sp_set_conf(COM2, 8, 2, PARITY_even, BR_8);
+  sp_set_conf(COM1, 8, 2, PARITY_even, BR_1);
+  sp_set_conf(COM2, 8, 2, PARITY_even, BR_1);
   sp_print_conf(COM1);
   sp_print_conf(COM2);
 

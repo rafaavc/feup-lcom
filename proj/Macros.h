@@ -251,6 +251,29 @@ END graphics
 //Debug
 //#define DEBUG
 
+/*
+---
+REAL TIME CLOCK
+---
+*/
+
+#define RTC_ADDR_REG 0x70
+#define RTC_DATA_REG 0x71
+#define REG_A 0xA
+#define REG_B 0xB
+#define REG_C 0xC
+#define SECONDS 0x0
+#define MINUTES 0x2
+#define HOURS 0x4
+#define UPDATE_IN_PROGRESS BIT(7)
+#define FORMAT_24 BIT(1)
+#define RTC_BINARY BIT(2)
+
+/*
+---
+END real time clock
+---
+*/
 
 
 #endif /* _LCOM_I8254_H */
