@@ -31,7 +31,7 @@ bool on = true, added_mouse_events_main_menu = false, added_mouse_events_pause =
 
 const unsigned triggers_mm_no = 4, triggers_p_no = 2, triggers_t_no = 1, triggers_g_no = 2, triggers_cm_no = 3, triggers_s_no = 3;
 
-MouseTrigger * mouse_triggers_main_menu[3];
+MouseTrigger * mouse_triggers_main_menu[4];
 MouseTrigger * mouse_triggers_pause[2];
 MouseTrigger * mouse_triggers_choosing_menu[3];
 MouseTrigger * mouse_triggers_tutorial[1];
@@ -105,22 +105,6 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
   int prev_i, prev_j;
   switch (current_event) {
     case NO_EVENT:
-      break;
-    case MAKE_DARK_MODE_AUTO:
-      override_dark_mode = false;
-      make_dm_auto();
-      current_event = NO_EVENT;
-      break;
-    case MAKE_DARK_MODE_CUSTOM_TOGGLE:
-      override_dark_mode = true;
-      if (!dark_mode) {
-        dark_mode = true;
-      } else {
-        dark_mode = false;
-      }
-      make_dm_custom(dark_mode);
-      draw_bg_buffer(get_background(), 0, 0, true, PREDEF_COLOR, ""); // updates the bg
-      current_event = NO_EVENT;
       break;
     case OPEN_SETTINGS:
       *s = SETTINGS;
@@ -1476,7 +1460,24 @@ int game() {
                 transmit_mouse_bytes(&mouse_data, mouse_xvariance, mouse_yvariance);
               }      
               handle_mouse_events(&s, &mouse_data, board, tiles);
-              execute_event(&s, tiles, tile_no, players, board);
+
+              if (current_event == MAKE_DARK_MODE_AUTO) {
+                override_dark_mode = false;
+                make_dm_auto();
+                current_event = NO_EVENT;
+              } else if (current_event == MAKE_DARK_MODE_CUSTOM_TOGGLE) { 
+                override_dark_mode = true;
+                if (!dark_mode) {
+                  dark_mode = true;
+                } else {
+                  dark_mode = false;
+                }
+                make_dm_custom(dark_mode);
+                draw_bg_buffer(get_background(), 0, 0, true, PREDEF_COLOR, ""); // updates the bg
+                current_event = NO_EVENT;
+              } else {
+                execute_event(&s, tiles, tile_no, players, board);
+              }
             }
           }
       }
