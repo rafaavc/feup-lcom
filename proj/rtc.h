@@ -25,6 +25,10 @@ void bcd_to_binary(uint8_t* number);
  * @param bit_no bit number for policy
  * @return 0 upon success and 1 otherwise
  */
-int rtc_subsrcibe_int(uint8_t* bit_no);
+int rtc_subscribe_int(uint8_t* bit_no);
 
 int (rtc_unsubscribe_int)();
+
+int read_rtc(uint32_t addr, uint8_t *ret);
+
+int write_rtc(uint32_t addr, uint8_t value);

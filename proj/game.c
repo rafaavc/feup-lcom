@@ -1107,7 +1107,7 @@ int game() {
   int r;   // return value of driver receive
   message msg;
 
-  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2), irq_rtc = BIT(4); // IRQ's of keyboard, timer, mouse, rtc and com1
+  uint8_t irq_kbd = BIT(0), irq_timer0 = BIT(1), irq_mouse = BIT(2), irq_rtc = 3; // IRQ's of keyboard, timer, mouse, rtc and com1
   unsigned int frame_counter = 0;
 
   uint8_t fr_rate = 60;
@@ -1127,7 +1127,7 @@ int game() {
   sys_irqenable(&hook_id_mouse);
 
   // RTC
-  if (rtc_subsrcibe_int(&irq_rtc) != 0) return 1; // Subscries RTC interrupts on update
+  if (rtc_subscribe_int(&irq_rtc) != 0) return 1; // Subscries RTC interrupts on update
 
   // Keyboard
   if (kbd_subscribe_int(& irq_kbd) != 0) return 1;  // Subscribes keyboard interruptions
@@ -1175,7 +1175,6 @@ int game() {
 
     if (is_ipc_notify(ipc_status))
     {
-      printf("%X", msg.m_notify.interrupts);
       switch (_ENDPOINT_P(msg.m_source))
       {
         case HARDWARE:
@@ -1256,14 +1255,14 @@ int game() {
           }
           if (msg.m_notify.interrupts & irq_rtc){ // RTC interrupt received
             if (get_time_rtc()) {
-                if (rtc[0] < 0 || rtc[0] > 30) {
-                  dark_mode = true;
-                }
-                else {
-                  dark_mode = false;
-                }
-                printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
+              if (rtc[0] < 0 || rtc[0] > 30) {
+                dark_mode = true;
               }
+              else {
+                dark_mode = false;
+              }
+              printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
+            }
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();

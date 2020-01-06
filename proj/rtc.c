@@ -9,29 +9,26 @@
 #include "Macros.h"
 
 
-bool dark_mode = true;
+bool dark_mode = false;
 int hook_id_rtc;
 uint8_t rtc[3];
 
 bool get_time_rtc(){
-    uint8_t regA = UPDATE_IN_PROGRESS, format;
+    uint8_t regA, format, regC;
 
-    sys_outb(RTC_ADDR_REG, REG_A);
-    util_sys_inb(RTC_DATA_REG, &regA);
+    read_rtc(REG_C, &regC);
+
+    read_rtc(REG_A, &regA);
 
     if (regA & UPDATE_IN_PROGRESS) return false;
 
-    sys_outb(RTC_ADDR_REG, REG_B);
-    util_sys_inb(RTC_DATA_REG, &format);
+    read_rtc(REG_B, &format);
 
-    sys_outb(RTC_ADDR_REG, HOURS);
-    util_sys_inb(RTC_DATA_REG, &rtc[0]);
+    read_rtc(HOURS, &rtc[0]);
 
-    sys_outb(RTC_ADDR_REG, MINUTES);
-    util_sys_inb(RTC_DATA_REG, &rtc[1]);
+    read_rtc(MINUTES, &rtc[1]);
 
-    sys_outb(RTC_ADDR_REG, SECONDS);
-    util_sys_inb(RTC_DATA_REG, &rtc[2]);
+    read_rtc(SECONDS, &rtc[2]);
 
     if (check_BCD()){
         for (int i = 0; i < 3; i++){
@@ -43,8 +40,7 @@ bool get_time_rtc(){
 
 bool check_BCD(){
     uint8_t regB;
-    sys_outb(RTC_ADDR_REG, REG_B);
-    util_sys_inb(RTC_DATA_REG, &regB);
+    read_rtc(REG_B, &regB);
 
     if (regB & RTC_BINARY) return false;
     return true;
@@ -58,19 +54,33 @@ void bcd_to_binary(uint8_t* number){
     *number += tmp;
 }
 
-int rtc_subsrcibe_int(uint8_t* bit_no){
+int read_rtc(uint32_t addr, uint8_t *ret) {
+    if (sys_outb(RTC_ADDR_REG, addr) != 0) return 1;
+    if (util_sys_inb(RTC_DATA_REG, ret) != 0) return 1;
+    return 0;
+}
+
+int write_rtc(uint32_t addr, uint8_t value) {
+    if (sys_outb(RTC_ADDR_REG, addr) != 0) return 1;
+    if (sys_outb(RTC_DATA_REG, value) != 0) return 1;
+    return 0;
+}
+
+int rtc_subscribe_int(uint8_t* bit_no){
     hook_id_rtc = (int) *bit_no;
     uint8_t regB;
 
     if (sys_irqsetpolicy(RTC_IRQ, IRQ_REENABLE | IRQ_EXCLUSIVE, &hook_id_rtc) != 0) return 1;
 
-    if (sys_outb(RTC_ADDR_REG, REG_B) != 0) return 1;
-    if (util_sys_inb(RTC_DATA_REG, &regB) != 0) return 1;
+    if (read_rtc(REG_B, &regB) != 0) return 1;
 
     regB = (regB | UPDATE_INTERRUPTS);
 
-    if (sys_outb(RTC_ADDR_REG, REG_B) != 0) return 1;
-    if (sys_outb(RTC_DATA_REG, regB) != 0) return 1;
+    if (write_rtc(REG_B, regB) != 0) return 1;
+
+    uint8_t regC;
+    if (read_rtc(REG_C, &regC) != 0) return 1;
+
 
     *bit_no = (uint8_t) BIT(*bit_no);
 
