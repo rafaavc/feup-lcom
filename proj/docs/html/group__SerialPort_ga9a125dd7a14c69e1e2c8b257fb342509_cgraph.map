@@ -1,0 +1,9 @@
+<map id="sp_terminate" name="sp_terminate">
+<area shape="rect" id="node2" href="$group__SerialPort.html#ga2d653465e990124317b3f4e2caacc840" title="Unsubcribes interruptions for serial port (COM1) " alt="" coords="157,5,309,32"/>
+<area shape="rect" id="node3" href="$group__SerialPort.html#gafef0b910df87109a12fffc4e1dbc665d" title="Writes to the interrupt enable register (IER), disabling the interrupts. " alt="" coords="160,56,305,83"/>
+<area shape="rect" id="node5" href="$group__SerialPort.html#ga45e636b3b985b6c5ad22014f01c01fd2" title="Unsubcribes interruptions for serial port (COM2) " alt="" coords="157,107,309,133"/>
+<area shape="rect" id="node6" href="$group__Queue.html#ga4c29bcf6ba2eca0528b3ac7889361b3f" title="makes a charqueue empty " alt="" coords="151,157,315,184"/>
+<area shape="rect" id="node4" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="380,56,471,83"/>
+<area shape="rect" id="node7" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="363,132,488,159"/>
+<area shape="rect" id="node8" href="$group__Queue.html#gacdaded4e5bcc6ae01a6d789985381553" title="POP method for the charqueue. " alt="" coords="370,183,481,209"/>
+</map>

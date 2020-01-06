@@ -1,0 +1,6 @@
+<map id="move" name="move">
+<area shape="rect" id="node2" href="$group__Player.html#ga44fb09b7f9ceea29af17f3901d679d4f" title="moves the player on positive y direction " alt="" coords="108,5,221,32"/>
+<area shape="rect" id="node3" href="$group__Player.html#gaa361267bf753695bbbf7d7e42056e5cc" title="moves the player on negative x direction " alt="" coords="109,56,220,83"/>
+<area shape="rect" id="node4" href="$group__Player.html#gad1a24804f5440f8fe762d57b9a6ffbd3" title="moves the player on negative y direction " alt="" coords="109,107,220,133"/>
+<area shape="rect" id="node5" href="$group__Player.html#ga145d0fef983ef960c273cd2e7a5915a8" title="moves the player on positive x direction " alt="" coords="109,157,220,184"/>
+</map>

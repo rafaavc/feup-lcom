@@ -1,0 +1,11 @@
+<map id="sp_ih" name="sp_ih">
+<area shape="rect" id="node2" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="323,31,414,57"/>
+<area shape="rect" id="node3" href="$group__SerialPort.html#ga5f3b628dda6e45cd03923ba47e8936b1" title="Sends a character. " alt="" coords="107,107,239,133"/>
+<area shape="rect" id="node4" href="$group__Queue.html#gab21c584ab513656ce228be8faf43072b" title="PUSH method for the charqueue. " alt="" coords="310,208,427,235"/>
+<area shape="rect" id="node5" href="$group__SerialPort.html#ga5012d51deb1cdda2651959d0600d5a60" title="goes to reception queue and gets information out " alt="" coords="109,281,236,322"/>
+<area shape="rect" id="node7" href="$group__Queue.html#gacdaded4e5bcc6ae01a6d789985381553" title="POP method for the charqueue. " alt="" coords="506,309,617,336"/>
+<area shape="rect" id="node8" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="499,411,624,437"/>
+<area shape="rect" id="node10" href="$group__SerialPort.html#ga877b6b90de84edab62d490d4379ebafb" title="prints the Line Status Register (LSR) " alt="" coords="128,5,217,32"/>
+<area shape="rect" id="node6" href="$group__Queue.html#gacaa29ccb78b3a91fc2cc5feff22750da" title="GET method for the element in front of the queue. " alt="" coords="311,259,426,285"/>
+<area shape="rect" id="node9" href="$group__Queue.html#ga4c29bcf6ba2eca0528b3ac7889361b3f" title="makes a charqueue empty " alt="" coords="287,360,451,387"/>
+</map>

@@ -1,0 +1,6 @@
+<map id="charqueue_remove_last" name="charqueue_remove_last">
+<area shape="rect" id="node2" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="213,5,339,32"/>
+<area shape="rect" id="node3" href="$group__Queue.html#ga44a11e67ef5807557628f7c6a0767289" title="constructor method for charqueue " alt="" coords="213,56,339,83"/>
+<area shape="rect" id="node4" href="$group__Queue.html#gacdaded4e5bcc6ae01a6d789985381553" title="POP method for the charqueue. " alt="" coords="221,107,331,133"/>
+<area shape="rect" id="node5" href="$group__Queue.html#gab21c584ab513656ce228be8faf43072b" title="PUSH method for the charqueue. " alt="" coords="217,157,335,184"/>
+</map>

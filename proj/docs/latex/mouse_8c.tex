@@ -1,0 +1,74 @@
+\hypertarget{mouse_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse.c File Reference}
+\label{mouse_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}video.\+h\char`\"{}}\newline
+Include dependency graph for mouse.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=285pt]{mouse_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int() \hyperlink{group__Mouse_ga20285aed4b3ef45812cd967532dd09db}{mouse\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for mouse. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Mouse_ga3ecf823d80520009ae5e0d76ae40a3c3}{mouse\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unubcribes interruptions for mouse. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_gadbd27fcc1c1614cacfb6a8c77e70c967}{write\+\_\+command\+\_\+byte} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Writes a command through Output buffer. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_ga8dccf03fc2b97a86e123897dfe5efe25}{send\+\_\+command\+\_\+to\+\_\+mouse} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Sends a command through mouse Output buffer and verifies response. \end{DoxyCompactList}\item 
+void \hyperlink{group__Mouse_gae385a7382889db22c547bf5e4868006d}{parse\+\_\+packet} (struct packet $\ast$mouse\+\_\+data, bool update\+\_\+mouse\+\_\+variance)
+\begin{DoxyCompactList}\small\item\em Breaks down the 3 bytes received to struct packet variable. \end{DoxyCompactList}\item 
+void() \hyperlink{group__Mouse_ga210374b50462acdedab00df64d5cea3c}{mouse\+\_\+ih} ()
+\begin{DoxyCompactList}\small\item\em Handles mouse interrutps. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{mouse_8c_a0b0da21bbdff62b7b28e9af7ec3d0d76}{hook\+\_\+id\+\_\+mouse} = 0
+\item 
+uint8\+\_\+t \hyperlink{mouse_8c_a53daae4d8df3cf0d07758cdf19508430}{mouse\+\_\+code}
+\item 
+uint8\+\_\+t \hyperlink{mouse_8c_a28d0dea129ded21d497ef4a364fa713d}{bytes\+\_\+read} \mbox{[}3\mbox{]}
+\item 
+int \hyperlink{mouse_8c_af9bc2c5a01a160514c48a51c9b63fb46}{mouse\+\_\+xvariance} = 400
+\item 
+int \hyperlink{mouse_8c_a167547e22ad51809d4670ba551a8c356}{mouse\+\_\+yvariance} = 300
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{mouse_8c_a28d0dea129ded21d497ef4a364fa713d}\label{mouse_8c_a28d0dea129ded21d497ef4a364fa713d}} 
+\index{mouse.\+c@{mouse.\+c}!bytes\+\_\+read@{bytes\+\_\+read}}
+\index{bytes\+\_\+read@{bytes\+\_\+read}!mouse.\+c@{mouse.\+c}}
+\subsubsection{\texorpdfstring{bytes\+\_\+read}{bytes\_read}}
+{\footnotesize\ttfamily uint8\+\_\+t bytes\+\_\+read\mbox{[}3\mbox{]}}
+
+\mbox{\Hypertarget{mouse_8c_a0b0da21bbdff62b7b28e9af7ec3d0d76}\label{mouse_8c_a0b0da21bbdff62b7b28e9af7ec3d0d76}} 
+\index{mouse.\+c@{mouse.\+c}!hook\+\_\+id\+\_\+mouse@{hook\+\_\+id\+\_\+mouse}}
+\index{hook\+\_\+id\+\_\+mouse@{hook\+\_\+id\+\_\+mouse}!mouse.\+c@{mouse.\+c}}
+\subsubsection{\texorpdfstring{hook\+\_\+id\+\_\+mouse}{hook\_id\_mouse}}
+{\footnotesize\ttfamily int hook\+\_\+id\+\_\+mouse = 0}
+
+\mbox{\Hypertarget{mouse_8c_a53daae4d8df3cf0d07758cdf19508430}\label{mouse_8c_a53daae4d8df3cf0d07758cdf19508430}} 
+\index{mouse.\+c@{mouse.\+c}!mouse\+\_\+code@{mouse\+\_\+code}}
+\index{mouse\+\_\+code@{mouse\+\_\+code}!mouse.\+c@{mouse.\+c}}
+\subsubsection{\texorpdfstring{mouse\+\_\+code}{mouse\_code}}
+{\footnotesize\ttfamily uint8\+\_\+t mouse\+\_\+code}
+
+\mbox{\Hypertarget{mouse_8c_af9bc2c5a01a160514c48a51c9b63fb46}\label{mouse_8c_af9bc2c5a01a160514c48a51c9b63fb46}} 
+\index{mouse.\+c@{mouse.\+c}!mouse\+\_\+xvariance@{mouse\+\_\+xvariance}}
+\index{mouse\+\_\+xvariance@{mouse\+\_\+xvariance}!mouse.\+c@{mouse.\+c}}
+\subsubsection{\texorpdfstring{mouse\+\_\+xvariance}{mouse\_xvariance}}
+{\footnotesize\ttfamily int mouse\+\_\+xvariance = 400}
+
+\mbox{\Hypertarget{mouse_8c_a167547e22ad51809d4670ba551a8c356}\label{mouse_8c_a167547e22ad51809d4670ba551a8c356}} 
+\index{mouse.\+c@{mouse.\+c}!mouse\+\_\+yvariance@{mouse\+\_\+yvariance}}
+\index{mouse\+\_\+yvariance@{mouse\+\_\+yvariance}!mouse.\+c@{mouse.\+c}}
+\subsubsection{\texorpdfstring{mouse\+\_\+yvariance}{mouse\_yvariance}}
+{\footnotesize\ttfamily int mouse\+\_\+yvariance = 300}
+

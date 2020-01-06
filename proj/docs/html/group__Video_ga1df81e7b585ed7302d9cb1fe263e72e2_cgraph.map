@@ -1,0 +1,7 @@
+<map id="draw_string_centered" name="draw_string_centered">
+<area shape="rect" id="node2" href="$group__Video.html#gaefb95d930fabc3645326297ed5d37b63" title="get a string width " alt="" coords="200,5,363,32"/>
+<area shape="rect" id="node4" href="$group__Video.html#ga65f3bcb27a5b294654783b067086a175" title="draws a string in the screen " alt="" coords="237,56,326,83"/>
+<area shape="rect" id="node3" href="$group__Video.html#ga5e63b50c933f1307aca72b0cafc77a14" title="get a character width " alt="" coords="411,5,571,32"/>
+<area shape="rect" id="node5" href="$group__Video.html#ga65cb3cc81804b640785e86116373a36c" title="draws a xpm " alt="" coords="441,56,540,83"/>
+<area shape="rect" id="node6" href="$group__XPM.html#gaeaf4a2c369709099c0355fca8ecbd497" title="get method for letters xpm_image_t " alt="" coords="453,107,529,133"/>
+</map>

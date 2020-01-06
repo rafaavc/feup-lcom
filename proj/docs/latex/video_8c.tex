@@ -1,0 +1,75 @@
+\hypertarget{video_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/video.c File Reference}
+\label{video_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/video.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/video.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$lcom/lab5.\+h$>$}\newline
+{\ttfamily \#include $<$minix/driver.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}string.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}video.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpm\+\_\+includes.\+h\char`\"{}}\newline
+Include dependency graph for video.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{video_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void $\ast$() \hyperlink{group__Video_gaa6c1ff5024cd4d15e476bce487584daa}{vg\+\_\+init} (uint16\+\_\+t mode)
+\begin{DoxyCompactList}\small\item\em initiates minix\textquotesingle{}s video mode \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_ga18107cedb98361dc0fa1f2680d2e6536}{draw\+\_\+pixel} (uint16\+\_\+t x, uint16\+\_\+t y, uint32\+\_\+t color)
+\begin{DoxyCompactList}\small\item\em draws a pixel \end{DoxyCompactList}\item 
+void \hyperlink{video_8c_a0e410edde52b08abf1a93ac7d6d647f8}{draw\+\_\+pixel\+\_\+bg\+\_\+buffer} (uint16\+\_\+t x, uint16\+\_\+t y, uint32\+\_\+t color)
+\item 
+void \hyperlink{group__Video_ga734884458e765801966514410031e00b}{draw\+\_\+hline} (uint16\+\_\+t x, uint16\+\_\+t y, uint16\+\_\+t width, uint32\+\_\+t color)
+\begin{DoxyCompactList}\small\item\em draw a vertical line \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_ga35c44a60865b65076c8de7007ed98a16}{draw\+\_\+vline} (uint16\+\_\+t x, uint16\+\_\+t y, uint16\+\_\+t height, uint32\+\_\+t color)
+\begin{DoxyCompactList}\small\item\em draw a vertical line \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_ga45710170c574300badfc04879210f4d4}{draw\+\_\+rectangle} (uint16\+\_\+t x, uint16\+\_\+t y, uint16\+\_\+t height, uint16\+\_\+t width, uint32\+\_\+t color)
+\begin{DoxyCompactList}\small\item\em draw a rectangle \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_ga65cb3cc81804b640785e86116373a36c}{draw\+\_\+pixmap} (xpm\+\_\+image\+\_\+t img, uint16\+\_\+t x, uint16\+\_\+t y, bool centered, uint32\+\_\+t color1, char $\ast$relative\+\_\+size)
+\begin{DoxyCompactList}\small\item\em draws a xpm \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_gad6fecc9854349e79299c1a719665b0cb}{draw\+\_\+bg\+\_\+buffer} (xpm\+\_\+image\+\_\+t img, uint16\+\_\+t x, uint16\+\_\+t y, bool centered, uint32\+\_\+t color1, char $\ast$relative\+\_\+size)
+\begin{DoxyCompactList}\small\item\em gets background buffer ready to copy \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__Video_ga5e63b50c933f1307aca72b0cafc77a14}{get\+\_\+letter\+\_\+width\+\_\+normal} (char s)
+\begin{DoxyCompactList}\small\item\em get a character width \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__Video_gaefb95d930fabc3645326297ed5d37b63}{get\+\_\+string\+\_\+width\+\_\+normal} (char $\ast$s, unsigned length)
+\begin{DoxyCompactList}\small\item\em get a string width \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_ga1df81e7b585ed7302d9cb1fe263e72e2}{draw\+\_\+string\+\_\+centered} (char $\ast$s, int ssize, uint16\+\_\+t x, uint16\+\_\+t y, uint16\+\_\+t max\+\_\+length\+\_\+per\+\_\+line, uint32\+\_\+t color, char $\ast$relative\+\_\+size)
+\begin{DoxyCompactList}\small\item\em draws a string centered in the screen \end{DoxyCompactList}\item 
+void \hyperlink{group__Video_ga65f3bcb27a5b294654783b067086a175}{draw\+\_\+string} (char $\ast$s, int ssize, uint16\+\_\+t x, uint16\+\_\+t y, uint16\+\_\+t max\+\_\+length\+\_\+per\+\_\+line, uint32\+\_\+t color, char $\ast$relative\+\_\+size)
+\begin{DoxyCompactList}\small\item\em draws a string in the screen \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{group__Video_ga92bcd933e2fd6e75a0c7c88a0b31452f}{get\+\_\+double\+\_\+buffer} ()
+\begin{DoxyCompactList}\small\item\em get method for the double buffer \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{group__Video_gadda634e50b839d2f56b4ad68bf0509a3}{get\+\_\+background\+\_\+buffer} ()
+\begin{DoxyCompactList}\small\item\em get method for background buffer \end{DoxyCompactList}\item 
+int \hyperlink{group__Video_gaa3e656b61ae08209e349f5b3e7b1a76f}{get\+\_\+mode\+\_\+info} (uint16\+\_\+t mode, vbe\+\_\+mode\+\_\+info\+\_\+t $\ast$vmi\+\_\+p)
+\begin{DoxyCompactList}\small\item\em Returns information on the input V\+BE mode, including screen dimensions, color depth and V\+R\+AM physical address. \end{DoxyCompactList}\item 
+uint16\+\_\+t \hyperlink{group__Video_ga3dcf2045f1929eb3b370b96715863c4e}{get\+\_\+xres} ()
+\begin{DoxyCompactList}\small\item\em get screen width \end{DoxyCompactList}\item 
+uint16\+\_\+t \hyperlink{group__Video_gad20679e2730425e7d0283793bdd6e696}{get\+\_\+yres} ()
+\begin{DoxyCompactList}\small\item\em get screen height \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__Video_ga29911e110d87d372e97e0676d2768c95}{get\+\_\+bits\+\_\+per\+\_\+pixel} ()
+\begin{DoxyCompactList}\small\item\em get bits per pixel \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__Video_ga98dfb26e764e6a19e51c2c6db282f982}{get\+\_\+red\+\_\+mask} ()
+\begin{DoxyCompactList}\small\item\em get method for the red mask used in the mode \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__Video_ga653e6120b1631cc1c2c3e0dd7d1a2917}{get\+\_\+blue\+\_\+mask} ()
+\begin{DoxyCompactList}\small\item\em get method for the blue mask used in the mode \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__Video_gab8c921f22eb318361b6fe018e1759267}{get\+\_\+green\+\_\+mask} ()
+\begin{DoxyCompactList}\small\item\em get method for the green mask used in the mode \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{group__Video_ga1d04069f4e8b1556a7a1ed2cd95bfdea}{get\+\_\+video\+\_\+mem} ()
+\begin{DoxyCompactList}\small\item\em get method for video\+\_\+mem \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{video_8c_a0e410edde52b08abf1a93ac7d6d647f8}\label{video_8c_a0e410edde52b08abf1a93ac7d6d647f8}} 
+\index{video.\+c@{video.\+c}!draw\+\_\+pixel\+\_\+bg\+\_\+buffer@{draw\+\_\+pixel\+\_\+bg\+\_\+buffer}}
+\index{draw\+\_\+pixel\+\_\+bg\+\_\+buffer@{draw\+\_\+pixel\+\_\+bg\+\_\+buffer}!video.\+c@{video.\+c}}
+\subsubsection{\texorpdfstring{draw\+\_\+pixel\+\_\+bg\+\_\+buffer()}{draw\_pixel\_bg\_buffer()}}
+{\footnotesize\ttfamily void draw\+\_\+pixel\+\_\+bg\+\_\+buffer (\begin{DoxyParamCaption}\item[{uint16\+\_\+t}]{x,  }\item[{uint16\+\_\+t}]{y,  }\item[{uint32\+\_\+t}]{color }\end{DoxyParamCaption})}
+

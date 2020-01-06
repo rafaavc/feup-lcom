@@ -1,0 +1,82 @@
+\hypertarget{mouse__trigger_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse\+\_\+trigger.c File Reference}
+\label{mouse__trigger_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse\+\_\+trigger.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse\+\_\+trigger.\+c}}
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mouse\+\_\+trigger.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$minix/driver.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+Include dependency graph for mouse\+\_\+trigger.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{mouse__trigger_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$ \hyperlink{group__MouseTrigger_gafcc865ceabbf0440ed41f6c3efab3883}{create\+\_\+mouse\+\_\+trigger} (unsigned x, unsigned y, unsigned width, unsigned height, enum \hyperlink{group__MouseTrigger_ga5667b805d857c6d28f83f6038a0272d3}{Event} event)
+\begin{DoxyCompactList}\small\item\em creates a \hyperlink{structMouseTrigger}{Mouse\+Trigger} \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__MouseTrigger_gae86488e196565e85859c13a95b6ad4ec}{mt\+\_\+get\+\_\+xpos} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for leftmost x \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__MouseTrigger_ga6a8b3f49ac3c8d51c829cb2b988edf18}{mt\+\_\+get\+\_\+ypos} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for upper y \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__MouseTrigger_ga8408da28d1d750afae507d52f5047c3b}{mt\+\_\+get\+\_\+endxpos} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for rightmost x \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__MouseTrigger_ga6aef780a98bbfc736bac70d1993f60cf}{mt\+\_\+get\+\_\+endypos} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for lower y \end{DoxyCompactList}\item 
+enum \hyperlink{group__MouseTrigger_ga5667b805d857c6d28f83f6038a0272d3}{Event} \hyperlink{group__MouseTrigger_gadbbad606bd8d6884d39ecec0e5fdc745}{mt\+\_\+get\+\_\+event} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for the event of the \hyperlink{structMouseTrigger}{Mouse\+Trigger} \end{DoxyCompactList}\item 
+bool \hyperlink{group__MouseTrigger_ga2cc2cd6834ca21e5346ed3bcc29607bb}{check\+\_\+mouse\+\_\+overlap} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em checks if the mouse is on the \hyperlink{structMouseTrigger}{Mouse\+Trigger} \end{DoxyCompactList}\item 
+bool \hyperlink{group__MouseTrigger_gac606d27355408b95dbf9f4569003a6de}{p1\+\_\+check\+\_\+mouse\+\_\+overlap} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em checks if the mouse from the other player is on the \hyperlink{structMouseTrigger}{Mouse\+Trigger} (if Serial Port is being used) \end{DoxyCompactList}\item 
+bool \hyperlink{group__MouseTrigger_ga2a065a926bc0f7b36fa31a8d4121b740}{mt\+\_\+get\+\_\+mouse\+\_\+over} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for mouse\+\_\+over \end{DoxyCompactList}\item 
+void \hyperlink{group__MouseTrigger_gaafa2c957090b2e1b477ed2497702b7b7}{mt\+\_\+set\+\_\+mouse\+\_\+over} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em sets mouse\+\_\+over to true \end{DoxyCompactList}\item 
+void \hyperlink{group__MouseTrigger_gab77507c5d9854b7626b4dfe6b457e5b5}{mt\+\_\+set\+\_\+obj} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t, void $\ast$o)
+\begin{DoxyCompactList}\small\item\em sets the mouse trigger object \end{DoxyCompactList}\item 
+void $\ast$ \hyperlink{group__MouseTrigger_gadb5e029956ef7cda8029a690f7a8bbbb}{mt\+\_\+get\+\_\+obj} (\hyperlink{structMouseTrigger}{Mouse\+Trigger} $\ast$t)
+\begin{DoxyCompactList}\small\item\em G\+ET method for the mouse trigger object. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{mouse__trigger_8c_af9bc2c5a01a160514c48a51c9b63fb46}{mouse\+\_\+xvariance}
+\item 
+int \hyperlink{mouse__trigger_8c_a167547e22ad51809d4670ba551a8c356}{mouse\+\_\+yvariance}
+\item 
+int \hyperlink{mouse__trigger_8c_ae7f356c9b952b38be8a9988dc0de993b}{p1\+\_\+mouse\+\_\+xvariance}
+\item 
+int \hyperlink{mouse__trigger_8c_ac637d5bd511e3c1a0094297fae08ce7d}{p1\+\_\+mouse\+\_\+yvariance}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{mouse__trigger_8c_af9bc2c5a01a160514c48a51c9b63fb46}\label{mouse__trigger_8c_af9bc2c5a01a160514c48a51c9b63fb46}} 
+\index{mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}!mouse\+\_\+xvariance@{mouse\+\_\+xvariance}}
+\index{mouse\+\_\+xvariance@{mouse\+\_\+xvariance}!mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}}
+\subsubsection{\texorpdfstring{mouse\+\_\+xvariance}{mouse\_xvariance}}
+{\footnotesize\ttfamily int mouse\+\_\+xvariance}
+
+\mbox{\Hypertarget{mouse__trigger_8c_a167547e22ad51809d4670ba551a8c356}\label{mouse__trigger_8c_a167547e22ad51809d4670ba551a8c356}} 
+\index{mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}!mouse\+\_\+yvariance@{mouse\+\_\+yvariance}}
+\index{mouse\+\_\+yvariance@{mouse\+\_\+yvariance}!mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}}
+\subsubsection{\texorpdfstring{mouse\+\_\+yvariance}{mouse\_yvariance}}
+{\footnotesize\ttfamily int mouse\+\_\+yvariance}
+
+\mbox{\Hypertarget{mouse__trigger_8c_ae7f356c9b952b38be8a9988dc0de993b}\label{mouse__trigger_8c_ae7f356c9b952b38be8a9988dc0de993b}} 
+\index{mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}!p1\+\_\+mouse\+\_\+xvariance@{p1\+\_\+mouse\+\_\+xvariance}}
+\index{p1\+\_\+mouse\+\_\+xvariance@{p1\+\_\+mouse\+\_\+xvariance}!mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}}
+\subsubsection{\texorpdfstring{p1\+\_\+mouse\+\_\+xvariance}{p1\_mouse\_xvariance}}
+{\footnotesize\ttfamily int p1\+\_\+mouse\+\_\+xvariance}
+
+\mbox{\Hypertarget{mouse__trigger_8c_ac637d5bd511e3c1a0094297fae08ce7d}\label{mouse__trigger_8c_ac637d5bd511e3c1a0094297fae08ce7d}} 
+\index{mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}!p1\+\_\+mouse\+\_\+yvariance@{p1\+\_\+mouse\+\_\+yvariance}}
+\index{p1\+\_\+mouse\+\_\+yvariance@{p1\+\_\+mouse\+\_\+yvariance}!mouse\+\_\+trigger.\+c@{mouse\+\_\+trigger.\+c}}
+\subsubsection{\texorpdfstring{p1\+\_\+mouse\+\_\+yvariance}{p1\_mouse\_yvariance}}
+{\footnotesize\ttfamily int p1\+\_\+mouse\+\_\+yvariance}
+

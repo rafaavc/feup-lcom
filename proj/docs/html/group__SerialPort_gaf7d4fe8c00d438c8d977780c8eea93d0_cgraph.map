@@ -1,0 +1,4 @@
+<map id="sp_set_conf" name="sp_set_conf">
+<area shape="rect" id="node2" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="299,5,389,32"/>
+<area shape="rect" id="node3" href="$group__SerialPort.html#gaf264a0b0c4be6a1b9f368e9af4863d4b" title="Writes to the divisor latch, setting the frame rate. " alt="" coords="147,31,251,57"/>
+</map>

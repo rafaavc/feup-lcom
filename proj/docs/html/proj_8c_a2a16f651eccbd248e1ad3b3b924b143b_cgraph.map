@@ -1,0 +1,51 @@
+<map id="proj_main_loop" name="proj_main_loop">
+<area shape="rect" id="node2" href="$group__Game.html#ga231e4dd52378c7442957e86cb5547465" title="main function for the game " alt="" coords="163,1069,217,1096"/>
+<area shape="rect" id="node3" href="$group__XPM.html#gad2044d84c92e452614c589961960e3f2" title="loads all the pixmaps needed for the program " alt="" coords="309,5,412,32"/>
+<area shape="rect" id="node4" href="$group__Mouse.html#ga20285aed4b3ef45812cd967532dd09db" title="Subcribes interruptions for mouse. " alt="" coords="288,56,433,83"/>
+<area shape="rect" id="node5" href="$group__Mouse.html#ga8dccf03fc2b97a86e123897dfe5efe25" title="Sends a command through mouse Output buffer and verifies response. " alt="" coords="504,411,683,437"/>
+<area shape="rect" id="node7" href="$group__RealTimeClock.html#ga5171a9c0f54940fe60f7500896afcc86" title="Subrscribes RTC interrupts for updates. " alt="" coords="300,208,421,235"/>
+<area shape="rect" id="node8" href="$group__RealTimeClock.html#gae37f65cb1eda30db92728dc94bb52b76" title="reads data from the RTC " alt="" coords="559,157,628,184"/>
+<area shape="rect" id="node10" href="$group__Keyboard.html#ga4ac9231a99a664d6a9f0b69767e0d707" title="Subscribes and enables Keyboard interrupts. " alt="" coords="297,461,424,488"/>
+<area shape="rect" id="node11" href="$group__Timer.html#gac57a7e1140a7e00ad95ac5488d2a671b" title="Subscribes and enables Timer 0 interrupts. " alt="" coords="293,512,428,539"/>
+<area shape="rect" id="node12" href="$group__Video.html#gaa6c1ff5024cd4d15e476bce487584daa" title="initiates minix&#39;s video mode " alt="" coords="331,563,391,589"/>
+<area shape="rect" id="node14" href="$group__Video.html#gad6fecc9854349e79299c1a719665b0cb" title="gets background buffer ready to copy " alt="" coords="538,625,649,652"/>
+<area shape="rect" id="node15" href="$group__XPM.html#ga2fc6c9c4a09c9d990267ef2e961e133b" title="get method for the day background xpm " alt="" coords="536,701,651,728"/>
+<area shape="rect" id="node16" href="$group__Player.html#gac8cf29880bdf99b58c45cf2375e98ce2" title="creates a Player " alt="" coords="761,816,861,843"/>
+<area shape="rect" id="node17" href="$group__XPM.html#gaa3caf6e5d8c0178d8267a0d56408169f" title="get method for the blue ball animation " alt="" coords="731,867,892,893"/>
+<area shape="rect" id="node18" href="$game_8c.html#add2e6d3c32b8c1ee99a60d1b5c444031" title="clear_game" alt="" coords="549,765,638,792"/>
+<area shape="rect" id="node21" href="$group__Keyboard.html#gaea970a154161a35f6894898a092ed70a" title="keyboard interrupts handler " alt="" coords="563,259,623,285"/>
+<area shape="rect" id="node22" href="$group__SerialPort.html#ga11be5d1aab04fe2f0e95a4d562082916" title="Transmits a kbd code (we only use kbd codes with one byte) " alt="" coords="295,917,427,944"/>
+<area shape="rect" id="node23" href="$group__Game.html#gaabe19ec3ff0b080785fefe2de90a490d" title="handles keyboard events for each state of the game " alt="" coords="277,968,444,995"/>
+<area shape="rect" id="node24" href="$group__Game.html#ga5eb6989c2c42661c4ce428c9032efd49" title="excecutes the current_event of the game " alt="" coords="307,715,414,741"/>
+<area shape="rect" id="node25" href="$group__SerialPort.html#ga6abe9396fa5e9b5dd422b66a563f5c05" title="Interrupt handler for serial port. " alt="" coords="567,309,620,336"/>
+<area shape="rect" id="node26" href="$group__Game.html#ga52aba3072d48420545e961ef1506c52c" title="handles mouse events for each state of the game " alt="" coords="285,1019,437,1045"/>
+<area shape="rect" id="node27" href="$group__RealTimeClock.html#ga18fb6b60ca3519b4c5943902893f89eb" title="Function to get time from the real time clock. " alt="" coords="313,107,408,133"/>
+<area shape="rect" id="node28" href="$group__Mouse.html#ga91a2072306c68353712a6b771287dc2c" title="Handles timer interrutps. " alt="" coords="300,1069,421,1096"/>
+<area shape="rect" id="node29" href="$group__SerialPort.html#ga9a125dd7a14c69e1e2c8b257fb342509" title="Terminates serial port. " alt="" coords="312,1120,409,1147"/>
+<area shape="rect" id="node30" href="$group__Game.html#ga83361e027b6f0dd917305f1f82dedda3" title="draws main menu screen " alt="" coords="299,1171,423,1197"/>
+<area shape="rect" id="node31" href="$group__Game.html#ga4ffa8c0e51a3c7ac41cd5457e8c30988" title="draws tutorial screen " alt="" coords="313,1221,409,1248"/>
+<area shape="rect" id="node32" href="$group__Game.html#gaf92051f9694c2b383cb3a5a5a33c9c85" title="draws settings menu " alt="" coords="309,1272,412,1299"/>
+<area shape="rect" id="node33" href="$group__Game.html#gadf57af8cce7fc24e7c2900722cf77ec3" title="draws main menu screen " alt="" coords="295,1323,426,1349"/>
+<area shape="rect" id="node34" href="$group__Game.html#ga2b28921ce3868ea6d33b566698a01e00" title="draws main menu screen " alt="" coords="267,1373,454,1400"/>
+<area shape="rect" id="node35" href="$group__Game.html#gab7dfcb2123582cf0a78ce1cd6e51eabd" title="draws choosing host menu screen " alt="" coords="271,1424,451,1451"/>
+<area shape="rect" id="node36" href="$group__Game.html#ga1655b2d3688b793afe08d766c1408c7c" title="draws waiting for connection screen " alt="" coords="265,1475,456,1501"/>
+<area shape="rect" id="node37" href="$group__Game.html#gad00e78145e30e8934e35f5a57dd6c2d4" title="Draws the player2 prompt (a menu that let&#39;s him choose his name) " alt="" coords="287,1525,434,1552"/>
+<area shape="rect" id="node38" href="$group__Player.html#ga5ddbe4f50900b2bf02dff9a2abac4c55" title="set method for Player&#39;s name " alt="" coords="314,1576,407,1603"/>
+<area shape="rect" id="node39" href="$group__Queue.html#ga27406c20bfc03f7594e296a9ff320c0a" title="converts a charqueue to a string " alt="" coords="524,1652,663,1679"/>
+<area shape="rect" id="node40" href="$group__SerialPort.html#gadf2672c522b1b952877889712bb7f1df" title="Transmits player name. " alt="" coords="289,1627,432,1653"/>
+<area shape="rect" id="node41" href="$game_8c.html#aff5636ff2fcb130820e940bc2662d7b6" title="draw_player2_prompt" alt="" coords="287,1728,434,1755"/>
+<area shape="rect" id="node42" href="$group__Game.html#ga92e674dfff707dfe92f72b21f67a3eaa" title="updates game based on players postion and number of moves done " alt="" coords="311,1779,411,1805"/>
+<area shape="rect" id="node43" href="$group__Game.html#ga5f910b1749ff0724dea2bc4e34102ec5" title="draws gameboard and players " alt="" coords="316,1829,405,1856"/>
+<area shape="rect" id="node44" href="$group__Mouse.html#ga210374b50462acdedab00df64d5cea3c" title="Handles mouse interrutps. " alt="" coords="554,360,633,387"/>
+<area shape="rect" id="node45" href="$group__Mouse.html#gae385a7382889db22c547bf5e4868006d" title="Breaks down the 3 bytes received to struct packet variable. " alt="" coords="311,1880,411,1907"/>
+<area shape="rect" id="node46" href="$group__SerialPort.html#gaa7ef2569acd9f6a7221b0c7cb262d9d1" title="Transmits mouse bytes. " alt="" coords="283,1931,438,1957"/>
+<area shape="rect" id="node47" href="$group__Mouse.html#ga3ecf823d80520009ae5e0d76ae40a3c3" title="Unubcribes interruptions for mouse. " alt="" coords="281,1981,440,2008"/>
+<area shape="rect" id="node48" href="$group__Keyboard.html#gaee0a7b54ee426fade9c780418d110fe0" title="Unsubscribes Keyboard interrupts. " alt="" coords="290,2032,431,2059"/>
+<area shape="rect" id="node49" href="$group__Timer.html#gafabd21de449be154dd65d5fdb2d8045d" title="Unsubscribes Timer 0 interrupts. " alt="" coords="286,2083,435,2109"/>
+<area shape="rect" id="node50" href="$group__RealTimeClock.html#ga9d4850bb2a488644672d43287f160622" title="Unsubscribes RTC interrupts. " alt="" coords="293,2133,428,2160"/>
+<area shape="rect" id="node6" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="766,309,857,336"/>
+<area shape="rect" id="node9" href="$group__RealTimeClock.html#ga22b6726ecbb76b91e8cbe61bfbc06595" title="writes a command to the RTC " alt="" coords="557,208,629,235"/>
+<area shape="rect" id="node13" href="$group__Video.html#gaa3e656b61ae08209e349f5b3e7b1a76f" title="Returns information on the input VBE mode, including screen dimensions, color depth and VRAM physical..." alt="" coords="540,563,647,589"/>
+<area shape="rect" id="node19" href="$group__BoardTile.html#ga1126de205089e0772fe82ff72f203da1" title="creates n tiles " alt="" coords="767,765,856,792"/>
+<area shape="rect" id="node20" href="$group__BoardTile.html#gabfc27e45224cf938ccc6e81428a00239" title="creates a board with the tiles " alt="" coords="763,715,860,741"/>
+</map>

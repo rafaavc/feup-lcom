@@ -1,0 +1,4 @@
+<map id="sp_print_conf" name="sp_print_conf">
+<area shape="rect" id="node2" href="$group__SerialPort.html#gab2a01a4e6ded224f3ac4a9e139852258" title="Obtains the value of the divisor latch. " alt="" coords="153,5,295,32"/>
+<area shape="rect" id="node3" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="343,31,433,57"/>
+</map>

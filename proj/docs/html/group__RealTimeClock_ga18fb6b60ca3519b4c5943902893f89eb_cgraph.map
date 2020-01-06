@@ -1,0 +1,6 @@
+<map id="get_time_rtc" name="get_time_rtc">
+<area shape="rect" id="node2" href="$group__RealTimeClock.html#gae37f65cb1eda30db92728dc94bb52b76" title="reads data from the RTC " alt="" coords="299,5,368,32"/>
+<area shape="rect" id="node4" href="$group__RealTimeClock.html#gab79ee864e66f8b74b5d0120a57a2c4f7" title="checks if date is on BCD " alt="" coords="153,31,246,57"/>
+<area shape="rect" id="node5" href="$group__RealTimeClock.html#ga3712be4b01789095104f73d8a0488e10" title="changes number in BCD format to binary " alt="" coords="148,81,251,108"/>
+<area shape="rect" id="node3" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="416,5,507,32"/>
+</map>

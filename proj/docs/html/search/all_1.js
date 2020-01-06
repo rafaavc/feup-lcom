@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['b_5fbreak',['B_break',['../Macros_8h.html#a3ebe4ee63a7cf21b697745720a48ab43',1,'Macros.h']]],
+  ['backspace_5fbreak',['BACKSPACE_break',['../Macros_8h.html#ac0a62048030fd127b9fbf929c9b24d14',1,'Macros.h']]],
+  ['bcd_5fto_5fbinary',['bcd_to_binary',['../group__RealTimeClock.html#ga3712be4b01789095104f73d8a0488e10',1,'bcd_to_binary(uint8_t *number):&#160;rtc.c'],['../group__RealTimeClock.html#ga3712be4b01789095104f73d8a0488e10',1,'bcd_to_binary(uint8_t *number):&#160;rtc.c']]],
+  ['bit',['BIT',['../group__utils.html#ga3a8ea58898cb58fc96013383d39f482c',1,'utils.h']]],
+  ['black',['BLACK',['../Macros_8h.html#a7b3b25cba33b07c303f3060fe41887f6',1,'Macros.h']]],
+  ['blocks_5fto_5fmove',['blocks_to_move',['../game_8c.html#a8f6814c2320f4de377a35a33f7c553db',1,'game.c']]],
+  ['board_5fi',['board_i',['../structPlayer.html#a9b9db456166f97a2bb620919b23aa91b',1,'Player']]],
+  ['board_5fj',['board_j',['../structPlayer.html#a17156154173c98e7736dc6c6d26056c9',1,'Player']]],
+  ['board_5fsize',['BOARD_SIZE',['../Macros_8h.html#a1db39eb31d1315ce982608fe25587b6d',1,'Macros.h']]],
+  ['board_5ftile_2ec',['board_tile.c',['../board__tile_8c.html',1,'']]],
+  ['board_5ftile_2eh',['board_tile.h',['../board__tile_8h.html',1,'']]],
+  ['board_20tile',['Board Tile',['../group__BoardTile.html',1,'']]],
+  ['br_5f1',['BR_1',['../Macros_8h.html#aec1806ebde93084cf4adbab7f8762137',1,'Macros.h']]],
+  ['br_5f2',['BR_2',['../Macros_8h.html#aa051d96a84d3edc049b7bd766b212a87',1,'Macros.h']]],
+  ['br_5f3',['BR_3',['../Macros_8h.html#aa9bc33ff81c5a43d7d020a9810e6a387',1,'Macros.h']]],
+  ['br_5f4',['BR_4',['../Macros_8h.html#afe50c9ee263f91052e0ec5d9abba022a',1,'Macros.h']]],
+  ['br_5f5',['BR_5',['../Macros_8h.html#a38d4829cc5f476288dd21d019c8cb503',1,'Macros.h']]],
+  ['br_5f6',['BR_6',['../Macros_8h.html#a6d2654543b563ffb08dc232869b75ad9',1,'Macros.h']]],
+  ['br_5f7',['BR_7',['../Macros_8h.html#a52c1bd9df512fb711e1a281da734e3ae',1,'Macros.h']]],
+  ['br_5f8',['BR_8',['../Macros_8h.html#a04135f6b6e66e8587d80ab31de1b2489',1,'Macros.h']]],
+  ['byte2_5fcode',['BYTE2_CODE',['../Macros_8h.html#a0a62fc27fe244671190c51dadd5a9caa',1,'Macros.h']]],
+  ['bytes_5fread',['bytes_read',['../game_8c.html#a7cf00bd9e2e0d5743352f0067b06fd84',1,'bytes_read():&#160;mouse.c'],['../mouse_8c.html#a28d0dea129ded21d497ef4a364fa713d',1,'bytes_read():&#160;mouse.c']]]
+];

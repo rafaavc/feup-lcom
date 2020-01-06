@@ -1,0 +1,10 @@
+<map id="update_game" name="update_game">
+<area shape="rect" id="node2" href="$group__Player.html#ga1a9352adf6424fef4c60801197c66372" title="get method for player board_i " alt="" coords="210,5,274,32"/>
+<area shape="rect" id="node3" href="$group__Player.html#ga075ca68a5eee830427f444f3e33519c7" title="get method for player board_j " alt="" coords="210,56,274,83"/>
+<area shape="rect" id="node4" href="$group__Player.html#ga23329d4803f8b89fdeacc653b6276e15" title="set method for Player&#39;s last movement " alt="" coords="167,107,317,133"/>
+<area shape="rect" id="node5" href="$group__Video.html#ga3dcf2045f1929eb3b370b96715863c4e" title="get screen width " alt="" coords="206,157,278,184"/>
+<area shape="rect" id="node6" href="$group__Video.html#gad20679e2730425e7d0283793bdd6e696" title="get screen height " alt="" coords="206,208,278,235"/>
+<area shape="rect" id="node7" href="$group__MouseTrigger.html#gafcc865ceabbf0440ed41f6c3efab3883" title="creates a MouseTrigger " alt="" coords="169,259,315,285"/>
+<area shape="rect" id="node8" href="$group__MouseTrigger.html#gab77507c5d9854b7626b4dfe6b457e5b5" title="sets the mouse trigger object " alt="" coords="199,309,285,336"/>
+<area shape="rect" id="node9" href="$board__tile_8c.html#a882153eaf18fd4c3c01238f26b94e656" title="changes state of the tile to draw it as a need to be moved tile (white center) " alt="" coords="153,360,331,387"/>
+</map>

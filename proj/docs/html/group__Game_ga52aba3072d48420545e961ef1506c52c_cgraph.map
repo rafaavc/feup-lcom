@@ -1,0 +1,17 @@
+<map id="handle_mouse_events" name="handle_mouse_events">
+<area shape="rect" id="node2" href="$group__MouseTrigger.html#ga2cc2cd6834ca21e5346ed3bcc29607bb" title="checks if the mouse is on the MouseTrigger " alt="" coords="216,107,368,133"/>
+<area shape="rect" id="node7" href="$group__MouseTrigger.html#gaafa2c957090b2e1b477ed2497702b7b7" title="sets mouse_over to true " alt="" coords="222,157,362,184"/>
+<area shape="rect" id="node8" href="$group__MouseTrigger.html#gadbbad606bd8d6884d39ecec0e5fdc745" title="get method for the event of the MouseTrigger " alt="" coords="241,208,343,235"/>
+<area shape="rect" id="node9" href="$group__MouseTrigger.html#gadb5e029956ef7cda8029a690f7a8bbbb" title="GET method for the mouse trigger object. " alt="" coords="249,259,335,285"/>
+<area shape="rect" id="node10" href="$group__BoardTile.html#ga202d81e1d680e41101f4ac21cab4fa2b" title="change dragging tile to true and state to initial " alt="" coords="228,309,356,336"/>
+<area shape="rect" id="node11" href="$group__MouseTrigger.html#gafcc865ceabbf0440ed41f6c3efab3883" title="creates a MouseTrigger " alt="" coords="219,360,365,387"/>
+<area shape="rect" id="node12" href="$group__Video.html#ga3dcf2045f1929eb3b370b96715863c4e" title="get screen width " alt="" coords="256,411,328,437"/>
+<area shape="rect" id="node13" href="$group__Video.html#gad20679e2730425e7d0283793bdd6e696" title="get screen height " alt="" coords="256,461,328,488"/>
+<area shape="rect" id="node14" href="$group__Game.html#ga08a012a57cdc651a07949e9d16fdc69d" title="Sets the tile being dragged on the postion i,j. " alt="" coords="222,512,362,539"/>
+<area shape="rect" id="node15" href="$group__BoardTile.html#ga8d64ff8a492dc61e2673588e82937e21" title="change dragging tile to false " alt="" coords="229,563,355,589"/>
+<area shape="rect" id="node16" href="$group__MouseTrigger.html#gac606d27355408b95dbf9f4569003a6de" title="checks if the mouse from the other player is on the MouseTrigger (if Serial Port is being used) ..." alt="" coords="205,56,379,83"/>
+<area shape="rect" id="node3" href="$group__MouseTrigger.html#gae86488e196565e85859c13a95b6ad4ec" title="get method for leftmost x " alt="" coords="437,107,535,133"/>
+<area shape="rect" id="node4" href="$group__MouseTrigger.html#ga6a8b3f49ac3c8d51c829cb2b988edf18" title="get method for upper y " alt="" coords="437,157,535,184"/>
+<area shape="rect" id="node5" href="$group__MouseTrigger.html#ga8408da28d1d750afae507d52f5047c3b" title="get method for rightmost x " alt="" coords="427,5,545,32"/>
+<area shape="rect" id="node6" href="$group__MouseTrigger.html#ga6aef780a98bbfc736bac70d1993f60cf" title="get method for lower y " alt="" coords="427,56,545,83"/>
+</map>

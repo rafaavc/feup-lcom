@@ -1,0 +1,239 @@
+\hypertarget{sp_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/sp.c File Reference}
+\label{sp_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/sp.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/sp.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$string.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}utils.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}queue.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}mouse.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}video.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}sp.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}keyboard.\+h\char`\"{}}\newline
+Include dependency graph for sp.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sp_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int() \hyperlink{group__SerialPort_gab9143dc649a5b01ac6e0f56b928c1b8e}{com1\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for serial port (C\+O\+M1) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga2d653465e990124317b3f4e2caacc840}{com1\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubcribes interruptions for serial port (C\+O\+M1) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga8a3c0f035c9de6a912d765d7e2902ea1}{com2\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for serial port (C\+O\+M2) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga45e636b3b985b6c5ad22014f01c01fd2}{com2\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubcribes interruptions for serial port (C\+O\+M2) \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gab2a01a4e6ded224f3ac4a9e139852258}{sp\+\_\+get\+\_\+divisor\+\_\+latch} (unsigned base, unsigned $\ast$dl)
+\begin{DoxyCompactList}\small\item\em Obtains the value of the divisor latch. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gaf264a0b0c4be6a1b9f368e9af4863d4b}{sp\+\_\+set\+\_\+bitrate} (unsigned base, unsigned bitrate)
+\begin{DoxyCompactList}\small\item\em Writes to the divisor latch, setting the frame rate. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gadd26ca35691edf8860a1b57ff99a83b5}{sp\+\_\+print\+\_\+conf} (unsigned base)
+\begin{DoxyCompactList}\small\item\em Prints the configuration of the serial port. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga877b6b90de84edab62d490d4379ebafb}{sp\+\_\+print\+\_\+lsr} (unsigned base)
+\begin{DoxyCompactList}\small\item\em prints the Line Status Register (L\+SR) \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__SerialPort_gaf00b2c9bf8233158498a1da4f5c012a2}{sp\+\_\+get\+\_\+lsr} (unsigned base)
+\begin{DoxyCompactList}\small\item\em G\+ET method for the Line Status Register (L\+SR) \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gaf7d4fe8c00d438c8d977780c8eea93d0}{sp\+\_\+set\+\_\+conf} (unsigned base, unsigned word\+\_\+length, unsigned stop\+\_\+bits, unsigned parity, unsigned bitrate)
+\begin{DoxyCompactList}\small\item\em Configues the serial port. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga944609b27c597a74c6e06a8889dfe69b}{sp\+\_\+enable\+\_\+interrupts} (unsigned base, bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host})
+\begin{DoxyCompactList}\small\item\em Writes to the interrupt enable register (I\+ER), enabling the desired interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gafef0b910df87109a12fffc4e1dbc665d}{sp\+\_\+disable\+\_\+interrupts} (unsigned base, bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host})
+\begin{DoxyCompactList}\small\item\em Writes to the interrupt enable register (I\+ER), disabling the interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga2600cc64b931c3dd4b6958d5090c39f4}{sp\+\_\+setup\+\_\+fifo} (unsigned base)
+\begin{DoxyCompactList}\small\item\em sets the fifo\textquotesingle{}s up \end{DoxyCompactList}\item 
+int \hyperlink{sp_8c_ab4b98e5b5790dbb39e44212e7b1ab7c6}{sp\+\_\+disable\+\_\+fifo} (unsigned base)
+\item 
+void \hyperlink{group__SerialPort_ga5f3b628dda6e45cd03923ba47e8936b1}{sp\+\_\+send\+\_\+character} (uint8\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Sends a character. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga413c45b134b03a909b49aa3b5b2bd003}{sp\+\_\+init} ()
+\begin{DoxyCompactList}\small\item\em Initiates serial port. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga9a125dd7a14c69e1e2c8b257fb342509}{sp\+\_\+terminate} ()
+\begin{DoxyCompactList}\small\item\em Terminates serial port. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gaa7ef2569acd9f6a7221b0c7cb262d9d1}{transmit\+\_\+mouse\+\_\+bytes} (struct packet $\ast$mouse\+\_\+data, unsigned \hyperlink{mouse__trigger_8c_af9bc2c5a01a160514c48a51c9b63fb46}{mouse\+\_\+xvariance}, unsigned \hyperlink{mouse__trigger_8c_a167547e22ad51809d4670ba551a8c356}{mouse\+\_\+yvariance})
+\begin{DoxyCompactList}\small\item\em Transmits mouse bytes. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga11be5d1aab04fe2f0e95a4d562082916}{transmit\+\_\+kbd\+\_\+code} (uint8\+\_\+t \hyperlink{keyboard_8c_a54c66c979c10f8ab1d2bf87bd8e59216}{kbd\+\_\+code})
+\begin{DoxyCompactList}\small\item\em Transmits a kbd code (we only use kbd codes with one byte) \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gadf2672c522b1b952877889712bb7f1df}{transmit\+\_\+player\+\_\+data} ()
+\begin{DoxyCompactList}\small\item\em Transmits player name. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga6b003a5f459d7954670a6df812bec19d}{charqueue\+\_\+push\+\_\+end\+\_\+characters} ()
+\begin{DoxyCompactList}\small\item\em Pushes 3 zero\textquotesingle{}s to the transmission queue. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gaa846c4db2d67c36002d1d18375f1e279}{transmit\+\_\+string} (char $\ast$str, uint8\+\_\+t str\+\_\+len)
+\begin{DoxyCompactList}\small\item\em Transmits a string. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga849ad2b7e942ea188c1acf4457acbe64}{transmit\+\_\+critical\+\_\+event} (char $\ast$type)
+\begin{DoxyCompactList}\small\item\em Transmits a critical event. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga5012d51deb1cdda2651959d0600d5a60}{retrieve\+\_\+info\+\_\+from\+\_\+queue} ()
+\begin{DoxyCompactList}\small\item\em goes to reception queue and gets information out \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga6abe9396fa5e9b5dd422b66a563f5c05}{sp\+\_\+ih} (unsigned com)
+\begin{DoxyCompactList}\small\item\em Interrupt handler for serial port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{sp_8c_ad92e7dbf3a809a92e06bf4fb83c1af5f}{hook\+\_\+id\+\_\+com1} = 0
+\item 
+int \hyperlink{sp_8c_a95469cee75fde7019d31ce902b09ab59}{hook\+\_\+id\+\_\+com2} = 0
+\item 
+int \hyperlink{sp_8c_ae7f356c9b952b38be8a9988dc0de993b}{p1\+\_\+mouse\+\_\+xvariance} = 400
+\item 
+int \hyperlink{sp_8c_ac637d5bd511e3c1a0094297fae08ce7d}{p1\+\_\+mouse\+\_\+yvariance} = 300
+\item 
+bool \hyperlink{sp_8c_a13f80f3a23f15957e2cfe9e1d5b3b05b}{p1\+\_\+mouse\+\_\+lb} = false
+\item 
+bool \hyperlink{sp_8c_a06d804cd290e79f8b4aae62ce4e62843}{received\+\_\+player\+\_\+data} = false
+\item 
+bool \hyperlink{sp_8c_ae47fc16a362baf0f60459e21c396c92a}{opponent\+\_\+quit} = false
+\item 
+uint8\+\_\+t \hyperlink{sp_8c_a3275f03eebd1e14688adad1a83e284bb}{p1\+\_\+kbd\+\_\+code} = 0
+\item 
+bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host}
+\item 
+bool \hyperlink{sp_8c_a8b2ac0cca6d47075b5228779e91f7180}{host\+\_\+has\+\_\+been\+\_\+set}
+\item 
+bool \hyperlink{sp_8c_aac7c06021dce9c8266ce1d600fd3ea91}{sp\+\_\+on}
+\item 
+bool \hyperlink{sp_8c_ab36823025f12a809217f7771125658c2}{connected}
+\item 
+uint8\+\_\+t \hyperlink{sp_8c_a91179bf7b85692e2865cedb4a127b7dc}{irq\+\_\+com1}
+\item 
+uint8\+\_\+t \hyperlink{sp_8c_ad1ad1ba00e773088fa5180a5ed6cf21d}{irq\+\_\+com2}
+\item 
+\hyperlink{structcharqueue}{charqueue} $\ast$ \hyperlink{sp_8c_a2a6a81e2571d77a9ef3830f010c435b1}{transmission\+\_\+queue} = N\+U\+LL
+\item 
+\hyperlink{structcharqueue}{charqueue} $\ast$ \hyperlink{sp_8c_a39696ff07bfc026ad40210f945c4187a}{reception\+\_\+queue} = N\+U\+LL
+\item 
+\hyperlink{structcharqueue}{charqueue} $\ast$ \hyperlink{sp_8c_a73d3ebbc1f5872492bf2e2b2bfd29485}{player1\+\_\+name}
+\item 
+\hyperlink{structcharqueue}{charqueue} $\ast$ \hyperlink{sp_8c_a1759ff7861991886b37d29df348b4647}{player2\+\_\+name}
+\item 
+unsigned \hyperlink{sp_8c_a17ec0c66155184139996b0e45820de5a}{zero\+\_\+count} = 0
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{sp_8c_ab4b98e5b5790dbb39e44212e7b1ab7c6}\label{sp_8c_ab4b98e5b5790dbb39e44212e7b1ab7c6}} 
+\index{sp.\+c@{sp.\+c}!sp\+\_\+disable\+\_\+fifo@{sp\+\_\+disable\+\_\+fifo}}
+\index{sp\+\_\+disable\+\_\+fifo@{sp\+\_\+disable\+\_\+fifo}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{sp\+\_\+disable\+\_\+fifo()}{sp\_disable\_fifo()}}
+{\footnotesize\ttfamily int sp\+\_\+disable\+\_\+fifo (\begin{DoxyParamCaption}\item[{unsigned}]{base }\end{DoxyParamCaption})}
+
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{sp_8c_ab36823025f12a809217f7771125658c2}\label{sp_8c_ab36823025f12a809217f7771125658c2}} 
+\index{sp.\+c@{sp.\+c}!connected@{connected}}
+\index{connected@{connected}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{connected}{connected}}
+{\footnotesize\ttfamily bool connected}
+
+\mbox{\Hypertarget{sp_8c_ad92e7dbf3a809a92e06bf4fb83c1af5f}\label{sp_8c_ad92e7dbf3a809a92e06bf4fb83c1af5f}} 
+\index{sp.\+c@{sp.\+c}!hook\+\_\+id\+\_\+com1@{hook\+\_\+id\+\_\+com1}}
+\index{hook\+\_\+id\+\_\+com1@{hook\+\_\+id\+\_\+com1}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{hook\+\_\+id\+\_\+com1}{hook\_id\_com1}}
+{\footnotesize\ttfamily int hook\+\_\+id\+\_\+com1 = 0}
+
+\mbox{\Hypertarget{sp_8c_a95469cee75fde7019d31ce902b09ab59}\label{sp_8c_a95469cee75fde7019d31ce902b09ab59}} 
+\index{sp.\+c@{sp.\+c}!hook\+\_\+id\+\_\+com2@{hook\+\_\+id\+\_\+com2}}
+\index{hook\+\_\+id\+\_\+com2@{hook\+\_\+id\+\_\+com2}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{hook\+\_\+id\+\_\+com2}{hook\_id\_com2}}
+{\footnotesize\ttfamily int hook\+\_\+id\+\_\+com2 = 0}
+
+\mbox{\Hypertarget{sp_8c_a4f63d54450207faa0b56186bef691a33}\label{sp_8c_a4f63d54450207faa0b56186bef691a33}} 
+\index{sp.\+c@{sp.\+c}!host@{host}}
+\index{host@{host}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{host}{host}}
+{\footnotesize\ttfamily bool host}
+
+\mbox{\Hypertarget{sp_8c_a8b2ac0cca6d47075b5228779e91f7180}\label{sp_8c_a8b2ac0cca6d47075b5228779e91f7180}} 
+\index{sp.\+c@{sp.\+c}!host\+\_\+has\+\_\+been\+\_\+set@{host\+\_\+has\+\_\+been\+\_\+set}}
+\index{host\+\_\+has\+\_\+been\+\_\+set@{host\+\_\+has\+\_\+been\+\_\+set}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{host\+\_\+has\+\_\+been\+\_\+set}{host\_has\_been\_set}}
+{\footnotesize\ttfamily bool host\+\_\+has\+\_\+been\+\_\+set}
+
+\mbox{\Hypertarget{sp_8c_a91179bf7b85692e2865cedb4a127b7dc}\label{sp_8c_a91179bf7b85692e2865cedb4a127b7dc}} 
+\index{sp.\+c@{sp.\+c}!irq\+\_\+com1@{irq\+\_\+com1}}
+\index{irq\+\_\+com1@{irq\+\_\+com1}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{irq\+\_\+com1}{irq\_com1}}
+{\footnotesize\ttfamily uint8\+\_\+t irq\+\_\+com1}
+
+\mbox{\Hypertarget{sp_8c_ad1ad1ba00e773088fa5180a5ed6cf21d}\label{sp_8c_ad1ad1ba00e773088fa5180a5ed6cf21d}} 
+\index{sp.\+c@{sp.\+c}!irq\+\_\+com2@{irq\+\_\+com2}}
+\index{irq\+\_\+com2@{irq\+\_\+com2}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{irq\+\_\+com2}{irq\_com2}}
+{\footnotesize\ttfamily uint8\+\_\+t irq\+\_\+com2}
+
+\mbox{\Hypertarget{sp_8c_ae47fc16a362baf0f60459e21c396c92a}\label{sp_8c_ae47fc16a362baf0f60459e21c396c92a}} 
+\index{sp.\+c@{sp.\+c}!opponent\+\_\+quit@{opponent\+\_\+quit}}
+\index{opponent\+\_\+quit@{opponent\+\_\+quit}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{opponent\+\_\+quit}{opponent\_quit}}
+{\footnotesize\ttfamily bool opponent\+\_\+quit = false}
+
+\mbox{\Hypertarget{sp_8c_a3275f03eebd1e14688adad1a83e284bb}\label{sp_8c_a3275f03eebd1e14688adad1a83e284bb}} 
+\index{sp.\+c@{sp.\+c}!p1\+\_\+kbd\+\_\+code@{p1\+\_\+kbd\+\_\+code}}
+\index{p1\+\_\+kbd\+\_\+code@{p1\+\_\+kbd\+\_\+code}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{p1\+\_\+kbd\+\_\+code}{p1\_kbd\_code}}
+{\footnotesize\ttfamily uint8\+\_\+t p1\+\_\+kbd\+\_\+code = 0}
+
+\mbox{\Hypertarget{sp_8c_a13f80f3a23f15957e2cfe9e1d5b3b05b}\label{sp_8c_a13f80f3a23f15957e2cfe9e1d5b3b05b}} 
+\index{sp.\+c@{sp.\+c}!p1\+\_\+mouse\+\_\+lb@{p1\+\_\+mouse\+\_\+lb}}
+\index{p1\+\_\+mouse\+\_\+lb@{p1\+\_\+mouse\+\_\+lb}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{p1\+\_\+mouse\+\_\+lb}{p1\_mouse\_lb}}
+{\footnotesize\ttfamily bool p1\+\_\+mouse\+\_\+lb = false}
+
+\mbox{\Hypertarget{sp_8c_ae7f356c9b952b38be8a9988dc0de993b}\label{sp_8c_ae7f356c9b952b38be8a9988dc0de993b}} 
+\index{sp.\+c@{sp.\+c}!p1\+\_\+mouse\+\_\+xvariance@{p1\+\_\+mouse\+\_\+xvariance}}
+\index{p1\+\_\+mouse\+\_\+xvariance@{p1\+\_\+mouse\+\_\+xvariance}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{p1\+\_\+mouse\+\_\+xvariance}{p1\_mouse\_xvariance}}
+{\footnotesize\ttfamily int p1\+\_\+mouse\+\_\+xvariance = 400}
+
+\mbox{\Hypertarget{sp_8c_ac637d5bd511e3c1a0094297fae08ce7d}\label{sp_8c_ac637d5bd511e3c1a0094297fae08ce7d}} 
+\index{sp.\+c@{sp.\+c}!p1\+\_\+mouse\+\_\+yvariance@{p1\+\_\+mouse\+\_\+yvariance}}
+\index{p1\+\_\+mouse\+\_\+yvariance@{p1\+\_\+mouse\+\_\+yvariance}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{p1\+\_\+mouse\+\_\+yvariance}{p1\_mouse\_yvariance}}
+{\footnotesize\ttfamily int p1\+\_\+mouse\+\_\+yvariance = 300}
+
+\mbox{\Hypertarget{sp_8c_a73d3ebbc1f5872492bf2e2b2bfd29485}\label{sp_8c_a73d3ebbc1f5872492bf2e2b2bfd29485}} 
+\index{sp.\+c@{sp.\+c}!player1\+\_\+name@{player1\+\_\+name}}
+\index{player1\+\_\+name@{player1\+\_\+name}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{player1\+\_\+name}{player1\_name}}
+{\footnotesize\ttfamily \hyperlink{structcharqueue}{charqueue}$\ast$ player1\+\_\+name}
+
+\mbox{\Hypertarget{sp_8c_a1759ff7861991886b37d29df348b4647}\label{sp_8c_a1759ff7861991886b37d29df348b4647}} 
+\index{sp.\+c@{sp.\+c}!player2\+\_\+name@{player2\+\_\+name}}
+\index{player2\+\_\+name@{player2\+\_\+name}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{player2\+\_\+name}{player2\_name}}
+{\footnotesize\ttfamily \hyperlink{structcharqueue}{charqueue}$\ast$ player2\+\_\+name}
+
+\mbox{\Hypertarget{sp_8c_a06d804cd290e79f8b4aae62ce4e62843}\label{sp_8c_a06d804cd290e79f8b4aae62ce4e62843}} 
+\index{sp.\+c@{sp.\+c}!received\+\_\+player\+\_\+data@{received\+\_\+player\+\_\+data}}
+\index{received\+\_\+player\+\_\+data@{received\+\_\+player\+\_\+data}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{received\+\_\+player\+\_\+data}{received\_player\_data}}
+{\footnotesize\ttfamily bool received\+\_\+player\+\_\+data = false}
+
+\mbox{\Hypertarget{sp_8c_a39696ff07bfc026ad40210f945c4187a}\label{sp_8c_a39696ff07bfc026ad40210f945c4187a}} 
+\index{sp.\+c@{sp.\+c}!reception\+\_\+queue@{reception\+\_\+queue}}
+\index{reception\+\_\+queue@{reception\+\_\+queue}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{reception\+\_\+queue}{reception\_queue}}
+{\footnotesize\ttfamily \hyperlink{structcharqueue}{charqueue}$\ast$ reception\+\_\+queue = N\+U\+LL}
+
+\mbox{\Hypertarget{sp_8c_aac7c06021dce9c8266ce1d600fd3ea91}\label{sp_8c_aac7c06021dce9c8266ce1d600fd3ea91}} 
+\index{sp.\+c@{sp.\+c}!sp\+\_\+on@{sp\+\_\+on}}
+\index{sp\+\_\+on@{sp\+\_\+on}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{sp\+\_\+on}{sp\_on}}
+{\footnotesize\ttfamily bool sp\+\_\+on}
+
+\mbox{\Hypertarget{sp_8c_a2a6a81e2571d77a9ef3830f010c435b1}\label{sp_8c_a2a6a81e2571d77a9ef3830f010c435b1}} 
+\index{sp.\+c@{sp.\+c}!transmission\+\_\+queue@{transmission\+\_\+queue}}
+\index{transmission\+\_\+queue@{transmission\+\_\+queue}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{transmission\+\_\+queue}{transmission\_queue}}
+{\footnotesize\ttfamily \hyperlink{structcharqueue}{charqueue}$\ast$ transmission\+\_\+queue = N\+U\+LL}
+
+\mbox{\Hypertarget{sp_8c_a17ec0c66155184139996b0e45820de5a}\label{sp_8c_a17ec0c66155184139996b0e45820de5a}} 
+\index{sp.\+c@{sp.\+c}!zero\+\_\+count@{zero\+\_\+count}}
+\index{zero\+\_\+count@{zero\+\_\+count}!sp.\+c@{sp.\+c}}
+\subsubsection{\texorpdfstring{zero\+\_\+count}{zero\_count}}
+{\footnotesize\ttfamily unsigned zero\+\_\+count = 0}
+

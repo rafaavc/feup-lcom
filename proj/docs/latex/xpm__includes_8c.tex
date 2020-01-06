@@ -1,0 +1,156 @@
+\hypertarget{xpm__includes_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/xpm\+\_\+includes.c File Reference}
+\label{xpm__includes_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/xpm\+\_\+includes.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/xpm\+\_\+includes.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$lcom/lab5.\+h$>$}\newline
+{\ttfamily \#include $<$lcom/xpm.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$minix/driver.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}xpms/logo.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bg.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bg1.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/wasd\+\_\+pad\+\_\+white.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/wasd\+\_\+pad\+\_\+black.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/block.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/block\+\_\+light.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/block1.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/block\+\_\+light1.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/cursor\+\_\+simple.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/cursor\+\_\+secondary.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+A.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/a.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+B.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/b.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+C.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/c.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+D.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/d.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+E.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/e.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+F.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/f.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+G.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/g.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+H.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/h.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+I.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/i.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+J.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/j.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+K.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/k.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+L.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/l.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+M.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/m.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+N.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/n.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+O.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/o.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+P.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/p.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+Q.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/q.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+R.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/r.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+S.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/s.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+T.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/t.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+U.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/u.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+V.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/v.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+W.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/w.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+X.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/x.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+Y.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/y.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/\+Z.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/z.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/0.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/1.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/2.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/3.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/4.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/5.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/6.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/7.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/8.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/9.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/and.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/apostrophe.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/comma.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/dpoint.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/exclamation.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/hifen.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/left.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/right.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/point.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/question.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/quote.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb1.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb2.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb3.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb4.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb5.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb6.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb7.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb8.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb9.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb10.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb11.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/rb12.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb1.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb2.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb3.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb4.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb5.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb6.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb7.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb8.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb9.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb10.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb11.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpms/bb12.\+xpm\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}rtc.\+h\char`\"{}}\newline
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{group__XPM_gad2044d84c92e452614c589961960e3f2}{load\+\_\+pixmaps} ()
+\begin{DoxyCompactList}\small\item\em loads all the pixmaps needed for the program \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_ga7e3ffa96f2cef7445fadb7a3da526d2f}{get\+\_\+logo} ()
+\begin{DoxyCompactList}\small\item\em get method for logo xpm \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_ga2fc6c9c4a09c9d990267ef2e961e133b}{get\+\_\+background} ()
+\begin{DoxyCompactList}\small\item\em get method for the day background xpm \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_ga8e0a9d2b45c84727a634b6aaf1be79f3}{get\+\_\+wasd} ()
+\begin{DoxyCompactList}\small\item\em get method for the wasd pad xpm \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_ga55abea20b97f7d2ba8c63a69ff86d18b}{get\+\_\+block} ()
+\begin{DoxyCompactList}\small\item\em get method for a game\textquotesingle{}s block \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_gaa8e536961c0ed7f1bcd089ae9fb0c4c7}{get\+\_\+block1} ()
+\begin{DoxyCompactList}\small\item\em get method for a game\textquotesingle{}s block that needs to be moved \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_gaa1969bef6924610fa26b58c27926b3ee}{get\+\_\+mouse\+\_\+simple} ()
+\begin{DoxyCompactList}\small\item\em get method for the mouse \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_gaec66ab419acf718b6b5b4234723b281c}{get\+\_\+mouse\+\_\+secondary} ()
+\begin{DoxyCompactList}\small\item\em get method for the secondary mouse (Serial port opponent\textquotesingle{}s mouse) \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t \hyperlink{group__XPM_gaeaf4a2c369709099c0355fca8ecbd497}{get\+\_\+letter} (char c)
+\begin{DoxyCompactList}\small\item\em get method for letters xpm\+\_\+image\+\_\+t \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t $\ast$ \hyperlink{group__XPM_ga8420f7ea3d894b635a6766e7a73ba288}{get\+\_\+red\+\_\+ball\+\_\+animation} ()
+\begin{DoxyCompactList}\small\item\em get method for the red ball animation \end{DoxyCompactList}\item 
+xpm\+\_\+image\+\_\+t $\ast$ \hyperlink{group__XPM_gaa3caf6e5d8c0178d8267a0d56408169f}{get\+\_\+blue\+\_\+ball\+\_\+animation} ()
+\begin{DoxyCompactList}\small\item\em get method for the blue ball animation \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{xpm__includes_8c_a18835e53ce582638a8a8498c84a0a4c1}{dark\+\_\+mode}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{xpm__includes_8c_a18835e53ce582638a8a8498c84a0a4c1}\label{xpm__includes_8c_a18835e53ce582638a8a8498c84a0a4c1}} 
+\index{xpm\+\_\+includes.\+c@{xpm\+\_\+includes.\+c}!dark\+\_\+mode@{dark\+\_\+mode}}
+\index{dark\+\_\+mode@{dark\+\_\+mode}!xpm\+\_\+includes.\+c@{xpm\+\_\+includes.\+c}}
+\subsubsection{\texorpdfstring{dark\+\_\+mode}{dark\_mode}}
+{\footnotesize\ttfamily bool dark\+\_\+mode}
+

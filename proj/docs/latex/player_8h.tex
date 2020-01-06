@@ -1,0 +1,56 @@
+\hypertarget{player_8h}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/player.h File Reference}
+\label{player_8h}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/player.\+h@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/player.\+h}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+Include dependency graph for player.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{player_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{player_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structPlayer}{Player}
+\begin{DoxyCompactList}\small\item\em struct for a player animation \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structPlayer}{Player} $\ast$ \hyperlink{group__Player_gac8cf29880bdf99b58c45cf2375e98ce2}{create\+\_\+player} (unsigned x, unsigned y, xpm\+\_\+image\+\_\+t animation\+\_\+idle\mbox{[}12\mbox{]}, unsigned starting\+\_\+an)
+\begin{DoxyCompactList}\small\item\em creates a \hyperlink{structPlayer}{Player} \end{DoxyCompactList}\item 
+int \hyperlink{group__Player_ga075ca68a5eee830427f444f3e33519c7}{p\+\_\+get\+\_\+j} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for player board\+\_\+j \end{DoxyCompactList}\item 
+int \hyperlink{group__Player_ga1a9352adf6424fef4c60801197c66372}{p\+\_\+get\+\_\+i} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for player board\+\_\+i \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga5ddbe4f50900b2bf02dff9a2abac4c55}{p\+\_\+set\+\_\+name} (\hyperlink{structPlayer}{Player} $\ast$p, char $\ast$name)
+\begin{DoxyCompactList}\small\item\em set method for \hyperlink{structPlayer}{Player}\textquotesingle{}s name \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{group__Player_gaa31362cac0c383394cd577df67ce3963}{p\+\_\+get\+\_\+name} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for \hyperlink{structPlayer}{Player}\textquotesingle{}s name \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__Player_ga8f2b0d2966564ddec85c97a5cce06eb0}{next\+\_\+animation\+\_\+frame} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em updates animation frame to next one \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga12cc74e0540deb2376a28ad72dbb3688}{draw\+\_\+player} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em updates player position in case it\textquotesingle{}s moving and draws it \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga8843878cb50bb98c78f92b736fd9a4f1}{draw\+\_\+player\+\_\+custom} (\hyperlink{structPlayer}{Player} $\ast$p, unsigned x, unsigned y)
+\begin{DoxyCompactList}\small\item\em draws player in custom x and y coordinates \end{DoxyCompactList}\item 
+bool \hyperlink{group__Player_ga1ad41a44780752bfb6fd1c7bdf2f903a}{move} (\hyperlink{structPlayer}{Player} $\ast$p, char direction, int board\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]}\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]})
+\begin{DoxyCompactList}\small\item\em move the player on any directon \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga44fb09b7f9ceea29af17f3901d679d4f}{player\+\_\+move\+\_\+w} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on positive y direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_gaa361267bf753695bbbf7d7e42056e5cc}{player\+\_\+move\+\_\+a} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on negative x direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_gad1a24804f5440f8fe762d57b9a6ffbd3}{player\+\_\+move\+\_\+s} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on negative y direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga145d0fef983ef960c273cd2e7a5915a8}{player\+\_\+move\+\_\+d} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on positive x direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga23329d4803f8b89fdeacc653b6276e15}{p\+\_\+set\+\_\+last\+\_\+movement} (\hyperlink{structPlayer}{Player} $\ast$p, char lmov)
+\begin{DoxyCompactList}\small\item\em set method for \hyperlink{structPlayer}{Player}\textquotesingle{}s last movement \end{DoxyCompactList}\item 
+char \hyperlink{group__Player_ga9a90d3a627868d84f43e46fc1dd7daa3}{p\+\_\+get\+\_\+last\+\_\+movement} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for \hyperlink{structPlayer}{Player}\textquotesingle{}s last movement \end{DoxyCompactList}\end{DoxyCompactItemize}

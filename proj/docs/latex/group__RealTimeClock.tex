@@ -1,0 +1,243 @@
+\hypertarget{group__RealTimeClock}{}\section{Real Time Clock}
+\label{group__RealTimeClock}\index{Real Time Clock@{Real Time Clock}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{group__RealTimeClock_ga18fb6b60ca3519b4c5943902893f89eb}{get\+\_\+time\+\_\+rtc} ()
+\begin{DoxyCompactList}\small\item\em Function to get time from the real time clock. \end{DoxyCompactList}\item 
+bool \hyperlink{group__RealTimeClock_gab79ee864e66f8b74b5d0120a57a2c4f7}{check\+\_\+\+B\+CD} ()
+\begin{DoxyCompactList}\small\item\em checks if date is on B\+CD \end{DoxyCompactList}\item 
+void \hyperlink{group__RealTimeClock_ga3712be4b01789095104f73d8a0488e10}{bcd\+\_\+to\+\_\+binary} (uint8\+\_\+t $\ast$number)
+\begin{DoxyCompactList}\small\item\em changes number in B\+CD format to binary \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga5171a9c0f54940fe60f7500896afcc86}{rtc\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subrscribes R\+TC interrupts for updates. \end{DoxyCompactList}\item 
+int() \hyperlink{group__RealTimeClock_ga9d4850bb2a488644672d43287f160622}{rtc\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubscribes R\+TC interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_gae37f65cb1eda30db92728dc94bb52b76}{read\+\_\+rtc} (uint32\+\_\+t addr, uint8\+\_\+t $\ast$ret)
+\begin{DoxyCompactList}\small\item\em reads data from the R\+TC \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga22b6726ecbb76b91e8cbe61bfbc06595}{write\+\_\+rtc} (uint32\+\_\+t addr, uint8\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em writes a command to the R\+TC \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_gab680718c3cc588942fae4b697a99a7a3}{write\+\_\+dark\+\_\+mode} (uint8\+\_\+t mode, uint8\+\_\+t content)
+\begin{DoxyCompactList}\small\item\em writes the mode and the content that the user chose on settings menu \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga7e3748780d4ab4b2f87949e477dba28c}{make\+\_\+dm\+\_\+auto} ()
+\begin{DoxyCompactList}\small\item\em changes color mode automatically \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga6dc7d0ef0bd75dbcf8581510fe4b224a}{make\+\_\+dm\+\_\+custom} (bool dm)
+\begin{DoxyCompactList}\small\item\em changes color mode acordingly to player choice \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains functions for R\+TC 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group__RealTimeClock_ga3712be4b01789095104f73d8a0488e10}\label{group__RealTimeClock_ga3712be4b01789095104f73d8a0488e10}} 
+\index{Real Time Clock@{Real Time Clock}!bcd\+\_\+to\+\_\+binary@{bcd\+\_\+to\+\_\+binary}}
+\index{bcd\+\_\+to\+\_\+binary@{bcd\+\_\+to\+\_\+binary}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{bcd\+\_\+to\+\_\+binary()}{bcd\_to\_binary()}}
+{\footnotesize\ttfamily void bcd\+\_\+to\+\_\+binary (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{number }\end{DoxyParamCaption})}
+
+
+
+changes number in B\+CD format to binary 
+
+
+\begin{DoxyParams}{Parameters}
+{\em number} & number to change \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__RealTimeClock_gab79ee864e66f8b74b5d0120a57a2c4f7}\label{group__RealTimeClock_gab79ee864e66f8b74b5d0120a57a2c4f7}} 
+\index{Real Time Clock@{Real Time Clock}!check\+\_\+\+B\+CD@{check\+\_\+\+B\+CD}}
+\index{check\+\_\+\+B\+CD@{check\+\_\+\+B\+CD}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{check\+\_\+\+B\+C\+D()}{check\_BCD()}}
+{\footnotesize\ttfamily bool check\+\_\+\+B\+CD (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+checks if date is on B\+CD 
+
+\begin{DoxyReturn}{Returns}
+true if time is on B\+CD and false otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=342pt]{group__RealTimeClock_gab79ee864e66f8b74b5d0120a57a2c4f7_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_ga18fb6b60ca3519b4c5943902893f89eb}\label{group__RealTimeClock_ga18fb6b60ca3519b4c5943902893f89eb}} 
+\index{Real Time Clock@{Real Time Clock}!get\+\_\+time\+\_\+rtc@{get\+\_\+time\+\_\+rtc}}
+\index{get\+\_\+time\+\_\+rtc@{get\+\_\+time\+\_\+rtc}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{get\+\_\+time\+\_\+rtc()}{get\_time\_rtc()}}
+{\footnotesize\ttfamily bool get\+\_\+time\+\_\+rtc (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Function to get time from the real time clock. 
+
+Time comes in an array with 3 bytes in format \mbox{[}hours, minutes, seconds\mbox{]} \begin{DoxyReturn}{Returns}
+true if it\textquotesingle{}s not updating time and false otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__RealTimeClock_ga18fb6b60ca3519b4c5943902893f89eb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_ga7e3748780d4ab4b2f87949e477dba28c}\label{group__RealTimeClock_ga7e3748780d4ab4b2f87949e477dba28c}} 
+\index{Real Time Clock@{Real Time Clock}!make\+\_\+dm\+\_\+auto@{make\+\_\+dm\+\_\+auto}}
+\index{make\+\_\+dm\+\_\+auto@{make\+\_\+dm\+\_\+auto}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{make\+\_\+dm\+\_\+auto()}{make\_dm\_auto()}}
+{\footnotesize\ttfamily int make\+\_\+dm\+\_\+auto (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+changes color mode automatically 
+
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__RealTimeClock_ga7e3748780d4ab4b2f87949e477dba28c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_ga6dc7d0ef0bd75dbcf8581510fe4b224a}\label{group__RealTimeClock_ga6dc7d0ef0bd75dbcf8581510fe4b224a}} 
+\index{Real Time Clock@{Real Time Clock}!make\+\_\+dm\+\_\+custom@{make\+\_\+dm\+\_\+custom}}
+\index{make\+\_\+dm\+\_\+custom@{make\+\_\+dm\+\_\+custom}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{make\+\_\+dm\+\_\+custom()}{make\_dm\_custom()}}
+{\footnotesize\ttfamily int make\+\_\+dm\+\_\+custom (\begin{DoxyParamCaption}\item[{bool}]{dm }\end{DoxyParamCaption})}
+
+
+
+changes color mode acordingly to player choice 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dm} & true if changing to dark mode and false otherwise \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__RealTimeClock_ga6dc7d0ef0bd75dbcf8581510fe4b224a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_gae37f65cb1eda30db92728dc94bb52b76}\label{group__RealTimeClock_gae37f65cb1eda30db92728dc94bb52b76}} 
+\index{Real Time Clock@{Real Time Clock}!read\+\_\+rtc@{read\+\_\+rtc}}
+\index{read\+\_\+rtc@{read\+\_\+rtc}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{read\+\_\+rtc()}{read\_rtc()}}
+{\footnotesize\ttfamily int read\+\_\+rtc (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{addr,  }\item[{uint8\+\_\+t $\ast$}]{ret }\end{DoxyParamCaption})}
+
+
+
+reads data from the R\+TC 
+
+
+\begin{DoxyParams}{Parameters}
+{\em addr} & address to read from \\
+\hline
+{\em ret} & variable to store the info \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=236pt]{group__RealTimeClock_gae37f65cb1eda30db92728dc94bb52b76_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_ga5171a9c0f54940fe60f7500896afcc86}\label{group__RealTimeClock_ga5171a9c0f54940fe60f7500896afcc86}} 
+\index{Real Time Clock@{Real Time Clock}!rtc\+\_\+subscribe\+\_\+int@{rtc\+\_\+subscribe\+\_\+int}}
+\index{rtc\+\_\+subscribe\+\_\+int@{rtc\+\_\+subscribe\+\_\+int}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{rtc\+\_\+subscribe\+\_\+int()}{rtc\_subscribe\_int()}}
+{\footnotesize\ttfamily int rtc\+\_\+subscribe\+\_\+int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{bit\+\_\+no }\end{DoxyParamCaption})}
+
+
+
+Subrscribes R\+TC interrupts for updates. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit\+\_\+no} & bit number for policy \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and 1 otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__RealTimeClock_ga5171a9c0f54940fe60f7500896afcc86_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_ga9d4850bb2a488644672d43287f160622}\label{group__RealTimeClock_ga9d4850bb2a488644672d43287f160622}} 
+\index{Real Time Clock@{Real Time Clock}!rtc\+\_\+unsubscribe\+\_\+int@{rtc\+\_\+unsubscribe\+\_\+int}}
+\index{rtc\+\_\+unsubscribe\+\_\+int@{rtc\+\_\+unsubscribe\+\_\+int}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{rtc\+\_\+unsubscribe\+\_\+int()}{rtc\_unsubscribe\_int()}}
+{\footnotesize\ttfamily int() rtc\+\_\+unsubscribe\+\_\+int (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Unsubscribes R\+TC interrupts. 
+
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__RealTimeClock_gab680718c3cc588942fae4b697a99a7a3}\label{group__RealTimeClock_gab680718c3cc588942fae4b697a99a7a3}} 
+\index{Real Time Clock@{Real Time Clock}!write\+\_\+dark\+\_\+mode@{write\+\_\+dark\+\_\+mode}}
+\index{write\+\_\+dark\+\_\+mode@{write\+\_\+dark\+\_\+mode}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{write\+\_\+dark\+\_\+mode()}{write\_dark\_mode()}}
+{\footnotesize\ttfamily int write\+\_\+dark\+\_\+mode (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mode,  }\item[{uint8\+\_\+t}]{content }\end{DoxyParamCaption})}
+
+
+
+writes the mode and the content that the user chose on settings menu 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mode} & \char`\"{}\+A\char`\"{} if automatic (light mode during day and dark mode during night) or \char`\"{}\+C\char`\"{} if custom \\
+\hline
+{\em content} & 0x0 if automatic mode and \char`\"{}\+T\char`\"{} for dark mode and \char`\"{}\+F\char`\"{} for light mode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=261pt]{group__RealTimeClock_gab680718c3cc588942fae4b697a99a7a3_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__RealTimeClock_ga22b6726ecbb76b91e8cbe61bfbc06595}\label{group__RealTimeClock_ga22b6726ecbb76b91e8cbe61bfbc06595}} 
+\index{Real Time Clock@{Real Time Clock}!write\+\_\+rtc@{write\+\_\+rtc}}
+\index{write\+\_\+rtc@{write\+\_\+rtc}!Real Time Clock@{Real Time Clock}}
+\subsubsection{\texorpdfstring{write\+\_\+rtc()}{write\_rtc()}}
+{\footnotesize\ttfamily int write\+\_\+rtc (\begin{DoxyParamCaption}\item[{uint32\+\_\+t}]{addr,  }\item[{uint8\+\_\+t}]{value }\end{DoxyParamCaption})}
+
+
+
+writes a command to the R\+TC 
+
+
+\begin{DoxyParams}{Parameters}
+{\em addr} & address to write to \\
+\hline
+{\em value} & command to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}

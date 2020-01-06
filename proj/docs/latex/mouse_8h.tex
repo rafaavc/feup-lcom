@@ -1,0 +1,36 @@
+\hypertarget{mouse_8h}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse.h File Reference}
+\label{mouse_8h}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse.\+h@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/mouse.\+h}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+Include dependency graph for mouse.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{mouse_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{mouse_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int() \hyperlink{group__Mouse_ga20285aed4b3ef45812cd967532dd09db}{mouse\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for mouse. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Mouse_ga3ecf823d80520009ae5e0d76ae40a3c3}{mouse\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unubcribes interruptions for mouse. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_gadbd27fcc1c1614cacfb6a8c77e70c967}{write\+\_\+command\+\_\+byte} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Writes a command through Output buffer. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_ga8dccf03fc2b97a86e123897dfe5efe25}{send\+\_\+command\+\_\+to\+\_\+mouse} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Sends a command through mouse Output buffer and verifies response. \end{DoxyCompactList}\item 
+void \hyperlink{group__Mouse_gae385a7382889db22c547bf5e4868006d}{parse\+\_\+packet} (struct packet $\ast$mouse\+\_\+data, bool update\+\_\+mouse\+\_\+variance)
+\begin{DoxyCompactList}\small\item\em Breaks down the 3 bytes received to struct packet variable. \end{DoxyCompactList}\item 
+void() \hyperlink{group__Mouse_ga210374b50462acdedab00df64d5cea3c}{mouse\+\_\+ih} ()
+\begin{DoxyCompactList}\small\item\em Handles mouse interrutps. \end{DoxyCompactList}\item 
+void() \hyperlink{group__Mouse_ga91a2072306c68353712a6b771287dc2c}{timer\+\_\+int\+\_\+handler} ()
+\begin{DoxyCompactList}\small\item\em Handles timer interrutps. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_gaead48ed9617cb223b1d75e66220d8c6a}{mouse\+\_\+polling} ()
+\begin{DoxyCompactList}\small\item\em Does polling for mouse. \end{DoxyCompactList}\end{DoxyCompactItemize}

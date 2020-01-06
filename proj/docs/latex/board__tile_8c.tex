@@ -1,0 +1,120 @@
+\hypertarget{board__tile_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/board\+\_\+tile.c File Reference}
+\label{board__tile_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/board\+\_\+tile.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/board\+\_\+tile.\+c}}
+{\ttfamily \#include \char`\"{}board\+\_\+tile.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}xpm\+\_\+includes.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}video.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$minix/driver.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+Include dependency graph for board\+\_\+tile.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{board__tile_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{group__BoardTile_gae1df260518a136a870415a2a3314a347}{get\+\_\+dragging} (\hyperlink{structTile}{Tile} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for dragging \end{DoxyCompactList}\item 
+\hyperlink{structTile}{Tile} $\ast$ \hyperlink{board__tile_8c_af889c2f741f280621a992a53409c92cb}{create\+\_\+tile} ()
+\begin{DoxyCompactList}\small\item\em creates a tile \end{DoxyCompactList}\item 
+void \hyperlink{board__tile_8c_afcf7b460647e5e2bc8fd67833c1c03c5}{draw\+\_\+tile} (\hyperlink{structTile}{Tile} $\ast$t, unsigned x, unsigned y)
+\begin{DoxyCompactList}\small\item\em draw the tile t at position x and y \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_ga202d81e1d680e41101f4ac21cab4fa2b}{start\+\_\+dragging\+\_\+tile} (\hyperlink{structTile}{Tile} $\ast$t)
+\begin{DoxyCompactList}\small\item\em change dragging tile to true and state to initial \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_ga8d64ff8a492dc61e2673588e82937e21}{stop\+\_\+dragging\+\_\+tile} (\hyperlink{structTile}{Tile} $\ast$t, bool changed\+\_\+position)
+\begin{DoxyCompactList}\small\item\em change dragging tile to false \end{DoxyCompactList}\item 
+void \hyperlink{board__tile_8c_a882153eaf18fd4c3c01238f26b94e656}{toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved} (\hyperlink{structTile}{Tile} $\ast$t)
+\begin{DoxyCompactList}\small\item\em changes state of the tile to draw it as a need to be moved tile (white center) \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_ga1126de205089e0772fe82ff72f203da1}{create\+\_\+tiles} (\hyperlink{structTile}{Tile} $\ast$t\mbox{[}$\,$\mbox{]}, const unsigned int n)
+\begin{DoxyCompactList}\small\item\em creates n tiles \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_gabfc27e45224cf938ccc6e81428a00239}{create\+\_\+board} (int board\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]}\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]})
+\begin{DoxyCompactList}\small\item\em creates a board with the tiles \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{board__tile_8c_a25a8a45b8c9ae181dbae987a8782a722}{grid\+\_\+height}
+\item 
+unsigned \hyperlink{board__tile_8c_a8a266f80a3756e9d8c24311b9b199f4d}{grid\+\_\+width}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{board__tile_8c_af889c2f741f280621a992a53409c92cb}\label{board__tile_8c_af889c2f741f280621a992a53409c92cb}} 
+\index{board\+\_\+tile.\+c@{board\+\_\+tile.\+c}!create\+\_\+tile@{create\+\_\+tile}}
+\index{create\+\_\+tile@{create\+\_\+tile}!board\+\_\+tile.\+c@{board\+\_\+tile.\+c}}
+\subsubsection{\texorpdfstring{create\+\_\+tile()}{create\_tile()}}
+{\footnotesize\ttfamily \hyperlink{structTile}{Tile}$\ast$ create\+\_\+tile (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+creates a tile 
+
+The tile\textquotesingle{}s state begins at 0 and dragging at false Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=242pt]{board__tile_8c_af889c2f741f280621a992a53409c92cb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{board__tile_8c_afcf7b460647e5e2bc8fd67833c1c03c5}\label{board__tile_8c_afcf7b460647e5e2bc8fd67833c1c03c5}} 
+\index{board\+\_\+tile.\+c@{board\+\_\+tile.\+c}!draw\+\_\+tile@{draw\+\_\+tile}}
+\index{draw\+\_\+tile@{draw\+\_\+tile}!board\+\_\+tile.\+c@{board\+\_\+tile.\+c}}
+\subsubsection{\texorpdfstring{draw\+\_\+tile()}{draw\_tile()}}
+{\footnotesize\ttfamily void draw\+\_\+tile (\begin{DoxyParamCaption}\item[{\hyperlink{structTile}{Tile} $\ast$}]{t,  }\item[{unsigned}]{x,  }\item[{unsigned}]{y }\end{DoxyParamCaption})}
+
+
+
+draw the tile t at position x and y 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & tile to draw \\
+\hline
+{\em x} & position on x axis \\
+\hline
+{\em y} & position on y axis \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{board__tile_8c_afcf7b460647e5e2bc8fd67833c1c03c5_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{board__tile_8c_a882153eaf18fd4c3c01238f26b94e656}\label{board__tile_8c_a882153eaf18fd4c3c01238f26b94e656}} 
+\index{board\+\_\+tile.\+c@{board\+\_\+tile.\+c}!toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved@{toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved}}
+\index{toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved@{toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved}!board\+\_\+tile.\+c@{board\+\_\+tile.\+c}}
+\subsubsection{\texorpdfstring{toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved()}{toggle\_need\_to\_be\_moved()}}
+{\footnotesize\ttfamily void toggle\+\_\+need\+\_\+to\+\_\+be\+\_\+moved (\begin{DoxyParamCaption}\item[{\hyperlink{structTile}{Tile} $\ast$}]{t }\end{DoxyParamCaption})}
+
+
+
+changes state of the tile to draw it as a need to be moved tile (white center) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & tile to mark \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{board__tile_8c_a25a8a45b8c9ae181dbae987a8782a722}\label{board__tile_8c_a25a8a45b8c9ae181dbae987a8782a722}} 
+\index{board\+\_\+tile.\+c@{board\+\_\+tile.\+c}!grid\+\_\+height@{grid\+\_\+height}}
+\index{grid\+\_\+height@{grid\+\_\+height}!board\+\_\+tile.\+c@{board\+\_\+tile.\+c}}
+\subsubsection{\texorpdfstring{grid\+\_\+height}{grid\_height}}
+{\footnotesize\ttfamily unsigned grid\+\_\+height}
+
+\mbox{\Hypertarget{board__tile_8c_a8a266f80a3756e9d8c24311b9b199f4d}\label{board__tile_8c_a8a266f80a3756e9d8c24311b9b199f4d}} 
+\index{board\+\_\+tile.\+c@{board\+\_\+tile.\+c}!grid\+\_\+width@{grid\+\_\+width}}
+\index{grid\+\_\+width@{grid\+\_\+width}!board\+\_\+tile.\+c@{board\+\_\+tile.\+c}}
+\subsubsection{\texorpdfstring{grid\+\_\+width}{grid\_width}}
+{\footnotesize\ttfamily unsigned grid\+\_\+width}
+

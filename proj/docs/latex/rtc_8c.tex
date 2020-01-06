@@ -1,0 +1,77 @@
+\hypertarget{rtc_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/rtc.c File Reference}
+\label{rtc_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/rtc.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/rtc.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$minix/driver.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}rtc.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+Include dependency graph for rtc.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{rtc_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{group__RealTimeClock_ga18fb6b60ca3519b4c5943902893f89eb}{get\+\_\+time\+\_\+rtc} ()
+\begin{DoxyCompactList}\small\item\em Function to get time from the real time clock. \end{DoxyCompactList}\item 
+bool \hyperlink{group__RealTimeClock_gab79ee864e66f8b74b5d0120a57a2c4f7}{check\+\_\+\+B\+CD} ()
+\begin{DoxyCompactList}\small\item\em checks if date is on B\+CD \end{DoxyCompactList}\item 
+void \hyperlink{group__RealTimeClock_ga3712be4b01789095104f73d8a0488e10}{bcd\+\_\+to\+\_\+binary} (uint8\+\_\+t $\ast$number)
+\begin{DoxyCompactList}\small\item\em changes number in B\+CD format to binary \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_gae37f65cb1eda30db92728dc94bb52b76}{read\+\_\+rtc} (uint32\+\_\+t addr, uint8\+\_\+t $\ast$ret)
+\begin{DoxyCompactList}\small\item\em reads data from the R\+TC \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga22b6726ecbb76b91e8cbe61bfbc06595}{write\+\_\+rtc} (uint32\+\_\+t addr, uint8\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em writes a command to the R\+TC \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga5171a9c0f54940fe60f7500896afcc86}{rtc\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subrscribes R\+TC interrupts for updates. \end{DoxyCompactList}\item 
+int() \hyperlink{group__RealTimeClock_ga9d4850bb2a488644672d43287f160622}{rtc\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubscribes R\+TC interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_gab680718c3cc588942fae4b697a99a7a3}{write\+\_\+dark\+\_\+mode} (uint8\+\_\+t mode, uint8\+\_\+t content)
+\begin{DoxyCompactList}\small\item\em writes the mode and the content that the user chose on settings menu \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga7e3748780d4ab4b2f87949e477dba28c}{make\+\_\+dm\+\_\+auto} ()
+\begin{DoxyCompactList}\small\item\em changes color mode automatically \end{DoxyCompactList}\item 
+int \hyperlink{group__RealTimeClock_ga6dc7d0ef0bd75dbcf8581510fe4b224a}{make\+\_\+dm\+\_\+custom} (bool dm)
+\begin{DoxyCompactList}\small\item\em changes color mode acordingly to player choice \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+bool \hyperlink{rtc_8c_a18835e53ce582638a8a8498c84a0a4c1}{dark\+\_\+mode} = false
+\item 
+bool \hyperlink{rtc_8c_ad3430ec627c21bff82c461422b83eab4}{override\+\_\+dark\+\_\+mode} = false
+\item 
+int \hyperlink{rtc_8c_a9fc22e6d8203dddf397ca66d65055d1d}{hook\+\_\+id\+\_\+rtc}
+\item 
+uint8\+\_\+t \hyperlink{rtc_8c_ad519d84c7797de872e110ac593f6f1b1}{rtc} \mbox{[}3\mbox{]}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{rtc_8c_a18835e53ce582638a8a8498c84a0a4c1}\label{rtc_8c_a18835e53ce582638a8a8498c84a0a4c1}} 
+\index{rtc.\+c@{rtc.\+c}!dark\+\_\+mode@{dark\+\_\+mode}}
+\index{dark\+\_\+mode@{dark\+\_\+mode}!rtc.\+c@{rtc.\+c}}
+\subsubsection{\texorpdfstring{dark\+\_\+mode}{dark\_mode}}
+{\footnotesize\ttfamily bool dark\+\_\+mode = false}
+
+\mbox{\Hypertarget{rtc_8c_a9fc22e6d8203dddf397ca66d65055d1d}\label{rtc_8c_a9fc22e6d8203dddf397ca66d65055d1d}} 
+\index{rtc.\+c@{rtc.\+c}!hook\+\_\+id\+\_\+rtc@{hook\+\_\+id\+\_\+rtc}}
+\index{hook\+\_\+id\+\_\+rtc@{hook\+\_\+id\+\_\+rtc}!rtc.\+c@{rtc.\+c}}
+\subsubsection{\texorpdfstring{hook\+\_\+id\+\_\+rtc}{hook\_id\_rtc}}
+{\footnotesize\ttfamily int hook\+\_\+id\+\_\+rtc}
+
+\mbox{\Hypertarget{rtc_8c_ad3430ec627c21bff82c461422b83eab4}\label{rtc_8c_ad3430ec627c21bff82c461422b83eab4}} 
+\index{rtc.\+c@{rtc.\+c}!override\+\_\+dark\+\_\+mode@{override\+\_\+dark\+\_\+mode}}
+\index{override\+\_\+dark\+\_\+mode@{override\+\_\+dark\+\_\+mode}!rtc.\+c@{rtc.\+c}}
+\subsubsection{\texorpdfstring{override\+\_\+dark\+\_\+mode}{override\_dark\_mode}}
+{\footnotesize\ttfamily bool override\+\_\+dark\+\_\+mode = false}
+
+\mbox{\Hypertarget{rtc_8c_ad519d84c7797de872e110ac593f6f1b1}\label{rtc_8c_ad519d84c7797de872e110ac593f6f1b1}} 
+\index{rtc.\+c@{rtc.\+c}!rtc@{rtc}}
+\index{rtc@{rtc}!rtc.\+c@{rtc.\+c}}
+\subsubsection{\texorpdfstring{rtc}{rtc}}
+{\footnotesize\ttfamily uint8\+\_\+t rtc\mbox{[}3\mbox{]}}
+

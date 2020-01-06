@@ -1,0 +1,63 @@
+\hypertarget{keyboard_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/keyboard.c File Reference}
+\label{keyboard_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/keyboard.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/keyboard.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+Include dependency graph for keyboard.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{keyboard_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void() \hyperlink{group__Keyboard_gaea970a154161a35f6894898a092ed70a}{kbc\+\_\+ih} ()
+\begin{DoxyCompactList}\small\item\em keyboard interrupts handler \end{DoxyCompactList}\item 
+int() \hyperlink{group__Keyboard_ga4ac9231a99a664d6a9f0b69767e0d707}{kbd\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subscribes and enables Keyboard interrupts. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Keyboard_gaee0a7b54ee426fade9c780418d110fe0}{kbd\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubscribes Keyboard interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{keyboard_8c_a3457919b7aad289917a3937c442e093e}{send\+\_\+statusreg\+\_\+commandbyte} (uint8\+\_\+t mask\+\_\+enable, uint8\+\_\+t mask\+\_\+disable)
+\item 
+int \hyperlink{group__Keyboard_ga4909d2b8687b61065a2ce1d215135c3e}{enable\+\_\+interrupts} ()
+\begin{DoxyCompactList}\small\item\em Enables keyboard interrupts. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{keyboard_8c_a7d15e4ad49d56102e73bfb92c6e43a22}{hook\+\_\+id\+\_\+kbd} = 0
+\item 
+uint8\+\_\+t \hyperlink{keyboard_8c_a54c66c979c10f8ab1d2bf87bd8e59216}{kbd\+\_\+code}
+\end{DoxyCompactItemize}
+
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{keyboard_8c_a3457919b7aad289917a3937c442e093e}\label{keyboard_8c_a3457919b7aad289917a3937c442e093e}} 
+\index{keyboard.\+c@{keyboard.\+c}!send\+\_\+statusreg\+\_\+commandbyte@{send\+\_\+statusreg\+\_\+commandbyte}}
+\index{send\+\_\+statusreg\+\_\+commandbyte@{send\+\_\+statusreg\+\_\+commandbyte}!keyboard.\+c@{keyboard.\+c}}
+\subsubsection{\texorpdfstring{send\+\_\+statusreg\+\_\+commandbyte()}{send\_statusreg\_commandbyte()}}
+{\footnotesize\ttfamily int send\+\_\+statusreg\+\_\+commandbyte (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mask\+\_\+enable,  }\item[{uint8\+\_\+t}]{mask\+\_\+disable }\end{DoxyParamCaption})}
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=334pt]{keyboard_8c_a3457919b7aad289917a3937c442e093e_cgraph}
+\end{center}
+\end{figure}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{keyboard_8c_a7d15e4ad49d56102e73bfb92c6e43a22}\label{keyboard_8c_a7d15e4ad49d56102e73bfb92c6e43a22}} 
+\index{keyboard.\+c@{keyboard.\+c}!hook\+\_\+id\+\_\+kbd@{hook\+\_\+id\+\_\+kbd}}
+\index{hook\+\_\+id\+\_\+kbd@{hook\+\_\+id\+\_\+kbd}!keyboard.\+c@{keyboard.\+c}}
+\subsubsection{\texorpdfstring{hook\+\_\+id\+\_\+kbd}{hook\_id\_kbd}}
+{\footnotesize\ttfamily int hook\+\_\+id\+\_\+kbd = 0}
+
+\mbox{\Hypertarget{keyboard_8c_a54c66c979c10f8ab1d2bf87bd8e59216}\label{keyboard_8c_a54c66c979c10f8ab1d2bf87bd8e59216}} 
+\index{keyboard.\+c@{keyboard.\+c}!kbd\+\_\+code@{kbd\+\_\+code}}
+\index{kbd\+\_\+code@{kbd\+\_\+code}!keyboard.\+c@{keyboard.\+c}}
+\subsubsection{\texorpdfstring{kbd\+\_\+code}{kbd\_code}}
+{\footnotesize\ttfamily uint8\+\_\+t kbd\+\_\+code}
+

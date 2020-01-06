@@ -1,0 +1,9 @@
+<map id="get_letter_input" name="get_letter_input">
+<area shape="rect" id="node2" href="$group__Queue.html#ga27406c20bfc03f7594e296a9ff320c0a" title="converts a charqueue to a string " alt="" coords="175,107,313,133"/>
+<area shape="rect" id="node3" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="372,5,497,32"/>
+<area shape="rect" id="node6" href="$group__Queue.html#gab21c584ab513656ce228be8faf43072b" title="PUSH method for the charqueue. " alt="" coords="376,208,493,235"/>
+<area shape="rect" id="node8" href="$group__Queue.html#ga1da158a3acaebfa6285053fa52d2d917" title="removes the last element from the charqueue " alt="" coords="164,56,324,83"/>
+<area shape="rect" id="node4" href="$group__Queue.html#ga3df2219927af0ffc207c237f99e06331" title="gets the size of the charqueue " alt="" coords="378,157,491,184"/>
+<area shape="rect" id="node5" href="$group__Queue.html#ga44a11e67ef5807557628f7c6a0767289" title="constructor method for charqueue " alt="" coords="372,107,497,133"/>
+<area shape="rect" id="node7" href="$group__Queue.html#gacdaded4e5bcc6ae01a6d789985381553" title="POP method for the charqueue. " alt="" coords="379,56,490,83"/>
+</map>

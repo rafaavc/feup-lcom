@@ -1,0 +1,112 @@
+\hypertarget{player_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/player.c File Reference}
+\label{player_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/player.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/player.\+c}}
+{\ttfamily \#include \char`\"{}player.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}video.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include $<$stdio.\+h$>$}\newline
+{\ttfamily \#include $<$minix/driver.\+h$>$}\newline
+{\ttfamily \#include $<$sys/mman.\+h$>$}\newline
+{\ttfamily \#include $<$stddef.\+h$>$}\newline
+Include dependency graph for player.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{player_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structPlayer}{Player} $\ast$ \hyperlink{group__Player_gac8cf29880bdf99b58c45cf2375e98ce2}{create\+\_\+player} (unsigned bi, unsigned bj, xpm\+\_\+image\+\_\+t animation\+\_\+idle\mbox{[}12\mbox{]}, unsigned starting\+\_\+an)
+\begin{DoxyCompactList}\small\item\em creates a \hyperlink{structPlayer}{Player} \end{DoxyCompactList}\item 
+int \hyperlink{group__Player_ga075ca68a5eee830427f444f3e33519c7}{p\+\_\+get\+\_\+j} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for player board\+\_\+j \end{DoxyCompactList}\item 
+int \hyperlink{group__Player_ga1a9352adf6424fef4c60801197c66372}{p\+\_\+get\+\_\+i} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for player board\+\_\+i \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga5ddbe4f50900b2bf02dff9a2abac4c55}{p\+\_\+set\+\_\+name} (\hyperlink{structPlayer}{Player} $\ast$p, char $\ast$name)
+\begin{DoxyCompactList}\small\item\em set method for \hyperlink{structPlayer}{Player}\textquotesingle{}s name \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{group__Player_gaa31362cac0c383394cd577df67ce3963}{p\+\_\+get\+\_\+name} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for \hyperlink{structPlayer}{Player}\textquotesingle{}s name \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__Player_ga8f2b0d2966564ddec85c97a5cce06eb0}{next\+\_\+animation\+\_\+frame} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em updates animation frame to next one \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga12cc74e0540deb2376a28ad72dbb3688}{draw\+\_\+player} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em updates player position in case it\textquotesingle{}s moving and draws it \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga8843878cb50bb98c78f92b736fd9a4f1}{draw\+\_\+player\+\_\+custom} (\hyperlink{structPlayer}{Player} $\ast$p, unsigned x, unsigned y)
+\begin{DoxyCompactList}\small\item\em draws player in custom x and y coordinates \end{DoxyCompactList}\item 
+bool \hyperlink{group__Player_ga1ad41a44780752bfb6fd1c7bdf2f903a}{move} (\hyperlink{structPlayer}{Player} $\ast$p, char direction, int board\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]}\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]})
+\begin{DoxyCompactList}\small\item\em move the player on any directon \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga44fb09b7f9ceea29af17f3901d679d4f}{player\+\_\+move\+\_\+w} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on positive y direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_gaa361267bf753695bbbf7d7e42056e5cc}{player\+\_\+move\+\_\+a} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on negative x direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_gad1a24804f5440f8fe762d57b9a6ffbd3}{player\+\_\+move\+\_\+s} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on negative y direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga145d0fef983ef960c273cd2e7a5915a8}{player\+\_\+move\+\_\+d} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em moves the player on positive x direction \end{DoxyCompactList}\item 
+void \hyperlink{group__Player_ga23329d4803f8b89fdeacc653b6276e15}{p\+\_\+set\+\_\+last\+\_\+movement} (\hyperlink{structPlayer}{Player} $\ast$p, char lmov)
+\begin{DoxyCompactList}\small\item\em set method for \hyperlink{structPlayer}{Player}\textquotesingle{}s last movement \end{DoxyCompactList}\item 
+char \hyperlink{group__Player_ga9a90d3a627868d84f43e46fc1dd7daa3}{p\+\_\+get\+\_\+last\+\_\+movement} (\hyperlink{structPlayer}{Player} $\ast$p)
+\begin{DoxyCompactList}\small\item\em get method for \hyperlink{structPlayer}{Player}\textquotesingle{}s last movement \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{player_8c_a25a8a45b8c9ae181dbae987a8782a722}{grid\+\_\+height}
+\item 
+unsigned \hyperlink{player_8c_a8a266f80a3756e9d8c24311b9b199f4d}{grid\+\_\+width}
+\item 
+unsigned \hyperlink{player_8c_af63a6c183ec4ffc8773a4836a262242a}{move\+\_\+count}
+\item 
+unsigned \hyperlink{player_8c_aa25790aaf38769a83aeb3bf66ba2adc3}{error}
+\item 
+uint32\+\_\+t \hyperlink{player_8c_a98b3befc0fc2776c4252b5bf353f6536}{color\+\_\+palette} \mbox{[}$\,$\mbox{]}
+\item 
+unsigned \hyperlink{player_8c_aadba057849b8784c41f1967805849304}{play\+\_\+time}
+\item 
+unsigned \hyperlink{player_8c_ab53ae9f543523a074bb7ac16b781dd52}{timer\+\_\+counter\+\_\+play}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{player_8c_a98b3befc0fc2776c4252b5bf353f6536}\label{player_8c_a98b3befc0fc2776c4252b5bf353f6536}} 
+\index{player.\+c@{player.\+c}!color\+\_\+palette@{color\+\_\+palette}}
+\index{color\+\_\+palette@{color\+\_\+palette}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{color\+\_\+palette}{color\_palette}}
+{\footnotesize\ttfamily uint32\+\_\+t color\+\_\+palette\mbox{[}$\,$\mbox{]}}
+
+\mbox{\Hypertarget{player_8c_aa25790aaf38769a83aeb3bf66ba2adc3}\label{player_8c_aa25790aaf38769a83aeb3bf66ba2adc3}} 
+\index{player.\+c@{player.\+c}!error@{error}}
+\index{error@{error}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{error}{error}}
+{\footnotesize\ttfamily unsigned error}
+
+\mbox{\Hypertarget{player_8c_a25a8a45b8c9ae181dbae987a8782a722}\label{player_8c_a25a8a45b8c9ae181dbae987a8782a722}} 
+\index{player.\+c@{player.\+c}!grid\+\_\+height@{grid\+\_\+height}}
+\index{grid\+\_\+height@{grid\+\_\+height}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{grid\+\_\+height}{grid\_height}}
+{\footnotesize\ttfamily unsigned grid\+\_\+height}
+
+\mbox{\Hypertarget{player_8c_a8a266f80a3756e9d8c24311b9b199f4d}\label{player_8c_a8a266f80a3756e9d8c24311b9b199f4d}} 
+\index{player.\+c@{player.\+c}!grid\+\_\+width@{grid\+\_\+width}}
+\index{grid\+\_\+width@{grid\+\_\+width}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{grid\+\_\+width}{grid\_width}}
+{\footnotesize\ttfamily unsigned grid\+\_\+width}
+
+\mbox{\Hypertarget{player_8c_af63a6c183ec4ffc8773a4836a262242a}\label{player_8c_af63a6c183ec4ffc8773a4836a262242a}} 
+\index{player.\+c@{player.\+c}!move\+\_\+count@{move\+\_\+count}}
+\index{move\+\_\+count@{move\+\_\+count}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{move\+\_\+count}{move\_count}}
+{\footnotesize\ttfamily unsigned move\+\_\+count}
+
+\mbox{\Hypertarget{player_8c_aadba057849b8784c41f1967805849304}\label{player_8c_aadba057849b8784c41f1967805849304}} 
+\index{player.\+c@{player.\+c}!play\+\_\+time@{play\+\_\+time}}
+\index{play\+\_\+time@{play\+\_\+time}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{play\+\_\+time}{play\_time}}
+{\footnotesize\ttfamily unsigned play\+\_\+time}
+
+\mbox{\Hypertarget{player_8c_ab53ae9f543523a074bb7ac16b781dd52}\label{player_8c_ab53ae9f543523a074bb7ac16b781dd52}} 
+\index{player.\+c@{player.\+c}!timer\+\_\+counter\+\_\+play@{timer\+\_\+counter\+\_\+play}}
+\index{timer\+\_\+counter\+\_\+play@{timer\+\_\+counter\+\_\+play}!player.\+c@{player.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+counter\+\_\+play}{timer\_counter\_play}}
+{\footnotesize\ttfamily unsigned timer\+\_\+counter\+\_\+play}
+

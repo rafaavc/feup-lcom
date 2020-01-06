@@ -1,0 +1,12 @@
+<map id="sp_init" name="sp_init">
+<area shape="rect" id="node2" href="$group__SerialPort.html#gaf7d4fe8c00d438c8d977780c8eea93d0" title="Configues the serial port. " alt="" coords="136,31,229,57"/>
+<area shape="rect" id="node5" href="$group__SerialPort.html#gadd26ca35691edf8860a1b57ff99a83b5" title="Prints the configuration of the serial port. " alt="" coords="133,81,233,108"/>
+<area shape="rect" id="node7" href="$group__SerialPort.html#gab9143dc649a5b01ac6e0f56b928c1b8e" title="Subcribes interruptions for serial port (COM1) " alt="" coords="113,132,252,159"/>
+<area shape="rect" id="node8" href="$group__SerialPort.html#ga8a3c0f035c9de6a912d765d7e2902ea1" title="Subcribes interruptions for serial port (COM2) " alt="" coords="113,183,252,209"/>
+<area shape="rect" id="node9" href="$group__SerialPort.html#ga944609b27c597a74c6e06a8889dfe69b" title="Writes to the interrupt enable register (IER), enabling the desired interrupts. " alt="" coords="300,208,443,235"/>
+<area shape="rect" id="node10" href="$group__SerialPort.html#ga2600cc64b931c3dd4b6958d5090c39f4" title="sets the fifo&#39;s up " alt="" coords="133,284,233,311"/>
+<area shape="rect" id="node11" href="$group__Queue.html#ga44a11e67ef5807557628f7c6a0767289" title="constructor method for charqueue " alt="" coords="120,335,245,361"/>
+<area shape="rect" id="node3" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="491,81,581,108"/>
+<area shape="rect" id="node4" href="$group__SerialPort.html#gaf264a0b0c4be6a1b9f368e9af4863d4b" title="Writes to the divisor latch, setting the frame rate. " alt="" coords="319,31,423,57"/>
+<area shape="rect" id="node6" href="$group__SerialPort.html#gab2a01a4e6ded224f3ac4a9e139852258" title="Obtains the value of the divisor latch. " alt="" coords="301,132,442,159"/>
+</map>

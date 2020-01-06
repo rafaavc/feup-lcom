@@ -1,0 +1,7 @@
+<map id="retrieve_info_from_queue" name="retrieve_info_from_queue">
+<area shape="rect" id="node2" href="$group__Queue.html#gacaa29ccb78b3a91fc2cc5feff22750da" title="GET method for the element in front of the queue. " alt="" coords="205,5,319,32"/>
+<area shape="rect" id="node3" href="$group__Queue.html#gacdaded4e5bcc6ae01a6d789985381553" title="POP method for the charqueue. " alt="" coords="399,81,510,108"/>
+<area shape="rect" id="node4" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="392,157,517,184"/>
+<area shape="rect" id="node5" href="$group__Queue.html#gab21c584ab513656ce228be8faf43072b" title="PUSH method for the charqueue. " alt="" coords="203,157,321,184"/>
+<area shape="rect" id="node6" href="$group__Queue.html#ga4c29bcf6ba2eca0528b3ac7889361b3f" title="makes a charqueue empty " alt="" coords="180,107,344,133"/>
+</map>

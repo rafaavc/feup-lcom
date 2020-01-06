@@ -1,0 +1,23 @@
+<map id="draw_tutorial" name="draw_tutorial">
+<area shape="rect" id="node2" href="$group__Video.html#ga92bcd933e2fd6e75a0c7c88a0b31452f" title="get method for the double buffer " alt="" coords="164,5,289,32"/>
+<area shape="rect" id="node3" href="$group__Video.html#gadda634e50b839d2f56b4ad68bf0509a3" title="get method for background buffer " alt="" coords="149,56,304,83"/>
+<area shape="rect" id="node4" href="$group__Video.html#ga3dcf2045f1929eb3b370b96715863c4e" title="get screen width " alt="" coords="191,107,263,133"/>
+<area shape="rect" id="node5" href="$group__Video.html#gad20679e2730425e7d0283793bdd6e696" title="get screen height " alt="" coords="191,157,263,184"/>
+<area shape="rect" id="node6" href="$group__Video.html#ga29911e110d87d372e97e0676d2768c95" title="get bits per pixel " alt="" coords="163,208,290,235"/>
+<area shape="rect" id="node7" href="$group__Video.html#ga1df81e7b585ed7302d9cb1fe263e72e2" title="draws a string centered in the screen " alt="" coords="352,309,499,336"/>
+<area shape="rect" id="node11" href="$group__Video.html#ga65cb3cc81804b640785e86116373a36c" title="draws a xpm " alt="" coords="788,259,887,285"/>
+<area shape="rect" id="node13" href="$group__XPM.html#ga8e0a9d2b45c84727a634b6aaf1be79f3" title="get method for the wasd pad xpm " alt="" coords="187,360,266,387"/>
+<area shape="rect" id="node14" href="$group__Game.html#gac5026be0285f2ce6d26418644d312c63" title="draws a text that can be clicked by the user " alt="" coords="165,411,288,437"/>
+<area shape="rect" id="node21" href="$group__XPM.html#gaa1969bef6924610fa26b58c27926b3ee" title="get method for the mouse " alt="" coords="161,461,292,488"/>
+<area shape="rect" id="node22" href="$group__Video.html#ga1d04069f4e8b1556a7a1ed2cd95bfdea" title="get method for video_mem " alt="" coords="169,512,284,539"/>
+<area shape="rect" id="node8" href="$group__Video.html#gaefb95d930fabc3645326297ed5d37b63" title="get a string width " alt="" coords="547,360,709,387"/>
+<area shape="rect" id="node10" href="$group__Video.html#ga65f3bcb27a5b294654783b067086a175" title="draws a string in the screen " alt="" coords="583,309,673,336"/>
+<area shape="rect" id="node9" href="$group__Video.html#ga5e63b50c933f1307aca72b0cafc77a14" title="get a character width " alt="" coords="757,360,917,387"/>
+<area shape="rect" id="node12" href="$group__XPM.html#gaeaf4a2c369709099c0355fca8ecbd497" title="get method for letters xpm_image_t " alt="" coords="799,309,875,336"/>
+<area shape="rect" id="node15" href="$group__MouseTrigger.html#ga2a065a926bc0f7b36fa31a8d4121b740" title="get method for mouse_over " alt="" coords="355,461,495,488"/>
+<area shape="rect" id="node20" href="$group__MouseTrigger.html#gafcc865ceabbf0440ed41f6c3efab3883" title="creates a MouseTrigger " alt="" coords="352,411,499,437"/>
+<area shape="rect" id="node16" href="$group__MouseTrigger.html#gae86488e196565e85859c13a95b6ad4ec" title="get method for leftmost x " alt="" coords="579,563,677,589"/>
+<area shape="rect" id="node17" href="$group__MouseTrigger.html#ga8408da28d1d750afae507d52f5047c3b" title="get method for rightmost x " alt="" coords="569,411,687,437"/>
+<area shape="rect" id="node18" href="$group__MouseTrigger.html#ga6a8b3f49ac3c8d51c829cb2b988edf18" title="get method for upper y " alt="" coords="579,461,677,488"/>
+<area shape="rect" id="node19" href="$group__MouseTrigger.html#ga6aef780a98bbfc736bac70d1993f60cf" title="get method for lower y " alt="" coords="569,512,687,539"/>
+</map>

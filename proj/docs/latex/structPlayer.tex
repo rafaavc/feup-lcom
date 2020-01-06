@@ -1,0 +1,105 @@
+\hypertarget{structPlayer}{}\section{Player Struct Reference}
+\label{structPlayer}\index{Player@{Player}}
+
+
+struct for a player animation  
+
+
+
+
+{\ttfamily \#include $<$player.\+h$>$}
+
+\subsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+unsigned \hyperlink{structPlayer_a96997d7fd96cd075a5461f388b70e411}{counter}
+\item 
+unsigned \hyperlink{structPlayer_a692e299113b1eb93c29f6d7069fa55f6}{animation\+\_\+frame}
+\item 
+int \hyperlink{structPlayer_a9b9db456166f97a2bb620919b23aa91b}{board\+\_\+i}
+\item 
+int \hyperlink{structPlayer_a17156154173c98e7736dc6c6d26056c9}{board\+\_\+j}
+\item 
+bool \hyperlink{structPlayer_aaf48c4184bee665e1f7f625dedc25adf}{moving}
+\item 
+xpm\+\_\+image\+\_\+t \hyperlink{structPlayer_a6b9abb8c8a4d3f6ee07fe89294d8b24b}{animation\+\_\+idle} \mbox{[}12\mbox{]}
+\item 
+char $\ast$ \hyperlink{structPlayer_a4af4a10433f33834b59d0c3793358a40}{name}
+\item 
+int \hyperlink{structPlayer_a834748101caf4cab3c42ed1619793fbf}{next\+\_\+x}
+\item 
+int \hyperlink{structPlayer_a8a1a06edc2b3ebae2705f1c4fc1917ff}{next\+\_\+y}
+\item 
+char \hyperlink{structPlayer_a7243478dde989d49cb250b1020d9f7f9}{last\+\_\+movement}
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+struct for a player animation 
+
+\subsection{Member Data Documentation}
+\mbox{\Hypertarget{structPlayer_a692e299113b1eb93c29f6d7069fa55f6}\label{structPlayer_a692e299113b1eb93c29f6d7069fa55f6}} 
+\index{Player@{Player}!animation\+\_\+frame@{animation\+\_\+frame}}
+\index{animation\+\_\+frame@{animation\+\_\+frame}!Player@{Player}}
+\subsubsection{\texorpdfstring{animation\+\_\+frame}{animation\_frame}}
+{\footnotesize\ttfamily unsigned Player\+::animation\+\_\+frame}
+
+current animation frame of the player \mbox{\Hypertarget{structPlayer_a6b9abb8c8a4d3f6ee07fe89294d8b24b}\label{structPlayer_a6b9abb8c8a4d3f6ee07fe89294d8b24b}} 
+\index{Player@{Player}!animation\+\_\+idle@{animation\+\_\+idle}}
+\index{animation\+\_\+idle@{animation\+\_\+idle}!Player@{Player}}
+\subsubsection{\texorpdfstring{animation\+\_\+idle}{animation\_idle}}
+{\footnotesize\ttfamily xpm\+\_\+image\+\_\+t Player\+::animation\+\_\+idle\mbox{[}12\mbox{]}}
+
+all the player\textquotesingle{}s animation frames \mbox{\Hypertarget{structPlayer_a9b9db456166f97a2bb620919b23aa91b}\label{structPlayer_a9b9db456166f97a2bb620919b23aa91b}} 
+\index{Player@{Player}!board\+\_\+i@{board\+\_\+i}}
+\index{board\+\_\+i@{board\+\_\+i}!Player@{Player}}
+\subsubsection{\texorpdfstring{board\+\_\+i}{board\_i}}
+{\footnotesize\ttfamily int Player\+::board\+\_\+i}
+
+board position on x axis \mbox{\Hypertarget{structPlayer_a17156154173c98e7736dc6c6d26056c9}\label{structPlayer_a17156154173c98e7736dc6c6d26056c9}} 
+\index{Player@{Player}!board\+\_\+j@{board\+\_\+j}}
+\index{board\+\_\+j@{board\+\_\+j}!Player@{Player}}
+\subsubsection{\texorpdfstring{board\+\_\+j}{board\_j}}
+{\footnotesize\ttfamily int Player\+::board\+\_\+j}
+
+board position on y axis \mbox{\Hypertarget{structPlayer_a96997d7fd96cd075a5461f388b70e411}\label{structPlayer_a96997d7fd96cd075a5461f388b70e411}} 
+\index{Player@{Player}!counter@{counter}}
+\index{counter@{counter}!Player@{Player}}
+\subsubsection{\texorpdfstring{counter}{counter}}
+{\footnotesize\ttfamily unsigned Player\+::counter}
+
+counter used to change player xpm only every 4 frames \mbox{\Hypertarget{structPlayer_a7243478dde989d49cb250b1020d9f7f9}\label{structPlayer_a7243478dde989d49cb250b1020d9f7f9}} 
+\index{Player@{Player}!last\+\_\+movement@{last\+\_\+movement}}
+\index{last\+\_\+movement@{last\+\_\+movement}!Player@{Player}}
+\subsubsection{\texorpdfstring{last\+\_\+movement}{last\_movement}}
+{\footnotesize\ttfamily char Player\+::last\+\_\+movement}
+
+\hyperlink{structPlayer}{Player}\textquotesingle{}s last movement (x if first movement of the turn) \mbox{\Hypertarget{structPlayer_aaf48c4184bee665e1f7f625dedc25adf}\label{structPlayer_aaf48c4184bee665e1f7f625dedc25adf}} 
+\index{Player@{Player}!moving@{moving}}
+\index{moving@{moving}!Player@{Player}}
+\subsubsection{\texorpdfstring{moving}{moving}}
+{\footnotesize\ttfamily bool Player\+::moving}
+
+\hyperlink{structPlayer}{Player} moving or stoped \mbox{\Hypertarget{structPlayer_a4af4a10433f33834b59d0c3793358a40}\label{structPlayer_a4af4a10433f33834b59d0c3793358a40}} 
+\index{Player@{Player}!name@{name}}
+\index{name@{name}!Player@{Player}}
+\subsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily char$\ast$ Player\+::name}
+
+name of the player \mbox{\Hypertarget{structPlayer_a834748101caf4cab3c42ed1619793fbf}\label{structPlayer_a834748101caf4cab3c42ed1619793fbf}} 
+\index{Player@{Player}!next\+\_\+x@{next\+\_\+x}}
+\index{next\+\_\+x@{next\+\_\+x}!Player@{Player}}
+\subsubsection{\texorpdfstring{next\+\_\+x}{next\_x}}
+{\footnotesize\ttfamily int Player\+::next\+\_\+x}
+
+Pixels remainig to move in x axis \mbox{\Hypertarget{structPlayer_a8a1a06edc2b3ebae2705f1c4fc1917ff}\label{structPlayer_a8a1a06edc2b3ebae2705f1c4fc1917ff}} 
+\index{Player@{Player}!next\+\_\+y@{next\+\_\+y}}
+\index{next\+\_\+y@{next\+\_\+y}!Player@{Player}}
+\subsubsection{\texorpdfstring{next\+\_\+y}{next\_y}}
+{\footnotesize\ttfamily int Player\+::next\+\_\+y}
+
+Pixels remaining to move in y axis 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/\hyperlink{player_8h}{player.\+h}\end{DoxyCompactItemize}

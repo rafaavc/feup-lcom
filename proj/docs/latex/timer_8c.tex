@@ -1,0 +1,51 @@
+\hypertarget{timer_8c}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/timer.c File Reference}
+\label{timer_8c}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/timer.\+c@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/timer.\+c}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+{\ttfamily \#include $<$stdint.\+h$>$}\newline
+{\ttfamily \#include \char`\"{}Macros.\+h\char`\"{}}\newline
+Include dependency graph for timer.\+c\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=250pt]{timer_8c__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void() \hyperlink{group__Mouse_ga91a2072306c68353712a6b771287dc2c}{timer\+\_\+int\+\_\+handler} ()
+\begin{DoxyCompactList}\small\item\em Handles timer interrutps. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Timer_gac57a7e1140a7e00ad95ac5488d2a671b}{timer\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subscribes and enables Timer 0 interrupts. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Timer_gafabd21de449be154dd65d5fdb2d8045d}{timer\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubscribes Timer 0 interrupts. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+int \hyperlink{timer_8c_a0f08eb193e0aedb134a1481913b6a823}{timer\+\_\+counter} = 0
+\item 
+unsigned \hyperlink{timer_8c_ab53ae9f543523a074bb7ac16b781dd52}{timer\+\_\+counter\+\_\+play}
+\item 
+int \hyperlink{timer_8c_a7f3d11d35385878045b6b6a2ec438ba8}{hook\+\_\+id\+\_\+timer} = \hyperlink{group__i8254_ga6a4822642d40c248435692324a818010}{T\+I\+M\+E\+R\+\_\+\+S\+E\+L0}
+\end{DoxyCompactItemize}
+
+
+\subsection{Variable Documentation}
+\mbox{\Hypertarget{timer_8c_a7f3d11d35385878045b6b6a2ec438ba8}\label{timer_8c_a7f3d11d35385878045b6b6a2ec438ba8}} 
+\index{timer.\+c@{timer.\+c}!hook\+\_\+id\+\_\+timer@{hook\+\_\+id\+\_\+timer}}
+\index{hook\+\_\+id\+\_\+timer@{hook\+\_\+id\+\_\+timer}!timer.\+c@{timer.\+c}}
+\subsubsection{\texorpdfstring{hook\+\_\+id\+\_\+timer}{hook\_id\_timer}}
+{\footnotesize\ttfamily int hook\+\_\+id\+\_\+timer = \hyperlink{group__i8254_ga6a4822642d40c248435692324a818010}{T\+I\+M\+E\+R\+\_\+\+S\+E\+L0}}
+
+\mbox{\Hypertarget{timer_8c_a0f08eb193e0aedb134a1481913b6a823}\label{timer_8c_a0f08eb193e0aedb134a1481913b6a823}} 
+\index{timer.\+c@{timer.\+c}!timer\+\_\+counter@{timer\+\_\+counter}}
+\index{timer\+\_\+counter@{timer\+\_\+counter}!timer.\+c@{timer.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+counter}{timer\_counter}}
+{\footnotesize\ttfamily int timer\+\_\+counter = 0}
+
+\mbox{\Hypertarget{timer_8c_ab53ae9f543523a074bb7ac16b781dd52}\label{timer_8c_ab53ae9f543523a074bb7ac16b781dd52}} 
+\index{timer.\+c@{timer.\+c}!timer\+\_\+counter\+\_\+play@{timer\+\_\+counter\+\_\+play}}
+\index{timer\+\_\+counter\+\_\+play@{timer\+\_\+counter\+\_\+play}!timer.\+c@{timer.\+c}}
+\subsubsection{\texorpdfstring{timer\+\_\+counter\+\_\+play}{timer\_counter\_play}}
+{\footnotesize\ttfamily unsigned timer\+\_\+counter\+\_\+play}
+

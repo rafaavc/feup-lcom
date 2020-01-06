@@ -1,0 +1,68 @@
+\hypertarget{sp_8h}{}\section{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/sp.h File Reference}
+\label{sp_8h}\index{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/sp.\+h@{/home/xavier/\+Desktop/\+F\+E\+U\+P/\+L\+C\+O\+M/\+M\+I\+N\+I\+X-\/\+L\+C\+O\+M/shared/proj/src/sp.\+h}}
+{\ttfamily \#include $<$lcom/lcf.\+h$>$}\newline
+Include dependency graph for sp.\+h\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=221pt]{sp_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{sp_8h__dep__incl}
+\end{center}
+\end{figure}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int() \hyperlink{group__SerialPort_gab9143dc649a5b01ac6e0f56b928c1b8e}{com1\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for serial port (C\+O\+M1) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga2d653465e990124317b3f4e2caacc840}{com1\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubcribes interruptions for serial port (C\+O\+M1) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga8a3c0f035c9de6a912d765d7e2902ea1}{com2\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for serial port (C\+O\+M2) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga45e636b3b985b6c5ad22014f01c01fd2}{com2\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubcribes interruptions for serial port (C\+O\+M2) \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gab2a01a4e6ded224f3ac4a9e139852258}{sp\+\_\+get\+\_\+divisor\+\_\+latch} (unsigned base, unsigned $\ast$dl)
+\begin{DoxyCompactList}\small\item\em Obtains the value of the divisor latch. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gaf264a0b0c4be6a1b9f368e9af4863d4b}{sp\+\_\+set\+\_\+bitrate} (unsigned base, unsigned bitrate)
+\begin{DoxyCompactList}\small\item\em Writes to the divisor latch, setting the frame rate. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gaf7d4fe8c00d438c8d977780c8eea93d0}{sp\+\_\+set\+\_\+conf} (unsigned base, unsigned word\+\_\+length, unsigned stop\+\_\+bits, unsigned parity, unsigned bitrate)
+\begin{DoxyCompactList}\small\item\em Configues the serial port. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gadd26ca35691edf8860a1b57ff99a83b5}{sp\+\_\+print\+\_\+conf} (unsigned base)
+\begin{DoxyCompactList}\small\item\em Prints the configuration of the serial port. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga944609b27c597a74c6e06a8889dfe69b}{sp\+\_\+enable\+\_\+interrupts} (unsigned base, bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host})
+\begin{DoxyCompactList}\small\item\em Writes to the interrupt enable register (I\+ER), enabling the desired interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gafef0b910df87109a12fffc4e1dbc665d}{sp\+\_\+disable\+\_\+interrupts} (unsigned base, bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host})
+\begin{DoxyCompactList}\small\item\em Writes to the interrupt enable register (I\+ER), disabling the interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga2600cc64b931c3dd4b6958d5090c39f4}{sp\+\_\+setup\+\_\+fifo} (unsigned base)
+\begin{DoxyCompactList}\small\item\em sets the fifo\textquotesingle{}s up \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga877b6b90de84edab62d490d4379ebafb}{sp\+\_\+print\+\_\+lsr} (unsigned base)
+\begin{DoxyCompactList}\small\item\em prints the Line Status Register (L\+SR) \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__SerialPort_gaf00b2c9bf8233158498a1da4f5c012a2}{sp\+\_\+get\+\_\+lsr} (unsigned base)
+\begin{DoxyCompactList}\small\item\em G\+ET method for the Line Status Register (L\+SR) \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga413c45b134b03a909b49aa3b5b2bd003}{sp\+\_\+init} ()
+\begin{DoxyCompactList}\small\item\em Initiates serial port. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga9a125dd7a14c69e1e2c8b257fb342509}{sp\+\_\+terminate} ()
+\begin{DoxyCompactList}\small\item\em Terminates serial port. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga5f3b628dda6e45cd03923ba47e8936b1}{sp\+\_\+send\+\_\+character} (uint8\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Sends a character. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga6b003a5f459d7954670a6df812bec19d}{charqueue\+\_\+push\+\_\+end\+\_\+characters} ()
+\begin{DoxyCompactList}\small\item\em Pushes 3 zero\textquotesingle{}s to the transmission queue. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gadf2672c522b1b952877889712bb7f1df}{transmit\+\_\+player\+\_\+data} ()
+\begin{DoxyCompactList}\small\item\em Transmits player name. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gaa846c4db2d67c36002d1d18375f1e279}{transmit\+\_\+string} (char $\ast$str, uint8\+\_\+t str\+\_\+len)
+\begin{DoxyCompactList}\small\item\em Transmits a string. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gaa7ef2569acd9f6a7221b0c7cb262d9d1}{transmit\+\_\+mouse\+\_\+bytes} (struct packet $\ast$mouse\+\_\+data, unsigned \hyperlink{mouse__trigger_8c_af9bc2c5a01a160514c48a51c9b63fb46}{mouse\+\_\+xvariance}, unsigned \hyperlink{mouse__trigger_8c_a167547e22ad51809d4670ba551a8c356}{mouse\+\_\+yvariance})
+\begin{DoxyCompactList}\small\item\em Transmits mouse bytes. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga849ad2b7e942ea188c1acf4457acbe64}{transmit\+\_\+critical\+\_\+event} (char $\ast$type)
+\begin{DoxyCompactList}\small\item\em Transmits a critical event. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga11be5d1aab04fe2f0e95a4d562082916}{transmit\+\_\+kbd\+\_\+code} (uint8\+\_\+t \hyperlink{keyboard_8c_a54c66c979c10f8ab1d2bf87bd8e59216}{kbd\+\_\+code})
+\begin{DoxyCompactList}\small\item\em Transmits a kbd code (we only use kbd codes with one byte) \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga5012d51deb1cdda2651959d0600d5a60}{retrieve\+\_\+info\+\_\+from\+\_\+queue} ()
+\begin{DoxyCompactList}\small\item\em goes to reception queue and gets information out \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga6abe9396fa5e9b5dd422b66a563f5c05}{sp\+\_\+ih} (unsigned com)
+\begin{DoxyCompactList}\small\item\em Interrupt handler for serial port. \end{DoxyCompactList}\end{DoxyCompactItemize}

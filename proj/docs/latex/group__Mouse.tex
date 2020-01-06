@@ -1,0 +1,176 @@
+\hypertarget{group__Mouse}{}\section{Mouse}
+\label{group__Mouse}\index{Mouse@{Mouse}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int() \hyperlink{group__Mouse_ga20285aed4b3ef45812cd967532dd09db}{mouse\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for mouse. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Mouse_ga3ecf823d80520009ae5e0d76ae40a3c3}{mouse\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unubcribes interruptions for mouse. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_gadbd27fcc1c1614cacfb6a8c77e70c967}{write\+\_\+command\+\_\+byte} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Writes a command through Output buffer. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_ga8dccf03fc2b97a86e123897dfe5efe25}{send\+\_\+command\+\_\+to\+\_\+mouse} (uint8\+\_\+t cmd)
+\begin{DoxyCompactList}\small\item\em Sends a command through mouse Output buffer and verifies response. \end{DoxyCompactList}\item 
+void \hyperlink{group__Mouse_gae385a7382889db22c547bf5e4868006d}{parse\+\_\+packet} (struct packet $\ast$mouse\+\_\+data, bool update\+\_\+mouse\+\_\+variance)
+\begin{DoxyCompactList}\small\item\em Breaks down the 3 bytes received to struct packet variable. \end{DoxyCompactList}\item 
+void() \hyperlink{group__Mouse_ga210374b50462acdedab00df64d5cea3c}{mouse\+\_\+ih} ()
+\begin{DoxyCompactList}\small\item\em Handles mouse interrutps. \end{DoxyCompactList}\item 
+void() \hyperlink{group__Mouse_ga91a2072306c68353712a6b771287dc2c}{timer\+\_\+int\+\_\+handler} ()
+\begin{DoxyCompactList}\small\item\em Handles timer interrutps. \end{DoxyCompactList}\item 
+int \hyperlink{group__Mouse_gaead48ed9617cb223b1d75e66220d8c6a}{mouse\+\_\+polling} ()
+\begin{DoxyCompactList}\small\item\em Does polling for mouse. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains functions for mouse 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group__Mouse_ga210374b50462acdedab00df64d5cea3c}\label{group__Mouse_ga210374b50462acdedab00df64d5cea3c}} 
+\index{Mouse@{Mouse}!mouse\+\_\+ih@{mouse\+\_\+ih}}
+\index{mouse\+\_\+ih@{mouse\+\_\+ih}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{mouse\+\_\+ih()}{mouse\_ih()}}
+{\footnotesize\ttfamily void() mouse\+\_\+ih (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handles mouse interrutps. 
+
+Reads the status register and the output buffer (OB).
+
+If there was some error, the byte read from the OB should be discarded.
+
+Must be defined using parenthesis around the function name. Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=243pt]{group__Mouse_ga210374b50462acdedab00df64d5cea3c_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Mouse_gaead48ed9617cb223b1d75e66220d8c6a}\label{group__Mouse_gaead48ed9617cb223b1d75e66220d8c6a}} 
+\index{Mouse@{Mouse}!mouse\+\_\+polling@{mouse\+\_\+polling}}
+\index{mouse\+\_\+polling@{mouse\+\_\+polling}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{mouse\+\_\+polling()}{mouse\_polling()}}
+{\footnotesize\ttfamily int mouse\+\_\+polling (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Does polling for mouse. 
+
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Mouse_ga20285aed4b3ef45812cd967532dd09db}\label{group__Mouse_ga20285aed4b3ef45812cd967532dd09db}} 
+\index{Mouse@{Mouse}!mouse\+\_\+subscribe\+\_\+int@{mouse\+\_\+subscribe\+\_\+int}}
+\index{mouse\+\_\+subscribe\+\_\+int@{mouse\+\_\+subscribe\+\_\+int}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{mouse\+\_\+subscribe\+\_\+int()}{mouse\_subscribe\_int()}}
+{\footnotesize\ttfamily int() mouse\+\_\+subscribe\+\_\+int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{bit\+\_\+no }\end{DoxyParamCaption})}
+
+
+
+Subcribes interruptions for mouse. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit\+\_\+no} & Mouse\+\_\+hook\+\_\+id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Mouse_ga3ecf823d80520009ae5e0d76ae40a3c3}\label{group__Mouse_ga3ecf823d80520009ae5e0d76ae40a3c3}} 
+\index{Mouse@{Mouse}!mouse\+\_\+unsubscribe\+\_\+int@{mouse\+\_\+unsubscribe\+\_\+int}}
+\index{mouse\+\_\+unsubscribe\+\_\+int@{mouse\+\_\+unsubscribe\+\_\+int}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{mouse\+\_\+unsubscribe\+\_\+int()}{mouse\_unsubscribe\_int()}}
+{\footnotesize\ttfamily int() mouse\+\_\+unsubscribe\+\_\+int (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Unubcribes interruptions for mouse. 
+
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Mouse_gae385a7382889db22c547bf5e4868006d}\label{group__Mouse_gae385a7382889db22c547bf5e4868006d}} 
+\index{Mouse@{Mouse}!parse\+\_\+packet@{parse\+\_\+packet}}
+\index{parse\+\_\+packet@{parse\+\_\+packet}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{parse\+\_\+packet()}{parse\_packet()}}
+{\footnotesize\ttfamily void parse\+\_\+packet (\begin{DoxyParamCaption}\item[{struct packet $\ast$}]{mouse\+\_\+data,  }\item[{bool}]{update\+\_\+mouse\+\_\+variance }\end{DoxyParamCaption})}
+
+
+
+Breaks down the 3 bytes received to struct packet variable. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mouse\+\_\+data} & packet$\ast$ mouse data with array of bytes received already \\
+\hline
+{\em update\+\_\+mouse\+\_\+variance} & true if mouse variance is to be updated and false otherwise \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=245pt]{group__Mouse_gae385a7382889db22c547bf5e4868006d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Mouse_ga8dccf03fc2b97a86e123897dfe5efe25}\label{group__Mouse_ga8dccf03fc2b97a86e123897dfe5efe25}} 
+\index{Mouse@{Mouse}!send\+\_\+command\+\_\+to\+\_\+mouse@{send\+\_\+command\+\_\+to\+\_\+mouse}}
+\index{send\+\_\+command\+\_\+to\+\_\+mouse@{send\+\_\+command\+\_\+to\+\_\+mouse}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{send\+\_\+command\+\_\+to\+\_\+mouse()}{send\_command\_to\_mouse()}}
+{\footnotesize\ttfamily int send\+\_\+command\+\_\+to\+\_\+mouse (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Sends a command through mouse Output buffer and verifies response. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & command to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=318pt]{group__Mouse_ga8dccf03fc2b97a86e123897dfe5efe25_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Mouse_ga91a2072306c68353712a6b771287dc2c}\label{group__Mouse_ga91a2072306c68353712a6b771287dc2c}} 
+\index{Mouse@{Mouse}!timer\+\_\+int\+\_\+handler@{timer\+\_\+int\+\_\+handler}}
+\index{timer\+\_\+int\+\_\+handler@{timer\+\_\+int\+\_\+handler}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{timer\+\_\+int\+\_\+handler()}{timer\_int\_handler()}}
+{\footnotesize\ttfamily void() timer\+\_\+int\+\_\+handler (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Handles timer interrutps. 
+
+Adds 1 to the global variable counter \mbox{\Hypertarget{group__Mouse_gadbd27fcc1c1614cacfb6a8c77e70c967}\label{group__Mouse_gadbd27fcc1c1614cacfb6a8c77e70c967}} 
+\index{Mouse@{Mouse}!write\+\_\+command\+\_\+byte@{write\+\_\+command\+\_\+byte}}
+\index{write\+\_\+command\+\_\+byte@{write\+\_\+command\+\_\+byte}!Mouse@{Mouse}}
+\subsubsection{\texorpdfstring{write\+\_\+command\+\_\+byte()}{write\_command\_byte()}}
+{\footnotesize\ttfamily int write\+\_\+command\+\_\+byte (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{cmd }\end{DoxyParamCaption})}
+
+
+
+Writes a command through Output buffer. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em cmd} & command to write \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=294pt]{group__Mouse_gadbd27fcc1c1614cacfb6a8c77e70c967_cgraph}
+\end{center}
+\end{figure}

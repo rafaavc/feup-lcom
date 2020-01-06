@@ -1,0 +1,4 @@
+<map id="draw_player_custom" name="draw_player_custom">
+<area shape="rect" id="node2" href="$group__Player.html#ga8f2b0d2966564ddec85c97a5cce06eb0" title="updates animation frame to next one " alt="" coords="196,5,347,32"/>
+<area shape="rect" id="node3" href="$group__Video.html#ga65cb3cc81804b640785e86116373a36c" title="draws a xpm " alt="" coords="222,56,321,83"/>
+</map>

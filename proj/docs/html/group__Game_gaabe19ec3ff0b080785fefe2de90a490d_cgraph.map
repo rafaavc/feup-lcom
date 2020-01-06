@@ -1,0 +1,10 @@
+<map id="handle_keyboard_events" name="handle_keyboard_events">
+<area shape="rect" id="node2" href="$group__Game.html#ga9ad562259d6a9159e0bcb68447a7e5b1" title="takes the kbd code and turns it into a letter that will be pushed to the queue given in the arguments..." alt="" coords="220,81,331,108"/>
+<area shape="rect" id="node3" href="$group__Queue.html#ga27406c20bfc03f7594e296a9ff320c0a" title="converts a charqueue to a string " alt="" coords="389,107,528,133"/>
+<area shape="rect" id="node4" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="587,5,712,32"/>
+<area shape="rect" id="node7" href="$group__Queue.html#gab21c584ab513656ce228be8faf43072b" title="PUSH method for the charqueue. " alt="" coords="591,208,708,235"/>
+<area shape="rect" id="node9" href="$group__Queue.html#ga1da158a3acaebfa6285053fa52d2d917" title="removes the last element from the charqueue " alt="" coords="379,56,539,83"/>
+<area shape="rect" id="node5" href="$group__Queue.html#ga3df2219927af0ffc207c237f99e06331" title="gets the size of the charqueue " alt="" coords="593,157,706,184"/>
+<area shape="rect" id="node6" href="$group__Queue.html#ga44a11e67ef5807557628f7c6a0767289" title="constructor method for charqueue " alt="" coords="587,107,712,133"/>
+<area shape="rect" id="node8" href="$group__Queue.html#gacdaded4e5bcc6ae01a6d789985381553" title="POP method for the charqueue. " alt="" coords="594,56,705,83"/>
+</map>

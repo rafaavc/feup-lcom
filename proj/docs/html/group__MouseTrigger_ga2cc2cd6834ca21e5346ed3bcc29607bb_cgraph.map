@@ -1,0 +1,6 @@
+<map id="check_mouse_overlap" name="check_mouse_overlap">
+<area shape="rect" id="node2" href="$group__MouseTrigger.html#gae86488e196565e85859c13a95b6ad4ec" title="get method for leftmost x " alt="" coords="216,5,313,32"/>
+<area shape="rect" id="node3" href="$group__MouseTrigger.html#ga6a8b3f49ac3c8d51c829cb2b988edf18" title="get method for upper y " alt="" coords="216,56,313,83"/>
+<area shape="rect" id="node4" href="$group__MouseTrigger.html#ga8408da28d1d750afae507d52f5047c3b" title="get method for rightmost x " alt="" coords="205,107,324,133"/>
+<area shape="rect" id="node5" href="$group__MouseTrigger.html#ga6aef780a98bbfc736bac70d1993f60cf" title="get method for lower y " alt="" coords="205,157,324,184"/>
+</map>

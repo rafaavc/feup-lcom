@@ -1,0 +1,4 @@
+<map id="make_dm_auto" name="make_dm_auto">
+<area shape="rect" id="node2" href="$group__RealTimeClock.html#gab680718c3cc588942fae4b697a99a7a3" title="writes the mode and the content that the user chose on settings menu " alt="" coords="164,5,285,32"/>
+<area shape="rect" id="node3" href="$group__RealTimeClock.html#ga22b6726ecbb76b91e8cbe61bfbc06595" title="writes a command to the RTC " alt="" coords="333,5,405,32"/>
+</map>

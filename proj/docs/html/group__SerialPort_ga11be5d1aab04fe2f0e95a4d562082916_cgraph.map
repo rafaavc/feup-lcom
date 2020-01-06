@@ -1,0 +1,6 @@
+<map id="transmit_kbd_code" name="transmit_kbd_code">
+<area shape="rect" id="node2" href="$group__Queue.html#ga1013b749bddaf2e7b01185099ccddfa7" title="checks if the charqueue is empty " alt="" coords="195,5,321,32"/>
+<area shape="rect" id="node3" href="$group__Queue.html#gab21c584ab513656ce228be8faf43072b" title="PUSH method for the charqueue. " alt="" coords="379,85,496,112"/>
+<area shape="rect" id="node4" href="$group__SerialPort.html#ga6b003a5f459d7954670a6df812bec19d" title="Pushes 3 zero&#39;s to the transmission queue. " alt="" coords="185,107,331,149"/>
+<area shape="rect" id="node5" href="$group__SerialPort.html#ga5f3b628dda6e45cd03923ba47e8936b1" title="Sends a character. " alt="" coords="192,173,324,200"/>
+</map>

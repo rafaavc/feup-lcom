@@ -1,0 +1,5 @@
+<map id="draw_string" name="draw_string">
+<area shape="rect" id="node2" href="$group__Video.html#ga5e63b50c933f1307aca72b0cafc77a14" title="get a character width " alt="" coords="143,5,303,32"/>
+<area shape="rect" id="node3" href="$group__Video.html#ga65cb3cc81804b640785e86116373a36c" title="draws a xpm " alt="" coords="173,56,272,83"/>
+<area shape="rect" id="node4" href="$group__XPM.html#gaeaf4a2c369709099c0355fca8ecbd497" title="get method for letters xpm_image_t " alt="" coords="185,107,261,133"/>
+</map>

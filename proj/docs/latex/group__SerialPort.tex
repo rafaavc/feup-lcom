@@ -1,0 +1,574 @@
+\hypertarget{group__SerialPort}{}\section{Serial Port}
+\label{group__SerialPort}\index{Serial Port@{Serial Port}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+int() \hyperlink{group__SerialPort_gab9143dc649a5b01ac6e0f56b928c1b8e}{com1\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for serial port (C\+O\+M1) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga2d653465e990124317b3f4e2caacc840}{com1\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubcribes interruptions for serial port (C\+O\+M1) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga8a3c0f035c9de6a912d765d7e2902ea1}{com2\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subcribes interruptions for serial port (C\+O\+M2) \end{DoxyCompactList}\item 
+int() \hyperlink{group__SerialPort_ga45e636b3b985b6c5ad22014f01c01fd2}{com2\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubcribes interruptions for serial port (C\+O\+M2) \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gab2a01a4e6ded224f3ac4a9e139852258}{sp\+\_\+get\+\_\+divisor\+\_\+latch} (unsigned base, unsigned $\ast$dl)
+\begin{DoxyCompactList}\small\item\em Obtains the value of the divisor latch. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gaf264a0b0c4be6a1b9f368e9af4863d4b}{sp\+\_\+set\+\_\+bitrate} (unsigned base, unsigned bitrate)
+\begin{DoxyCompactList}\small\item\em Writes to the divisor latch, setting the frame rate. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gaf7d4fe8c00d438c8d977780c8eea93d0}{sp\+\_\+set\+\_\+conf} (unsigned base, unsigned word\+\_\+length, unsigned stop\+\_\+bits, unsigned parity, unsigned bitrate)
+\begin{DoxyCompactList}\small\item\em Configues the serial port. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gadd26ca35691edf8860a1b57ff99a83b5}{sp\+\_\+print\+\_\+conf} (unsigned base)
+\begin{DoxyCompactList}\small\item\em Prints the configuration of the serial port. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga944609b27c597a74c6e06a8889dfe69b}{sp\+\_\+enable\+\_\+interrupts} (unsigned base, bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host})
+\begin{DoxyCompactList}\small\item\em Writes to the interrupt enable register (I\+ER), enabling the desired interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_gafef0b910df87109a12fffc4e1dbc665d}{sp\+\_\+disable\+\_\+interrupts} (unsigned base, bool \hyperlink{sp_8c_a4f63d54450207faa0b56186bef691a33}{host})
+\begin{DoxyCompactList}\small\item\em Writes to the interrupt enable register (I\+ER), disabling the interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga2600cc64b931c3dd4b6958d5090c39f4}{sp\+\_\+setup\+\_\+fifo} (unsigned base)
+\begin{DoxyCompactList}\small\item\em sets the fifo\textquotesingle{}s up \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga877b6b90de84edab62d490d4379ebafb}{sp\+\_\+print\+\_\+lsr} (unsigned base)
+\begin{DoxyCompactList}\small\item\em prints the Line Status Register (L\+SR) \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__SerialPort_gaf00b2c9bf8233158498a1da4f5c012a2}{sp\+\_\+get\+\_\+lsr} (unsigned base)
+\begin{DoxyCompactList}\small\item\em G\+ET method for the Line Status Register (L\+SR) \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga413c45b134b03a909b49aa3b5b2bd003}{sp\+\_\+init} ()
+\begin{DoxyCompactList}\small\item\em Initiates serial port. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga9a125dd7a14c69e1e2c8b257fb342509}{sp\+\_\+terminate} ()
+\begin{DoxyCompactList}\small\item\em Terminates serial port. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga5f3b628dda6e45cd03923ba47e8936b1}{sp\+\_\+send\+\_\+character} (uint8\+\_\+t c)
+\begin{DoxyCompactList}\small\item\em Sends a character. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga6b003a5f459d7954670a6df812bec19d}{charqueue\+\_\+push\+\_\+end\+\_\+characters} ()
+\begin{DoxyCompactList}\small\item\em Pushes 3 zero\textquotesingle{}s to the transmission queue. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gadf2672c522b1b952877889712bb7f1df}{transmit\+\_\+player\+\_\+data} ()
+\begin{DoxyCompactList}\small\item\em Transmits player name. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gaa846c4db2d67c36002d1d18375f1e279}{transmit\+\_\+string} (char $\ast$str, uint8\+\_\+t str\+\_\+len)
+\begin{DoxyCompactList}\small\item\em Transmits a string. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_gaa7ef2569acd9f6a7221b0c7cb262d9d1}{transmit\+\_\+mouse\+\_\+bytes} (struct packet $\ast$mouse\+\_\+data, unsigned \hyperlink{mouse__trigger_8c_af9bc2c5a01a160514c48a51c9b63fb46}{mouse\+\_\+xvariance}, unsigned \hyperlink{mouse__trigger_8c_a167547e22ad51809d4670ba551a8c356}{mouse\+\_\+yvariance})
+\begin{DoxyCompactList}\small\item\em Transmits mouse bytes. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga849ad2b7e942ea188c1acf4457acbe64}{transmit\+\_\+critical\+\_\+event} (char $\ast$type)
+\begin{DoxyCompactList}\small\item\em Transmits a critical event. \end{DoxyCompactList}\item 
+void \hyperlink{group__SerialPort_ga11be5d1aab04fe2f0e95a4d562082916}{transmit\+\_\+kbd\+\_\+code} (uint8\+\_\+t \hyperlink{keyboard_8c_a54c66c979c10f8ab1d2bf87bd8e59216}{kbd\+\_\+code})
+\begin{DoxyCompactList}\small\item\em Transmits a kbd code (we only use kbd codes with one byte) \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga5012d51deb1cdda2651959d0600d5a60}{retrieve\+\_\+info\+\_\+from\+\_\+queue} ()
+\begin{DoxyCompactList}\small\item\em goes to reception queue and gets information out \end{DoxyCompactList}\item 
+int \hyperlink{group__SerialPort_ga6abe9396fa5e9b5dd422b66a563f5c05}{sp\+\_\+ih} (unsigned com)
+\begin{DoxyCompactList}\small\item\em Interrupt handler for serial port. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains functions for serial port 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group__SerialPort_ga6b003a5f459d7954670a6df812bec19d}\label{group__SerialPort_ga6b003a5f459d7954670a6df812bec19d}} 
+\index{Serial Port@{Serial Port}!charqueue\+\_\+push\+\_\+end\+\_\+characters@{charqueue\+\_\+push\+\_\+end\+\_\+characters}}
+\index{charqueue\+\_\+push\+\_\+end\+\_\+characters@{charqueue\+\_\+push\+\_\+end\+\_\+characters}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+push\+\_\+end\+\_\+characters()}{charqueue\_push\_end\_characters()}}
+{\footnotesize\ttfamily void charqueue\+\_\+push\+\_\+end\+\_\+characters (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Pushes 3 zero\textquotesingle{}s to the transmission queue. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=313pt]{group__SerialPort_ga6b003a5f459d7954670a6df812bec19d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gab9143dc649a5b01ac6e0f56b928c1b8e}\label{group__SerialPort_gab9143dc649a5b01ac6e0f56b928c1b8e}} 
+\index{Serial Port@{Serial Port}!com1\+\_\+subscribe\+\_\+int@{com1\+\_\+subscribe\+\_\+int}}
+\index{com1\+\_\+subscribe\+\_\+int@{com1\+\_\+subscribe\+\_\+int}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{com1\+\_\+subscribe\+\_\+int()}{com1\_subscribe\_int()}}
+{\footnotesize\ttfamily int() com1\+\_\+subscribe\+\_\+int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{bit\+\_\+no }\end{DoxyParamCaption})}
+
+
+
+Subcribes interruptions for serial port (C\+O\+M1) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit\+\_\+no} & Serial port hook id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__SerialPort_ga2d653465e990124317b3f4e2caacc840}\label{group__SerialPort_ga2d653465e990124317b3f4e2caacc840}} 
+\index{Serial Port@{Serial Port}!com1\+\_\+unsubscribe\+\_\+int@{com1\+\_\+unsubscribe\+\_\+int}}
+\index{com1\+\_\+unsubscribe\+\_\+int@{com1\+\_\+unsubscribe\+\_\+int}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{com1\+\_\+unsubscribe\+\_\+int()}{com1\_unsubscribe\_int()}}
+{\footnotesize\ttfamily int() com1\+\_\+unsubscribe\+\_\+int (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Unsubcribes interruptions for serial port (C\+O\+M1) 
+
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__SerialPort_ga8a3c0f035c9de6a912d765d7e2902ea1}\label{group__SerialPort_ga8a3c0f035c9de6a912d765d7e2902ea1}} 
+\index{Serial Port@{Serial Port}!com2\+\_\+subscribe\+\_\+int@{com2\+\_\+subscribe\+\_\+int}}
+\index{com2\+\_\+subscribe\+\_\+int@{com2\+\_\+subscribe\+\_\+int}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{com2\+\_\+subscribe\+\_\+int()}{com2\_subscribe\_int()}}
+{\footnotesize\ttfamily int() com2\+\_\+subscribe\+\_\+int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{bit\+\_\+no }\end{DoxyParamCaption})}
+
+
+
+Subcribes interruptions for serial port (C\+O\+M2) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit\+\_\+no} & Serial port hook id \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__SerialPort_ga45e636b3b985b6c5ad22014f01c01fd2}\label{group__SerialPort_ga45e636b3b985b6c5ad22014f01c01fd2}} 
+\index{Serial Port@{Serial Port}!com2\+\_\+unsubscribe\+\_\+int@{com2\+\_\+unsubscribe\+\_\+int}}
+\index{com2\+\_\+unsubscribe\+\_\+int@{com2\+\_\+unsubscribe\+\_\+int}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{com2\+\_\+unsubscribe\+\_\+int()}{com2\_unsubscribe\_int()}}
+{\footnotesize\ttfamily int() com2\+\_\+unsubscribe\+\_\+int (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Unsubcribes interruptions for serial port (C\+O\+M2) 
+
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__SerialPort_ga5012d51deb1cdda2651959d0600d5a60}\label{group__SerialPort_ga5012d51deb1cdda2651959d0600d5a60}} 
+\index{Serial Port@{Serial Port}!retrieve\+\_\+info\+\_\+from\+\_\+queue@{retrieve\+\_\+info\+\_\+from\+\_\+queue}}
+\index{retrieve\+\_\+info\+\_\+from\+\_\+queue@{retrieve\+\_\+info\+\_\+from\+\_\+queue}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{retrieve\+\_\+info\+\_\+from\+\_\+queue()}{retrieve\_info\_from\_queue()}}
+{\footnotesize\ttfamily int retrieve\+\_\+info\+\_\+from\+\_\+queue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+goes to reception queue and gets information out 
+
+\begin{DoxyReturn}{Returns}
+a number that has a meaning (the meaning is commented inside the function) 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_ga5012d51deb1cdda2651959d0600d5a60_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gafef0b910df87109a12fffc4e1dbc665d}\label{group__SerialPort_gafef0b910df87109a12fffc4e1dbc665d}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+disable\+\_\+interrupts@{sp\+\_\+disable\+\_\+interrupts}}
+\index{sp\+\_\+disable\+\_\+interrupts@{sp\+\_\+disable\+\_\+interrupts}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+disable\+\_\+interrupts()}{sp\_disable\_interrupts()}}
+{\footnotesize\ttfamily int sp\+\_\+disable\+\_\+interrupts (\begin{DoxyParamCaption}\item[{unsigned}]{base,  }\item[{bool}]{host }\end{DoxyParamCaption})}
+
+
+
+Writes to the interrupt enable register (I\+ER), disabling the interrupts. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+{\em host} & whether this machine is the host or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=293pt]{group__SerialPort_gafef0b910df87109a12fffc4e1dbc665d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga944609b27c597a74c6e06a8889dfe69b}\label{group__SerialPort_ga944609b27c597a74c6e06a8889dfe69b}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+enable\+\_\+interrupts@{sp\+\_\+enable\+\_\+interrupts}}
+\index{sp\+\_\+enable\+\_\+interrupts@{sp\+\_\+enable\+\_\+interrupts}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+enable\+\_\+interrupts()}{sp\_enable\_interrupts()}}
+{\footnotesize\ttfamily int sp\+\_\+enable\+\_\+interrupts (\begin{DoxyParamCaption}\item[{unsigned}]{base,  }\item[{bool}]{host }\end{DoxyParamCaption})}
+
+
+
+Writes to the interrupt enable register (I\+ER), enabling the desired interrupts. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+{\em host} & whether this machine is the host or not \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=291pt]{group__SerialPort_ga944609b27c597a74c6e06a8889dfe69b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gab2a01a4e6ded224f3ac4a9e139852258}\label{group__SerialPort_gab2a01a4e6ded224f3ac4a9e139852258}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+get\+\_\+divisor\+\_\+latch@{sp\+\_\+get\+\_\+divisor\+\_\+latch}}
+\index{sp\+\_\+get\+\_\+divisor\+\_\+latch@{sp\+\_\+get\+\_\+divisor\+\_\+latch}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+get\+\_\+divisor\+\_\+latch()}{sp\_get\_divisor\_latch()}}
+{\footnotesize\ttfamily int sp\+\_\+get\+\_\+divisor\+\_\+latch (\begin{DoxyParamCaption}\item[{unsigned}]{base,  }\item[{unsigned $\ast$}]{dl }\end{DoxyParamCaption})}
+
+
+
+Obtains the value of the divisor latch. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & -\/ the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+{\em dl} & -\/ the address that will receive the value of the dl\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=290pt]{group__SerialPort_gab2a01a4e6ded224f3ac4a9e139852258_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gaf00b2c9bf8233158498a1da4f5c012a2}\label{group__SerialPort_gaf00b2c9bf8233158498a1da4f5c012a2}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+get\+\_\+lsr@{sp\+\_\+get\+\_\+lsr}}
+\index{sp\+\_\+get\+\_\+lsr@{sp\+\_\+get\+\_\+lsr}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+get\+\_\+lsr()}{sp\_get\_lsr()}}
+{\footnotesize\ttfamily uint8\+\_\+t sp\+\_\+get\+\_\+lsr (\begin{DoxyParamCaption}\item[{unsigned}]{base }\end{DoxyParamCaption})}
+
+
+
+G\+ET method for the Line Status Register (L\+SR) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the L\+SR 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=246pt]{group__SerialPort_gaf00b2c9bf8233158498a1da4f5c012a2_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga6abe9396fa5e9b5dd422b66a563f5c05}\label{group__SerialPort_ga6abe9396fa5e9b5dd422b66a563f5c05}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+ih@{sp\+\_\+ih}}
+\index{sp\+\_\+ih@{sp\+\_\+ih}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+ih()}{sp\_ih()}}
+{\footnotesize\ttfamily int sp\+\_\+ih (\begin{DoxyParamCaption}\item[{unsigned}]{com }\end{DoxyParamCaption})}
+
+
+
+Interrupt handler for serial port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em com} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_ga6abe9396fa5e9b5dd422b66a563f5c05_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga413c45b134b03a909b49aa3b5b2bd003}\label{group__SerialPort_ga413c45b134b03a909b49aa3b5b2bd003}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+init@{sp\+\_\+init}}
+\index{sp\+\_\+init@{sp\+\_\+init}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+init()}{sp\_init()}}
+{\footnotesize\ttfamily void sp\+\_\+init (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Initiates serial port. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_ga413c45b134b03a909b49aa3b5b2bd003_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gadd26ca35691edf8860a1b57ff99a83b5}\label{group__SerialPort_gadd26ca35691edf8860a1b57ff99a83b5}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+print\+\_\+conf@{sp\+\_\+print\+\_\+conf}}
+\index{sp\+\_\+print\+\_\+conf@{sp\+\_\+print\+\_\+conf}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+print\+\_\+conf()}{sp\_print\_conf()}}
+{\footnotesize\ttfamily int sp\+\_\+print\+\_\+conf (\begin{DoxyParamCaption}\item[{unsigned}]{base }\end{DoxyParamCaption})}
+
+
+
+Prints the configuration of the serial port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_gadd26ca35691edf8860a1b57ff99a83b5_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga877b6b90de84edab62d490d4379ebafb}\label{group__SerialPort_ga877b6b90de84edab62d490d4379ebafb}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+print\+\_\+lsr@{sp\+\_\+print\+\_\+lsr}}
+\index{sp\+\_\+print\+\_\+lsr@{sp\+\_\+print\+\_\+lsr}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+print\+\_\+lsr()}{sp\_print\_lsr()}}
+{\footnotesize\ttfamily int sp\+\_\+print\+\_\+lsr (\begin{DoxyParamCaption}\item[{unsigned}]{base }\end{DoxyParamCaption})}
+
+
+
+prints the Line Status Register (L\+SR) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=251pt]{group__SerialPort_ga877b6b90de84edab62d490d4379ebafb_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga5f3b628dda6e45cd03923ba47e8936b1}\label{group__SerialPort_ga5f3b628dda6e45cd03923ba47e8936b1}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+send\+\_\+character@{sp\+\_\+send\+\_\+character}}
+\index{sp\+\_\+send\+\_\+character@{sp\+\_\+send\+\_\+character}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+send\+\_\+character()}{sp\_send\_character()}}
+{\footnotesize\ttfamily void sp\+\_\+send\+\_\+character (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{c }\end{DoxyParamCaption})}
+
+
+
+Sends a character. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em c} & the character to send \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__SerialPort_gaf264a0b0c4be6a1b9f368e9af4863d4b}\label{group__SerialPort_gaf264a0b0c4be6a1b9f368e9af4863d4b}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+set\+\_\+bitrate@{sp\+\_\+set\+\_\+bitrate}}
+\index{sp\+\_\+set\+\_\+bitrate@{sp\+\_\+set\+\_\+bitrate}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+set\+\_\+bitrate()}{sp\_set\_bitrate()}}
+{\footnotesize\ttfamily int sp\+\_\+set\+\_\+bitrate (\begin{DoxyParamCaption}\item[{unsigned}]{base,  }\item[{unsigned}]{bitrate }\end{DoxyParamCaption})}
+
+
+
+Writes to the divisor latch, setting the frame rate. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+{\em bitrate} & the bitrate to set \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=262pt]{group__SerialPort_gaf264a0b0c4be6a1b9f368e9af4863d4b_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gaf7d4fe8c00d438c8d977780c8eea93d0}\label{group__SerialPort_gaf7d4fe8c00d438c8d977780c8eea93d0}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+set\+\_\+conf@{sp\+\_\+set\+\_\+conf}}
+\index{sp\+\_\+set\+\_\+conf@{sp\+\_\+set\+\_\+conf}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+set\+\_\+conf()}{sp\_set\_conf()}}
+{\footnotesize\ttfamily int sp\+\_\+set\+\_\+conf (\begin{DoxyParamCaption}\item[{unsigned}]{base,  }\item[{unsigned}]{word\+\_\+length,  }\item[{unsigned}]{stop\+\_\+bits,  }\item[{unsigned}]{parity,  }\item[{unsigned}]{bitrate }\end{DoxyParamCaption})}
+
+
+
+Configues the serial port. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+{\em word\+\_\+length} & word size \\
+\hline
+{\em stop\+\_\+bits} & stop bit number \\
+\hline
+{\em parity} & parity bits \\
+\hline
+{\em bitrate} & the bitrate to set\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_gaf7d4fe8c00d438c8d977780c8eea93d0_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga2600cc64b931c3dd4b6958d5090c39f4}\label{group__SerialPort_ga2600cc64b931c3dd4b6958d5090c39f4}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+setup\+\_\+fifo@{sp\+\_\+setup\+\_\+fifo}}
+\index{sp\+\_\+setup\+\_\+fifo@{sp\+\_\+setup\+\_\+fifo}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+setup\+\_\+fifo()}{sp\_setup\_fifo()}}
+{\footnotesize\ttfamily int sp\+\_\+setup\+\_\+fifo (\begin{DoxyParamCaption}\item[{unsigned}]{base }\end{DoxyParamCaption})}
+
+
+
+sets the fifo\textquotesingle{}s up 
+
+
+\begin{DoxyParams}{Parameters}
+{\em base} & the address of the port (C\+O\+M1 or C\+O\+M2) \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__SerialPort_ga9a125dd7a14c69e1e2c8b257fb342509}\label{group__SerialPort_ga9a125dd7a14c69e1e2c8b257fb342509}} 
+\index{Serial Port@{Serial Port}!sp\+\_\+terminate@{sp\+\_\+terminate}}
+\index{sp\+\_\+terminate@{sp\+\_\+terminate}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{sp\+\_\+terminate()}{sp\_terminate()}}
+{\footnotesize\ttfamily void sp\+\_\+terminate (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Terminates serial port. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_ga9a125dd7a14c69e1e2c8b257fb342509_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga849ad2b7e942ea188c1acf4457acbe64}\label{group__SerialPort_ga849ad2b7e942ea188c1acf4457acbe64}} 
+\index{Serial Port@{Serial Port}!transmit\+\_\+critical\+\_\+event@{transmit\+\_\+critical\+\_\+event}}
+\index{transmit\+\_\+critical\+\_\+event@{transmit\+\_\+critical\+\_\+event}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{transmit\+\_\+critical\+\_\+event()}{transmit\_critical\_event()}}
+{\footnotesize\ttfamily void transmit\+\_\+critical\+\_\+event (\begin{DoxyParamCaption}\item[{char $\ast$}]{type }\end{DoxyParamCaption})}
+
+
+
+Transmits a critical event. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em type} & the critical event to transmit \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_ga849ad2b7e942ea188c1acf4457acbe64_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_ga11be5d1aab04fe2f0e95a4d562082916}\label{group__SerialPort_ga11be5d1aab04fe2f0e95a4d562082916}} 
+\index{Serial Port@{Serial Port}!transmit\+\_\+kbd\+\_\+code@{transmit\+\_\+kbd\+\_\+code}}
+\index{transmit\+\_\+kbd\+\_\+code@{transmit\+\_\+kbd\+\_\+code}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{transmit\+\_\+kbd\+\_\+code()}{transmit\_kbd\_code()}}
+{\footnotesize\ttfamily void transmit\+\_\+kbd\+\_\+code (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{kbd\+\_\+code }\end{DoxyParamCaption})}
+
+
+
+Transmits a kbd code (we only use kbd codes with one byte) 
+
+
+\begin{DoxyParams}{Parameters}
+{\em kbd\+\_\+code} & the kbd code to transmit \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_ga11be5d1aab04fe2f0e95a4d562082916_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gaa7ef2569acd9f6a7221b0c7cb262d9d1}\label{group__SerialPort_gaa7ef2569acd9f6a7221b0c7cb262d9d1}} 
+\index{Serial Port@{Serial Port}!transmit\+\_\+mouse\+\_\+bytes@{transmit\+\_\+mouse\+\_\+bytes}}
+\index{transmit\+\_\+mouse\+\_\+bytes@{transmit\+\_\+mouse\+\_\+bytes}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{transmit\+\_\+mouse\+\_\+bytes()}{transmit\_mouse\_bytes()}}
+{\footnotesize\ttfamily void transmit\+\_\+mouse\+\_\+bytes (\begin{DoxyParamCaption}\item[{struct packet $\ast$}]{mouse\+\_\+data,  }\item[{unsigned}]{mouse\+\_\+xvariance,  }\item[{unsigned}]{mouse\+\_\+yvariance }\end{DoxyParamCaption})}
+
+
+
+Transmits mouse bytes. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mouse\+\_\+data} & pointer to the mouse packet that needs to be transmitted \\
+\hline
+{\em mouse\+\_\+yvariance} & mouse variance in y axis \\
+\hline
+{\em mouse\+\_\+xvariance} & mouse variance in x axis \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_gaa7ef2569acd9f6a7221b0c7cb262d9d1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gadf2672c522b1b952877889712bb7f1df}\label{group__SerialPort_gadf2672c522b1b952877889712bb7f1df}} 
+\index{Serial Port@{Serial Port}!transmit\+\_\+player\+\_\+data@{transmit\+\_\+player\+\_\+data}}
+\index{transmit\+\_\+player\+\_\+data@{transmit\+\_\+player\+\_\+data}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{transmit\+\_\+player\+\_\+data()}{transmit\_player\_data()}}
+{\footnotesize\ttfamily void transmit\+\_\+player\+\_\+data (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Transmits player name. 
+
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_gadf2672c522b1b952877889712bb7f1df_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__SerialPort_gaa846c4db2d67c36002d1d18375f1e279}\label{group__SerialPort_gaa846c4db2d67c36002d1d18375f1e279}} 
+\index{Serial Port@{Serial Port}!transmit\+\_\+string@{transmit\+\_\+string}}
+\index{transmit\+\_\+string@{transmit\+\_\+string}!Serial Port@{Serial Port}}
+\subsubsection{\texorpdfstring{transmit\+\_\+string()}{transmit\_string()}}
+{\footnotesize\ttfamily void transmit\+\_\+string (\begin{DoxyParamCaption}\item[{char $\ast$}]{str,  }\item[{uint8\+\_\+t}]{str\+\_\+len }\end{DoxyParamCaption})}
+
+
+
+Transmits a string. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em str} & the string to transmit \\
+\hline
+{\em str\+\_\+len} & the number of characters in the string \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__SerialPort_gaa846c4db2d67c36002d1d18375f1e279_cgraph}
+\end{center}
+\end{figure}

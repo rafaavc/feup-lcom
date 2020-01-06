@@ -1,0 +1,4 @@
+<map id="check_BCD" name="check_BCD">
+<area shape="rect" id="node2" href="$group__RealTimeClock.html#gae37f65cb1eda30db92728dc94bb52b76" title="reads data from the RTC " alt="" coords="147,5,216,32"/>
+<area shape="rect" id="node3" href="$group__utils.html#ga79a031a8611f5b2d6afa4158e92b0fb4" title="Invokes sys_inb() system call but reads the value into a uint8_t variable. " alt="" coords="264,5,355,32"/>
+</map>

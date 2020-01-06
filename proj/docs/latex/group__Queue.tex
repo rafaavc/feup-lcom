@@ -1,0 +1,226 @@
+\hypertarget{group__Queue}{}\section{Queue}
+\label{group__Queue}\index{Queue@{Queue}}
+\subsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \hyperlink{structcharqueue__node}{charqueue\+\_\+node}
+\begin{DoxyCompactList}\small\item\em struct for charqueue node \end{DoxyCompactList}\item 
+struct \hyperlink{structcharqueue}{charqueue}
+\begin{DoxyCompactList}\small\item\em struct for charqueue \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{structcharqueue}{charqueue} $\ast$ \hyperlink{group__Queue_ga44a11e67ef5807557628f7c6a0767289}{create\+\_\+charqueue} ()
+\begin{DoxyCompactList}\small\item\em constructor method for charqueue \end{DoxyCompactList}\item 
+void \hyperlink{group__Queue_ga0ea8507c596fb50285773fd50f0a818d}{charqueue\+\_\+print} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em prints a charqueue \end{DoxyCompactList}\item 
+void \hyperlink{group__Queue_gab21c584ab513656ce228be8faf43072b}{charqueue\+\_\+push} (\hyperlink{structcharqueue}{charqueue} $\ast$q, uint8\+\_\+t value)
+\begin{DoxyCompactList}\small\item\em P\+U\+SH method for the charqueue. \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__Queue_gacdaded4e5bcc6ae01a6d789985381553}{charqueue\+\_\+pop} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em P\+OP method for the charqueue. \end{DoxyCompactList}\item 
+uint8\+\_\+t \hyperlink{group__Queue_gacaa29ccb78b3a91fc2cc5feff22750da}{charqueue\+\_\+front} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em G\+ET method for the element in front of the queue. \end{DoxyCompactList}\item 
+void \hyperlink{group__Queue_ga4c29bcf6ba2eca0528b3ac7889361b3f}{charqueue\+\_\+make\+\_\+empty} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em makes a charqueue empty \end{DoxyCompactList}\item 
+bool \hyperlink{group__Queue_ga1013b749bddaf2e7b01185099ccddfa7}{charqueue\+\_\+empty} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em checks if the charqueue is empty \end{DoxyCompactList}\item 
+unsigned \hyperlink{group__Queue_ga3df2219927af0ffc207c237f99e06331}{charqueue\+\_\+size} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em gets the size of the charqueue \end{DoxyCompactList}\item 
+void \hyperlink{group__Queue_ga1da158a3acaebfa6285053fa52d2d917}{charqueue\+\_\+remove\+\_\+last} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em removes the last element from the charqueue \end{DoxyCompactList}\item 
+char $\ast$ \hyperlink{group__Queue_ga27406c20bfc03f7594e296a9ff320c0a}{charqueue\+\_\+to\+\_\+string} (\hyperlink{structcharqueue}{charqueue} $\ast$q)
+\begin{DoxyCompactList}\small\item\em converts a charqueue to a string \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains functions for charqueue 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group__Queue_ga1013b749bddaf2e7b01185099ccddfa7}\label{group__Queue_ga1013b749bddaf2e7b01185099ccddfa7}} 
+\index{Queue@{Queue}!charqueue\+\_\+empty@{charqueue\+\_\+empty}}
+\index{charqueue\+\_\+empty@{charqueue\+\_\+empty}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+empty()}{charqueue\_empty()}}
+{\footnotesize\ttfamily bool charqueue\+\_\+empty (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+checks if the charqueue is empty 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+whether it is empty or not 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Queue_gacaa29ccb78b3a91fc2cc5feff22750da}\label{group__Queue_gacaa29ccb78b3a91fc2cc5feff22750da}} 
+\index{Queue@{Queue}!charqueue\+\_\+front@{charqueue\+\_\+front}}
+\index{charqueue\+\_\+front@{charqueue\+\_\+front}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+front()}{charqueue\_front()}}
+{\footnotesize\ttfamily uint8\+\_\+t charqueue\+\_\+front (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+G\+ET method for the element in front of the queue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Queue_ga4c29bcf6ba2eca0528b3ac7889361b3f}\label{group__Queue_ga4c29bcf6ba2eca0528b3ac7889361b3f}} 
+\index{Queue@{Queue}!charqueue\+\_\+make\+\_\+empty@{charqueue\+\_\+make\+\_\+empty}}
+\index{charqueue\+\_\+make\+\_\+empty@{charqueue\+\_\+make\+\_\+empty}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+make\+\_\+empty()}{charqueue\_make\_empty()}}
+{\footnotesize\ttfamily void charqueue\+\_\+make\+\_\+empty (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+makes a charqueue empty 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=333pt]{group__Queue_ga4c29bcf6ba2eca0528b3ac7889361b3f_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Queue_gacdaded4e5bcc6ae01a6d789985381553}\label{group__Queue_gacdaded4e5bcc6ae01a6d789985381553}} 
+\index{Queue@{Queue}!charqueue\+\_\+pop@{charqueue\+\_\+pop}}
+\index{charqueue\+\_\+pop@{charqueue\+\_\+pop}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+pop()}{charqueue\_pop()}}
+{\footnotesize\ttfamily uint8\+\_\+t charqueue\+\_\+pop (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+P\+OP method for the charqueue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the value in the frontof the queue 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Queue_ga0ea8507c596fb50285773fd50f0a818d}\label{group__Queue_ga0ea8507c596fb50285773fd50f0a818d}} 
+\index{Queue@{Queue}!charqueue\+\_\+print@{charqueue\+\_\+print}}
+\index{charqueue\+\_\+print@{charqueue\+\_\+print}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+print()}{charqueue\_print()}}
+{\footnotesize\ttfamily void charqueue\+\_\+print (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+prints a charqueue 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue to print \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=296pt]{group__Queue_ga0ea8507c596fb50285773fd50f0a818d_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Queue_gab21c584ab513656ce228be8faf43072b}\label{group__Queue_gab21c584ab513656ce228be8faf43072b}} 
+\index{Queue@{Queue}!charqueue\+\_\+push@{charqueue\+\_\+push}}
+\index{charqueue\+\_\+push@{charqueue\+\_\+push}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+push()}{charqueue\_push()}}
+{\footnotesize\ttfamily void charqueue\+\_\+push (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q,  }\item[{uint8\+\_\+t}]{value }\end{DoxyParamCaption})}
+
+
+
+P\+U\+SH method for the charqueue. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue that will receive an element \\
+\hline
+{\em value} & the value to be added \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__Queue_ga1da158a3acaebfa6285053fa52d2d917}\label{group__Queue_ga1da158a3acaebfa6285053fa52d2d917}} 
+\index{Queue@{Queue}!charqueue\+\_\+remove\+\_\+last@{charqueue\+\_\+remove\+\_\+last}}
+\index{charqueue\+\_\+remove\+\_\+last@{charqueue\+\_\+remove\+\_\+last}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+remove\+\_\+last()}{charqueue\_remove\_last()}}
+{\footnotesize\ttfamily void charqueue\+\_\+remove\+\_\+last (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+removes the last element from the charqueue 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & charqueue \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=330pt]{group__Queue_ga1da158a3acaebfa6285053fa52d2d917_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Queue_ga3df2219927af0ffc207c237f99e06331}\label{group__Queue_ga3df2219927af0ffc207c237f99e06331}} 
+\index{Queue@{Queue}!charqueue\+\_\+size@{charqueue\+\_\+size}}
+\index{charqueue\+\_\+size@{charqueue\+\_\+size}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+size()}{charqueue\_size()}}
+{\footnotesize\ttfamily unsigned charqueue\+\_\+size (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+gets the size of the charqueue 
+
+
+\begin{DoxyParams}{Parameters}
+{\em q} & the charqueue \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+the size of the charqueue 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Queue_ga27406c20bfc03f7594e296a9ff320c0a}\label{group__Queue_ga27406c20bfc03f7594e296a9ff320c0a}} 
+\index{Queue@{Queue}!charqueue\+\_\+to\+\_\+string@{charqueue\+\_\+to\+\_\+string}}
+\index{charqueue\+\_\+to\+\_\+string@{charqueue\+\_\+to\+\_\+string}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{charqueue\+\_\+to\+\_\+string()}{charqueue\_to\_string()}}
+{\footnotesize\ttfamily char$\ast$ charqueue\+\_\+to\+\_\+string (\begin{DoxyParamCaption}\item[{\hyperlink{structcharqueue}{charqueue} $\ast$}]{q }\end{DoxyParamCaption})}
+
+
+
+converts a charqueue to a string 
+
+\begin{DoxyReturn}{Returns}
+the string result 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=314pt]{group__Queue_ga27406c20bfc03f7594e296a9ff320c0a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Queue_ga44a11e67ef5807557628f7c6a0767289}\label{group__Queue_ga44a11e67ef5807557628f7c6a0767289}} 
+\index{Queue@{Queue}!create\+\_\+charqueue@{create\+\_\+charqueue}}
+\index{create\+\_\+charqueue@{create\+\_\+charqueue}!Queue@{Queue}}
+\subsubsection{\texorpdfstring{create\+\_\+charqueue()}{create\_charqueue()}}
+{\footnotesize\ttfamily \hyperlink{structcharqueue}{charqueue}$\ast$ create\+\_\+charqueue (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+constructor method for charqueue 
+
+\begin{DoxyReturn}{Returns}
+pointer to the charqueue created 
+\end{DoxyReturn}

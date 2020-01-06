@@ -1,0 +1,109 @@
+\hypertarget{group__BoardTile}{}\section{Board Tile}
+\label{group__BoardTile}\index{Board Tile@{Board Tile}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \hyperlink{group__BoardTile_ga202d81e1d680e41101f4ac21cab4fa2b}{start\+\_\+dragging\+\_\+tile} (\hyperlink{structTile}{Tile} $\ast$t)
+\begin{DoxyCompactList}\small\item\em change dragging tile to true and state to initial \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_ga8d64ff8a492dc61e2673588e82937e21}{stop\+\_\+dragging\+\_\+tile} (\hyperlink{structTile}{Tile} $\ast$t, bool changed\+\_\+position)
+\begin{DoxyCompactList}\small\item\em change dragging tile to false \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_ga1126de205089e0772fe82ff72f203da1}{create\+\_\+tiles} (\hyperlink{structTile}{Tile} $\ast$t\mbox{[}$\,$\mbox{]}, const unsigned int n)
+\begin{DoxyCompactList}\small\item\em creates n tiles \end{DoxyCompactList}\item 
+bool \hyperlink{group__BoardTile_gae1df260518a136a870415a2a3314a347}{get\+\_\+dragging} (\hyperlink{structTile}{Tile} $\ast$t)
+\begin{DoxyCompactList}\small\item\em get method for dragging \end{DoxyCompactList}\item 
+void \hyperlink{group__BoardTile_gabfc27e45224cf938ccc6e81428a00239}{create\+\_\+board} (int board\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]}\mbox{[}\hyperlink{Macros_8h_a1db39eb31d1315ce982608fe25587b6d}{B\+O\+A\+R\+D\+\_\+\+S\+I\+ZE}\mbox{]})
+\begin{DoxyCompactList}\small\item\em creates a board with the tiles \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains functions for Board \hyperlink{structTile}{Tile} 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group__BoardTile_gabfc27e45224cf938ccc6e81428a00239}\label{group__BoardTile_gabfc27e45224cf938ccc6e81428a00239}} 
+\index{Board Tile@{Board Tile}!create\+\_\+board@{create\+\_\+board}}
+\index{create\+\_\+board@{create\+\_\+board}!Board Tile@{Board Tile}}
+\subsubsection{\texorpdfstring{create\+\_\+board()}{create\_board()}}
+{\footnotesize\ttfamily void create\+\_\+board (\begin{DoxyParamCaption}\item[{int}]{board\mbox{[}\+B\+O\+A\+R\+D\+\_\+\+S\+I\+Z\+E\mbox{]}\mbox{[}\+B\+O\+A\+R\+D\+\_\+\+S\+I\+Z\+E\mbox{]} }\end{DoxyParamCaption})}
+
+
+
+creates a board with the tiles 
+
+
+\begin{DoxyParams}{Parameters}
+{\em board} & game\textquotesingle{}s board \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__BoardTile_ga1126de205089e0772fe82ff72f203da1}\label{group__BoardTile_ga1126de205089e0772fe82ff72f203da1}} 
+\index{Board Tile@{Board Tile}!create\+\_\+tiles@{create\+\_\+tiles}}
+\index{create\+\_\+tiles@{create\+\_\+tiles}!Board Tile@{Board Tile}}
+\subsubsection{\texorpdfstring{create\+\_\+tiles()}{create\_tiles()}}
+{\footnotesize\ttfamily void create\+\_\+tiles (\begin{DoxyParamCaption}\item[{\hyperlink{structTile}{Tile} $\ast$}]{t\mbox{[}$\,$\mbox{]},  }\item[{const unsigned int}]{n }\end{DoxyParamCaption})}
+
+
+
+creates n tiles 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & array with all the tiles to create \\
+\hline
+{\em n} & number of tiles to create \\
+\hline
+\end{DoxyParams}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=345pt]{group__BoardTile_ga1126de205089e0772fe82ff72f203da1_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__BoardTile_gae1df260518a136a870415a2a3314a347}\label{group__BoardTile_gae1df260518a136a870415a2a3314a347}} 
+\index{Board Tile@{Board Tile}!get\+\_\+dragging@{get\+\_\+dragging}}
+\index{get\+\_\+dragging@{get\+\_\+dragging}!Board Tile@{Board Tile}}
+\subsubsection{\texorpdfstring{get\+\_\+dragging()}{get\_dragging()}}
+{\footnotesize\ttfamily bool get\+\_\+dragging (\begin{DoxyParamCaption}\item[{\hyperlink{structTile}{Tile} $\ast$}]{t }\end{DoxyParamCaption})}
+
+
+
+get method for dragging 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & tile \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__BoardTile_ga202d81e1d680e41101f4ac21cab4fa2b}\label{group__BoardTile_ga202d81e1d680e41101f4ac21cab4fa2b}} 
+\index{Board Tile@{Board Tile}!start\+\_\+dragging\+\_\+tile@{start\+\_\+dragging\+\_\+tile}}
+\index{start\+\_\+dragging\+\_\+tile@{start\+\_\+dragging\+\_\+tile}!Board Tile@{Board Tile}}
+\subsubsection{\texorpdfstring{start\+\_\+dragging\+\_\+tile()}{start\_dragging\_tile()}}
+{\footnotesize\ttfamily void start\+\_\+dragging\+\_\+tile (\begin{DoxyParamCaption}\item[{\hyperlink{structTile}{Tile} $\ast$}]{t }\end{DoxyParamCaption})}
+
+
+
+change dragging tile to true and state to initial 
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & tile to change \\
+\hline
+\end{DoxyParams}
+\mbox{\Hypertarget{group__BoardTile_ga8d64ff8a492dc61e2673588e82937e21}\label{group__BoardTile_ga8d64ff8a492dc61e2673588e82937e21}} 
+\index{Board Tile@{Board Tile}!stop\+\_\+dragging\+\_\+tile@{stop\+\_\+dragging\+\_\+tile}}
+\index{stop\+\_\+dragging\+\_\+tile@{stop\+\_\+dragging\+\_\+tile}!Board Tile@{Board Tile}}
+\subsubsection{\texorpdfstring{stop\+\_\+dragging\+\_\+tile()}{stop\_dragging\_tile()}}
+{\footnotesize\ttfamily void stop\+\_\+dragging\+\_\+tile (\begin{DoxyParamCaption}\item[{\hyperlink{structTile}{Tile} $\ast$}]{t,  }\item[{bool}]{changed\+\_\+position }\end{DoxyParamCaption})}
+
+
+
+change dragging tile to false 
+
+If changed position state is set to 0 otherwise state is set 1
+
+
+\begin{DoxyParams}{Parameters}
+{\em t} & tile to change \\
+\hline
+{\em changed\+\_\+position} & true if the tile was changed and false if there was an error when changing \\
+\hline
+\end{DoxyParams}

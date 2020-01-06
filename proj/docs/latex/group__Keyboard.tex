@@ -1,0 +1,107 @@
+\hypertarget{group__Keyboard}{}\section{Keyboard}
+\label{group__Keyboard}\index{Keyboard@{Keyboard}}
+\subsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void() \hyperlink{group__Keyboard_gaea970a154161a35f6894898a092ed70a}{kbc\+\_\+ih} ()
+\begin{DoxyCompactList}\small\item\em keyboard interrupts handler \end{DoxyCompactList}\item 
+int() \hyperlink{group__Keyboard_ga4ac9231a99a664d6a9f0b69767e0d707}{kbd\+\_\+subscribe\+\_\+int} (uint8\+\_\+t $\ast$bit\+\_\+no)
+\begin{DoxyCompactList}\small\item\em Subscribes and enables Keyboard interrupts. \end{DoxyCompactList}\item 
+int() \hyperlink{group__Keyboard_gaee0a7b54ee426fade9c780418d110fe0}{kbd\+\_\+unsubscribe\+\_\+int} ()
+\begin{DoxyCompactList}\small\item\em Unsubscribes Keyboard interrupts. \end{DoxyCompactList}\item 
+int \hyperlink{group__Keyboard_gade2f6cbc5a539bc152aca944b3cd5c43}{send\+\_\+statusreg\+\_\+commandbyte} (uint8\+\_\+t mask)
+\begin{DoxyCompactList}\small\item\em Sends command byte to status reg. \end{DoxyCompactList}\item 
+int \hyperlink{group__Keyboard_ga4909d2b8687b61065a2ce1d215135c3e}{enable\+\_\+interrupts} ()
+\begin{DoxyCompactList}\small\item\em Enables keyboard interrupts. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Contains functions for keyboard 
+
+\subsection{Function Documentation}
+\mbox{\Hypertarget{group__Keyboard_ga4909d2b8687b61065a2ce1d215135c3e}\label{group__Keyboard_ga4909d2b8687b61065a2ce1d215135c3e}} 
+\index{Keyboard@{Keyboard}!enable\+\_\+interrupts@{enable\+\_\+interrupts}}
+\index{enable\+\_\+interrupts@{enable\+\_\+interrupts}!Keyboard@{Keyboard}}
+\subsubsection{\texorpdfstring{enable\+\_\+interrupts()}{enable\_interrupts()}}
+{\footnotesize\ttfamily int enable\+\_\+interrupts (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Enables keyboard interrupts. 
+
+\begin{DoxyReturn}{Returns}
+Return 0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=350pt]{group__Keyboard_ga4909d2b8687b61065a2ce1d215135c3e_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Keyboard_gaea970a154161a35f6894898a092ed70a}\label{group__Keyboard_gaea970a154161a35f6894898a092ed70a}} 
+\index{Keyboard@{Keyboard}!kbc\+\_\+ih@{kbc\+\_\+ih}}
+\index{kbc\+\_\+ih@{kbc\+\_\+ih}!Keyboard@{Keyboard}}
+\subsubsection{\texorpdfstring{kbc\+\_\+ih()}{kbc\_ih()}}
+{\footnotesize\ttfamily void() kbc\+\_\+ih (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+keyboard interrupts handler 
+
+Reads keyboard data and saves it to kbd\+\_\+code Here is the call graph for this function\+:\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=229pt]{group__Keyboard_gaea970a154161a35f6894898a092ed70a_cgraph}
+\end{center}
+\end{figure}
+\mbox{\Hypertarget{group__Keyboard_ga4ac9231a99a664d6a9f0b69767e0d707}\label{group__Keyboard_ga4ac9231a99a664d6a9f0b69767e0d707}} 
+\index{Keyboard@{Keyboard}!kbd\+\_\+subscribe\+\_\+int@{kbd\+\_\+subscribe\+\_\+int}}
+\index{kbd\+\_\+subscribe\+\_\+int@{kbd\+\_\+subscribe\+\_\+int}!Keyboard@{Keyboard}}
+\subsubsection{\texorpdfstring{kbd\+\_\+subscribe\+\_\+int()}{kbd\_subscribe\_int()}}
+{\footnotesize\ttfamily int() kbd\+\_\+subscribe\+\_\+int (\begin{DoxyParamCaption}\item[{uint8\+\_\+t $\ast$}]{bit\+\_\+no }\end{DoxyParamCaption})}
+
+
+
+Subscribes and enables Keyboard interrupts. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em bit\+\_\+no} & address of memory to be initialized with the bit number to be set in the mask returned upon an interrupt \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return 0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Keyboard_gaee0a7b54ee426fade9c780418d110fe0}\label{group__Keyboard_gaee0a7b54ee426fade9c780418d110fe0}} 
+\index{Keyboard@{Keyboard}!kbd\+\_\+unsubscribe\+\_\+int@{kbd\+\_\+unsubscribe\+\_\+int}}
+\index{kbd\+\_\+unsubscribe\+\_\+int@{kbd\+\_\+unsubscribe\+\_\+int}!Keyboard@{Keyboard}}
+\subsubsection{\texorpdfstring{kbd\+\_\+unsubscribe\+\_\+int()}{kbd\_unsubscribe\_int()}}
+{\footnotesize\ttfamily int() kbd\+\_\+unsubscribe\+\_\+int (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Unsubscribes Keyboard interrupts. 
+
+\begin{DoxyReturn}{Returns}
+Return 0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
+\mbox{\Hypertarget{group__Keyboard_gade2f6cbc5a539bc152aca944b3cd5c43}\label{group__Keyboard_gade2f6cbc5a539bc152aca944b3cd5c43}} 
+\index{Keyboard@{Keyboard}!send\+\_\+statusreg\+\_\+commandbyte@{send\+\_\+statusreg\+\_\+commandbyte}}
+\index{send\+\_\+statusreg\+\_\+commandbyte@{send\+\_\+statusreg\+\_\+commandbyte}!Keyboard@{Keyboard}}
+\subsubsection{\texorpdfstring{send\+\_\+statusreg\+\_\+commandbyte()}{send\_statusreg\_commandbyte()}}
+{\footnotesize\ttfamily int send\+\_\+statusreg\+\_\+commandbyte (\begin{DoxyParamCaption}\item[{uint8\+\_\+t}]{mask }\end{DoxyParamCaption})}
+
+
+
+Sends command byte to status reg. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mask} & the mask has the bits that it wants to change to enabled with value = 1 IF mask = 0\+: Nothing changes\\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Return 0 upon success and non-\/zero otherwise 
+\end{DoxyReturn}
