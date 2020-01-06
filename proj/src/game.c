@@ -1535,7 +1535,7 @@ int game() {
   if (timer_unsubscribe_int() != 0) return 1;  // unsubscribes Timer0 interrupts
   if (rtc_unsubscribe_int() != 0) return 1; // Unsubscriber RTC interrupts
   // Exiting video mode
-  vg_exit();
+  vg_exit();  
 
   return 0;
 }
