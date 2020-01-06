@@ -12,6 +12,7 @@
 enum State {
     MAIN_MENU,  /**<  used when the game is at the initial menu  */
     TUTORIAL,   /**<  used when the game is at the tutorial page  */
+    SETTINGS,   /**<  used when the game is at the settings page  */
     PAUSE,      /**<  used when the game is paused during a game  */
     GAME,       /**<  used when the players are playing  */
     CHOOSING_MODE,  /**<  used when the players are choosing which mode to play  */
@@ -80,6 +81,13 @@ void draw_tutorial();
  * Draws the background, then all the strings and text buttons for the pause menu and lastly the mouse
  */
 void draw_pause_menu();
+
+/**
+ * @brief draws settings menu
+ * 
+ * Draws the background, then all the strings and text buttons for the settings menu and lastly the mouse
+ */
+void draw_settings();
 
 /**
  * @brief draws main menu screen

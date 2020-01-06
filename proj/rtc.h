@@ -32,3 +32,9 @@ int (rtc_unsubscribe_int)();
 int read_rtc(uint32_t addr, uint8_t *ret);
 
 int write_rtc(uint32_t addr, uint8_t value);
+
+int write_dark_mode(uint8_t mode, uint8_t content);
+
+int make_dm_auto();
+
+int make_dm_custom(bool dm);

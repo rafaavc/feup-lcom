@@ -9,7 +9,7 @@
 #include "Macros.h"
 
 
-bool dark_mode = false;
+bool dark_mode = false, override_dark_mode = false;
 int hook_id_rtc;
 uint8_t rtc[3];
 
@@ -81,6 +81,18 @@ int rtc_subscribe_int(uint8_t* bit_no){
     uint8_t regC;
     if (read_rtc(REG_C, &regC) != 0) return 1;
 
+    // This will check the dark mode registers for data
+    uint8_t override_dm;
+    if (read_rtc(REG_DARK_MODE, &override_dm) != 0) return 1;
+    if (override_dm == 'C') {
+        override_dark_mode = true;
+        if (read_rtc(REG_DARK_MODE1, &override_dm) != 0) return 1;
+
+        if (override_dm == 'T') dark_mode = true;
+        else dark_mode = false;
+
+    } else override_dark_mode = false;
+
 
     *bit_no = (uint8_t) BIT(*bit_no);
 
@@ -88,9 +100,30 @@ int rtc_subscribe_int(uint8_t* bit_no){
 }
 
 int (rtc_unsubscribe_int)() {
-  // removes notification subscriptions on interrupts
-  if (sys_irqrmpolicy(&hook_id_rtc) != 0)
-    return 1;
+    // removes notification subscriptions on interrupts
+    if (sys_irqrmpolicy(&hook_id_rtc) != 0)
+        return 1;
 
-  return 0;
+    return 0;
 }
+
+int write_dark_mode(uint8_t mode, uint8_t content) {
+    if (write_rtc(REG_DARK_MODE, mode) != 0) return 1;
+    if (write_rtc(REG_DARK_MODE1, content) != 0) return 1;
+    return 0;
+}
+
+int make_dm_auto() {
+    if (write_dark_mode('A', 0x0) != 0) return 1;
+    return 0;
+}
+
+int make_dm_custom(bool dm) {
+    uint8_t c;
+    if (dm) c = 'T';
+    else c = 'F';
+
+    if (write_dark_mode('C', c) != 0) return 1;
+    return 0;
+}
+

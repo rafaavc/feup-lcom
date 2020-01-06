@@ -27,15 +27,16 @@ uint8_t irq_com1 = 0, irq_com2 = 5;
 
 unsigned grid_height = 23, grid_width = 37, current_player = 0, move_count = 0; // current_player -> 0 or 1 for player 1 or 2
 
-bool on = true, added_mouse_events_main_menu = false, added_mouse_events_pause = false, added_mouse_events_tutorial = false, added_mouse_events_choosing_menu = false, game_ends = false;
+bool on = true, added_mouse_events_main_menu = false, added_mouse_events_pause = false, added_mouse_events_tutorial = false, added_mouse_events_choosing_menu = false, game_ends = false, added_mouse_events_settings = false;
 
-const unsigned triggers_mm_no = 3, triggers_p_no = 2, triggers_t_no = 1, triggers_g_no = 2, triggers_cm_no = 3;
+const unsigned triggers_mm_no = 4, triggers_p_no = 2, triggers_t_no = 1, triggers_g_no = 2, triggers_cm_no = 3, triggers_s_no = 3;
 
 MouseTrigger * mouse_triggers_main_menu[3];
 MouseTrigger * mouse_triggers_pause[2];
 MouseTrigger * mouse_triggers_choosing_menu[3];
 MouseTrigger * mouse_triggers_tutorial[1];
 MouseTrigger * mouse_triggers_game[2] = {NULL, NULL}; // the the block(s) that need to be moved
+MouseTrigger * mouse_triggers_settings[3];
 
 Player * main_menu_animated_ball;
 
@@ -53,12 +54,12 @@ bool only_one_move = false; unsigned tile_move_count = 0;
 
 enum Event current_event = NO_EVENT;
 
-                    //      text    text_over   other    (Will make it easier to change all colors to dark/light theme)
+                    //      text    text_over   other
 uint32_t color_palette[] = {WHITE, DIRTY_WHITE, BLACK};
 
 // RTC
 extern bool dark_mode;
-bool past_mode;
+extern bool override_dark_mode;
 
 // Serial port variables
 bool multi_computer = false; // Whether playing serial port mode or not
@@ -104,6 +105,26 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
   int prev_i, prev_j;
   switch (current_event) {
     case NO_EVENT:
+      break;
+    case MAKE_DARK_MODE_AUTO:
+      override_dark_mode = false;
+      make_dm_auto();
+      current_event = NO_EVENT;
+      break;
+    case MAKE_DARK_MODE_CUSTOM_TOGGLE:
+      override_dark_mode = true;
+      if (!dark_mode) {
+        dark_mode = true;
+      } else {
+        dark_mode = false;
+      }
+      make_dm_custom(dark_mode);
+      draw_bg_buffer(get_background(), 0, 0, true, PREDEF_COLOR, ""); // updates the bg
+      current_event = NO_EVENT;
+      break;
+    case OPEN_SETTINGS:
+      *s = SETTINGS;
+      current_event = NO_EVENT;
       break;
     case START_CHOOSING_MODE:
       *s = CHOOSING_MODE;
@@ -254,8 +275,10 @@ void draw_main_menu() {
   draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[0], false, START_CHOOSING_MODE, "Start Game", 10, get_xres()/2, 275, 800, PREDEF_COLOR, PREDEF_COLOR, "");
 
   draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[1], false, OPEN_TUTORIAL, "Help", 4, get_xres()/2, 350, 800, PREDEF_COLOR, PREDEF_COLOR, "");
+  
+  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[2], false, OPEN_SETTINGS, "Settings", 8, get_xres()/2, 425, 800, PREDEF_COLOR, PREDEF_COLOR, "");
 
-  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[2], true, QUIT_GAME, "Quit", 4, get_xres()/2, 500, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[3], true, QUIT_GAME, "Quit", 4, get_xres()/2, 530, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
@@ -280,6 +303,31 @@ void draw_tutorial() {
 
   draw_text_button(&added_mouse_events_tutorial, &mouse_triggers_tutorial[0], true, OPEN_MAIN_MENU, "Return", 6, get_xres()/2, get_yres()-70, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
+  draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
+  memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
+}
+
+void draw_settings() {
+  memcpy(get_double_buffer(), get_background_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8));
+
+  draw_string_centered("Settings", 8, get_xres()/2, 150, 800, color_palette[0], "");
+  uint32_t dma_color = PREDEF_COLOR, dma_color_over = PREDEF_COLOR;
+
+  if (!override_dark_mode) {
+    dma_color = 0xf9b909;
+    dma_color_over = dma_color;
+  }
+
+  draw_text_button(&added_mouse_events_settings, &mouse_triggers_settings[0], false, MAKE_DARK_MODE_AUTO, "Make Dark Mode automatic (based on time of day)", 47, get_xres()/2, 280, 800, dma_color, dma_color_over, "small");
+  draw_string_centered("If dark mode is automatic, it will turn on at 8PM and off at 8AM.", 65, get_xres()/2, 320, 800, color_palette[0], "smaller");
+  if (!dark_mode) {
+    draw_text_button(&added_mouse_events_settings, &mouse_triggers_settings[1], false, MAKE_DARK_MODE_CUSTOM_TOGGLE, "Turn on Dark Mode", 17, get_xres()/2, 360, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  } else {
+    draw_text_button(&added_mouse_events_settings, &mouse_triggers_settings[1], false, MAKE_DARK_MODE_CUSTOM_TOGGLE, "Turn off Dark Mode", 18, get_xres()/2, 360, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  }
+
+  draw_text_button(&added_mouse_events_settings, &mouse_triggers_settings[2], true, OPEN_MAIN_MENU, "Return", 6, get_xres()/2, 530, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
+  
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
@@ -513,10 +561,16 @@ void handle_keyboard_events(enum State *s, Player * players[]) {
         current_event = QUIT_GAME;
       }
       break;
+    case SETTINGS:
+      if (kbd_code == ESC_break) {
+        current_event = OPEN_MAIN_MENU;
+      }
+      break;
     case TUTORIAL:
       if (kbd_code == ESC_break) {
         current_event = OPEN_MAIN_MENU;
       }
+      break;
     case PAUSE:
       if (kbd_code == ESC_break) {
         current_event = END_GAME;
@@ -652,6 +706,24 @@ void handle_mouse_events(enum State *s, struct packet *mouse_data, int board[BOA
         for (unsigned i = 0; i < triggers_mm_no; i++) {
           if (check_mouse_overlap(mouse_triggers_main_menu[i])) {
             current_event = mt_get_event(mouse_triggers_main_menu[i]);
+            timer_counter_play = 0;
+            play_time = 0;
+            break;
+          }
+        }
+      }
+      break;
+    case SETTINGS:
+      for (unsigned i = 0; i < triggers_s_no; i++) {
+        if (check_mouse_overlap(mouse_triggers_settings[i])) {
+          mt_set_mouse_over(mouse_triggers_settings[i]);
+          break;
+        }
+      }
+      if (mouse_data->lb && !mouse_lb_pressed) {
+        for (unsigned i = 0; i < triggers_s_no; i++) {
+          if (check_mouse_overlap(mouse_triggers_settings[i])) {
+            current_event = mt_get_event(mouse_triggers_settings[i]);
             timer_counter_play = 0;
             play_time = 0;
             break;
@@ -846,6 +918,9 @@ void free_allocated_memory(Tile * tiles[], unsigned tile_no, Player * players[])
   }
   for (unsigned i = 0; i < triggers_cm_no; i++) {
     free(mouse_triggers_choosing_menu[i]);
+  }
+  for (unsigned i = 0; i < triggers_s_no; i++) {
+    free(mouse_triggers_settings[i]);
   }
   for (unsigned i = 0; i < tile_no; i++) {
     free(tiles[i]);
@@ -1254,15 +1329,31 @@ int game() {
             }
           }
           if (msg.m_notify.interrupts & irq_rtc){ // RTC interrupt received
-            if (get_time_rtc()) {
-              if (rtc[0] < 0 || rtc[0] > 30) {
-                dark_mode = true;
-              }
-              else {
-                dark_mode = false;
-              }
-              printf("hour: %d, Minutes: %d, Seconds: %d\n", rtc[0], rtc[1], rtc[2]);
+            uint8_t *regC = malloc(sizeof(uint8_t));   // needed to do this because weird things were happening
+            *regC = 0;
+            if (read_rtc(REG_C, regC) != 0) return 1;
+            if (*regC & C_UPDATE_FLAG) { // Update interrupt
+                if (get_time_rtc()) {
+                    if (!override_dark_mode) {
+                      if ((rtc[0] < 8 || rtc[0] > 20) && !dark_mode) {
+                          dark_mode = true;
+                          draw_bg_buffer(get_background(), 0, 0, true, PREDEF_COLOR, ""); // updates the bg
+                      }
+                      else if ((rtc[0] > 8 && rtc[0] < 20) && dark_mode) {
+                          dark_mode = false;
+                          draw_bg_buffer(get_background(), 0, 0, true, PREDEF_COLOR, ""); // updates the bg
+                      }
+                    }
+                    //printf("%d:%d:%d\n", rtc[0], rtc[1], rtc[2]);
+                }
             }
+            if (*regC & C_ALARM_FLAG) { // Alarm interrupt
+                printf("RTC alarm interrupt.\n");
+            }
+            if (*regC & C_PERIODIC_FLAG) { // Periodic interrupt
+                printf("RTC periodic interrupt.\n");
+            }
+            free(regC);
           }
           if (msg.m_notify.interrupts & irq_timer0) {   // Timer0 interrupt received
             timer_int_handler();
@@ -1290,6 +1381,9 @@ int game() {
                   break;
                 case TUTORIAL:
                   draw_tutorial();
+                  break;
+                case SETTINGS:
+                  draw_settings();
                   break;
                 case PAUSE:
                   draw_pause_menu();

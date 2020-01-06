@@ -260,18 +260,28 @@ REAL TIME CLOCK
 
 #define RTC_ADDR_REG 0x70
 #define RTC_DATA_REG 0x71
+
 #define REG_A 0xA
 #define REG_B 0xB
 #define REG_C 0xC
+
+#define REG_DARK_MODE 0xF       // can be auto ('A') or custom ('C')
+#define REG_DARK_MODE1 0x1F      // can be true ('T') or false ('F')
+
 #define SECONDS 0x0
 #define MINUTES 0x2
 #define HOURS 0x4
+
 #define UPDATE_IN_PROGRESS BIT(7)
 #define FORMAT_24 BIT(1)
 #define RTC_BINARY BIT(2)
 #define UPDATE_INTERRUPTS BIT(4)
 #define PERIODIC_INTERRUPTS BIT(6)
 #define ALARM_INTERRUPTS BIT(5)
+
+#define C_UPDATE_FLAG BIT(4)
+#define C_ALARM_FLAG BIT(5)
+#define C_PERIODIC_FLAG BIT(6)
 
 /*
 ---

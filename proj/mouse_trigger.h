@@ -16,7 +16,10 @@ enum Event {
     PLAYER_MOVE_W,      /**< Move a player with w key */
     PLAYER_MOVE_A,      /**< Move a player with a key */
     PLAYER_MOVE_S,      /**< Move a player with s key */
-    PLAYER_MOVE_D       /**< Move a player with d key */
+    PLAYER_MOVE_D,       /**< Move a player with d key */
+    MAKE_DARK_MODE_AUTO, /**< Making dark mode automatic */
+    MAKE_DARK_MODE_CUSTOM_TOGGLE, /**< Making dark mode custom with dark mode = !dark_mode */ 
+    OPEN_SETTINGS                /**< Open settings menu */
 };
 
 /**
