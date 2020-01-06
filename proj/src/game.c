@@ -13,7 +13,6 @@
 #include "xpm_includes.h"
 #include "mouse.h"
 #include "game.h"
-#include "menus.h"
 #include "sp.h"
 #include "rtc.h"
 
@@ -142,7 +141,6 @@ void execute_event(enum State *s, Tile * tiles[], unsigned tile_no, Player * pla
       sp_send_character('a');
       *s = WAITING_FOR_CONNECTION;
       current_event = NO_EVENT;
-      //sp_sync();
       break;
     case QUIT_GAME:
       free_allocated_memory(tiles, tile_no, players);
@@ -264,6 +262,30 @@ void draw_main_menu() {
 
   draw_text_button(&added_mouse_events_main_menu, &mouse_triggers_main_menu[3], true, QUIT_GAME, "Quit", 4, get_xres()/2, 530, 800, PREDEF_COLOR, PREDEF_COLOR, "small");
 
+  char time[9];
+  char n[4];
+  if (rtc[0] > 10) {
+    sprintf(n, "%d:", rtc[0]);
+  } else {
+    sprintf(n, "0%d:", rtc[0]);
+  }
+  sprintf(time, "%s", n);
+  if (rtc[1] > 10) {
+    sprintf(n, "%d:", rtc[1]);
+  } else {
+    sprintf(n, "0%d:", rtc[1]);
+  }
+  sprintf(time, "%s%s", time, n);
+  if (rtc[2] > 10) {
+    sprintf(n, "%d", rtc[2]);
+  } else {
+    sprintf(n, "0%d", rtc[2]);
+  }
+  sprintf(time, "%s%s", time, n);
+
+
+  draw_string(time, 8, get_xres() - (20 + get_string_width_normal(time, 8)/3), get_yres() - 30, 800, color_palette[0], "smaller");
+
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
 }
@@ -332,6 +354,30 @@ void draw_pause_menu() {
       draw_string_centered("Opponent disconnected", 21, get_xres()/2, 500, 800, color_palette[0], "small");
     }
   }
+
+  char time[9];
+  char n[4];
+  if (rtc[0] > 10) {
+    sprintf(n, "%d:", rtc[0]);
+  } else {
+    sprintf(n, "0%d:", rtc[0]);
+  }
+  sprintf(time, "%s", n);
+  if (rtc[1] > 10) {
+    sprintf(n, "%d:", rtc[1]);
+  } else {
+    sprintf(n, "0%d:", rtc[1]);
+  }
+  sprintf(time, "%s%s", time, n);
+  if (rtc[2] > 10) {
+    sprintf(n, "%d", rtc[2]);
+  } else {
+    sprintf(n, "0%d", rtc[2]);
+  }
+  sprintf(time, "%s%s", time, n);
+
+
+  draw_string(time, 8, get_xres() - (20 + get_string_width_normal(time, 8)/3), get_yres() - 30, 800, color_palette[0], "smaller");
 
   draw_pixmap(get_mouse_simple(), mouse_xvariance, mouse_yvariance, false, PREDEF_COLOR, "");
   memcpy(get_video_mem(), get_double_buffer(), get_xres()*get_yres()*((get_bits_per_pixel()+7)/8)); // copies double buffer to display on screen
