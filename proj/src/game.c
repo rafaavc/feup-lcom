@@ -1536,7 +1536,6 @@ int game() {
   if (rtc_unsubscribe_int() != 0) return 1; // Unsubscriber RTC interrupts
   // Exiting video mode
   vg_exit();
-  send_command_to_mouse(DISABLE_DATA_REPORTING);
 
   return 0;
 }
